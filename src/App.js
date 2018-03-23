@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Button } from 'antd';
-import './App.css';
+import { Layout, Menu, Icon } from 'antd';
+import './App.less';
 
 const API_KEY = 'AIzaSyDJO37Cx7EyABWOXVZWDBou-wau3dIsYCQ';
 const webpageTest_API = 'A.42f94b48a17054d80dd1c592a4e2d4d5';
@@ -12,6 +12,7 @@ const query = [
   'key=' + API_KEY,
   'locale=zh',   //中文zh
 ].join('&');
+const { Header, Sider, Content } = Layout;
 
 // const query2 = [
 //   'url=' + URL_TO_GET_RESULTS_FOR,
@@ -20,8 +21,10 @@ const query = [
 class App extends Component {
 
   state = {
-    image: null
-  }
+    collapsed: false,
+  };
+
+
   componentDidMount() {
     //Google pageSpeed API
     fetch(API_URL+query,{
@@ -48,12 +51,37 @@ class App extends Component {
     //   console.log(result)
     // })
   }
-
+  toggle = () => {
+    this.setState({
+      collapsed: !this.state.collapsed,
+    });
+  }
 
   render() {
     return (
       <div className="App">
-        <Button>hi</Button>
+        <Sider
+          trigger={null}
+          collapsible
+          collapsed={this.state.collapsed}
+          className="sider"
+        >
+          <div className="logo" />
+          <Menu theme="dark" mode="inline">
+            <Menu.Item key="1">
+              <Icon type="pie-chart" />
+              <span>1</span>
+            </Menu.Item>
+            <Menu.Item key="2">
+              <Icon type="pie-chart" />
+              <span>2</span>
+            </Menu.Item>
+            <Menu.Item key="3">
+              <Icon type="pie-chart" />
+              <span>3</span>
+            </Menu.Item>
+          </Menu>
+        </Sider>
       </div>
     );
   }
