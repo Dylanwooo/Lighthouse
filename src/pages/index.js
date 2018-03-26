@@ -2,6 +2,7 @@ import React, { Component, PureComponent } from 'react';
 import { Radio,Card,Input,Select,Button } from 'antd';
 import { language } from '../asserts/language'
 import './pages.less';
+
 /**
  * webpageTest API
  * 请求方式：http://www.webpagetest.org/runtest.php?url=目标网址&k=api_key
@@ -9,6 +10,12 @@ import './pages.less';
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
+
+const children = [];
+
+for (let i = 0; i <language.length; i++) {
+  children.push(<Option key={language[i].key}>{language[i].name}</Option>);
+}
 
 const API_KEY = 'AIzaSyDJO37Cx7EyABWOXVZWDBou-wau3dIsYCQ';
 const webpageTest_API = 'A.42f94b48a17054d80dd1c592a4e2d4d5';
@@ -30,6 +37,11 @@ const query2 = [
 
 export default class Index extends PureComponent {
 
+    state = {
+        deviceType: 'desktop',
+        lang: 'zh',
+    }
+
     componentDidMount() {
         //Google pageSpeed API
         fetch(API_URL+query,{
@@ -44,19 +56,23 @@ export default class Index extends PureComponent {
 
 
     onChange = (e) => {
-        console.log(`radio checked:${e.target.value}`);
+        this.setState({
+            deviceType: e.target.value
+        })
     }
-    handleChange = (value) => {
-        console.log(`selected ${value}`);
+    handleLangChange = (value) => {
+        this.setState({
+            language: value
+        })
     }
       
     render() {
         return(
             <div>
                 <div className="deviceTypeWrapper" >
-                    <RadioGroup onChange={this.onChange} defaultValue="a">
-                        <RadioButton value="a">PC端</RadioButton>
-                        <RadioButton value="b">移动端</RadioButton>
+                    <RadioGroup onChange={this.onChange} defaultValue="desktop">
+                        <RadioButton value="desktop">PC端</RadioButton>
+                        <RadioButton value="mobile">移动端</RadioButton>
                     </RadioGroup>
                 </div>
                 <div className="contentWrapper">
@@ -68,13 +84,13 @@ export default class Index extends PureComponent {
                         <div className="itemWrapper">
                             <span>选择语言：</span>
                             <Select defaultValue="简体中文" onChange={this.handleChange}>
-                                {language.map(val => {
-                                     <Option value={val.key} key={val.key}>{val.name}</Option>                               
-                                })}
+                                {children}                         
                             </Select>
                         </div>
                         <div className="snapViewWrapper">
-                            我是结果概略
+                            <Card>
+                                
+                            </Card>
                         </div>
                         <div className="btnWrapper">
                             <Button>开始测评</Button>

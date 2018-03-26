@@ -51,7 +51,7 @@ class App extends Component {
                 type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
                 onClick={this.toggle}
               />
-                Header
+                
               </Header>
               <Content>
                 <Index />

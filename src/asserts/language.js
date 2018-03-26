@@ -12,7 +12,7 @@ export const language = [
         key: 'ca'
     },
     {
-        name: '繁体中文（台湾',
+        name: '繁体中文（台湾）',
         key: 'zh-TW'
     },
     {
@@ -57,7 +57,7 @@ export const language = [
     },
     {
         name: '德语',
-        key: 'en'
+        key: 'de'
     },
     {
         name: '希腊语',
