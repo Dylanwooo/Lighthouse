@@ -1,0 +1,37 @@
+Index: src/App.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import React, { Component } from 'react';\nimport { Layout, Menu, Icon, Button } from 'antd';\nimport './App.css';\n\nconst { Header, Sider, Content } = Layout;\n\nconst API_KEY = 'AIzaSyDJO37Cx7EyABWOXVZWDBou-wau3dIsYCQ';\nconst webpageTest_API = 'A.42f94b48a17054d80dd1c592a4e2d4d5';\nconst URL_TO_GET_RESULTS_FOR = 'http://www.4399.com';\nconst API_URL = 'https://www.googleapis.com/pagespeedonline/v4/runPagespeed?';\nconst webpageTest_URL = 'http://www.webpagetest.org/runtest.php?';\nconst query = [\n  'url=' + URL_TO_GET_RESULTS_FOR,\n  'key=' + API_KEY,\n  'locale=zh',   //中文zh\n].join('&');\n\n// const query2 = [\n//   'url=' + URL_TO_GET_RESULTS_FOR,\n//   'key=' + webpageTest_API,\n// ]\nclass App extends Component {\n\n  state = {\n    collapsed: false,\n  };\n \n  componentDidMount() {\n    //Google pageSpeed API\n    fetch(API_URL+query,{\n      headers: {\n          'Content-type':'application/json',\n          'Accept':'application/json',\n          'cache-control': 'max-age=604800'   //设置浏览器缓存7天\n      }\n    })\n    .then((response) => response.json())\n    .then(result => {\n      console.log(result);\n    })\n\n    //webpageTest API\n    // fetch(webpageTest_URL+query2,{\n    //   headers: {\n    //     'Content-type':'application/json',\n    //     'Accept':'application/json',\n    //   }\n    // })\n    // .then((response) => response.json())\n    // .then(result => {\n    //   console.log(result)\n    // })\n  }\n  toggle = () => {\n    this.setState({\n      collapsed: !this.state.collapsed,\n    });\n  }\n\n  render() {\n    return (\n      <div className=\"App\">\n        <Layout>\n        <Sider\n          trigger={null}\n          collapsible\n          collapsed={this.state.collapsed}\n        >\n          <div className=\"logo\" />\n          <Menu theme=\"dark\" mode=\"inline\" defaultSelectedKeys={['1']}>\n            <Menu.Item key=\"1\">\n              <Icon type=\"user\" />\n              <span>nav 1</span>\n            </Menu.Item>\n            <Menu.Item key=\"2\">\n              <Icon type=\"video-camera\" />\n              <span>nav 2</span>\n            </Menu.Item>\n            <Menu.Item key=\"3\">\n              <Icon type=\"upload\" />\n              <span>nav 3</span>\n            </Menu.Item>\n          </Menu>\n        </Sider>\n        <Layout>\n          <Header style={{ background: '#fff', padding: 0 }}>\n            <Icon\n              className=\"trigger\"\n              type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}\n              onClick={this.toggle}\n            />\n          </Header>\n          <Content style={{ margin: '24px 16px', padding: 24, background: '#fff', minHeight: 280 }}>\n            Content\n          </Content>\n        </Layout>\n      </Layout>\n      </div>\n    );\n  }\n}\n\nexport default App;\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/App.js	(date 1521903212000)
++++ src/App.js	(revision )
+@@ -15,10 +15,11 @@
+   'locale=zh',   //中文zh
+ ].join('&');
+ 
+-// const query2 = [
+-//   'url=' + URL_TO_GET_RESULTS_FOR,
+-//   'key=' + webpageTest_API,
+-// ]
++const query2 = [
++  'url=' + URL_TO_GET_RESULTS_FOR,
++  'k=' + webpageTest_API,
++  'f=' + 'json'
++].join('&');
+ class App extends Component {
+ 
+   state = {
+@@ -27,9 +28,10 @@
+  
+   componentDidMount() {
+     //Google pageSpeed API
+-    fetch(API_URL+query,{
++    fetch(webpageTest_URL+query2,{
+       headers: {
+           'Content-type':'application/json',
++          'Access-Control-Allow-Origin': '*',
+           'Accept':'application/json',
+           'cache-control': 'max-age=604800'   //设置浏览器缓存7天
+       }

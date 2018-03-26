@@ -1,5 +1,5 @@
 import React, { Component, PureComponent } from 'react';
-import { Radio,Card,Input,Select,Button } from 'antd';
+import { Radio,Card,Input,Select,Button,Row, Col } from 'antd';
 import { language } from '../asserts/language'
 import './pages.less';
 
@@ -40,6 +40,7 @@ export default class Index extends PureComponent {
     state = {
         deviceType: 'desktop',
         lang: 'zh',
+        snapViewVisible: false,
     }
 
     componentDidMount() {
@@ -59,10 +60,15 @@ export default class Index extends PureComponent {
         this.setState({
             deviceType: e.target.value
         })
-    }
+    };
     handleLangChange = (value) => {
         this.setState({
             language: value
+        })
+    };
+    onEstimate = () => {
+        this.setState({
+            snapViewVisible: true
         })
     }
       
@@ -76,6 +82,7 @@ export default class Index extends PureComponent {
                     </RadioGroup>
                 </div>
                 <div className="contentWrapper">
+
                     <Card>
                         <div className="itemWrapper">
                             <span>测评网址：</span>
@@ -83,17 +90,31 @@ export default class Index extends PureComponent {
                         </div>
                         <div className="itemWrapper">
                             <span>选择语言：</span>
-                            <Select defaultValue="简体中文" onChange={this.handleChange}>
-                                {children}                         
+                            <Select defaultValue="简体中文" onChange={this.handleLangChange}>
+                                {children}
                             </Select>
                         </div>
-                        <div className="snapViewWrapper">
-                            <Card>
-                                
-                            </Card>
-                        </div>
+                        { this.state.snapViewVisible?
+                            <div className="snapViewWrapper">
+                                <Card>
+                                    <Row gutter={150}>
+                                        <Col span={10}>
+                                            <div className="scoreWrapper">
+                                                hhh
+                                            </div>
+                                        </Col>
+                                        <Col span={10}>
+                                            <div className="snapPicWrapper">
+                                                hhh
+                                            </div>
+                                        </Col>
+                                    </Row>
+                                </Card>
+                            </div> : null
+                        }
+
                         <div className="btnWrapper">
-                            <Button>开始测评</Button>
+                            <Button onClick={this.onEstimate}>开始测评</Button>
                             <Button>结果详情</Button>
                         </div>
                     </Card>
