@@ -34,16 +34,16 @@ class App extends Component {
     //Google pageSpeed API
     fetch(webpageTest_URL+query2,{
       headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Content-type':'application/json',
+          'Access-Control-Allow-Origin': '*',       
+          'Content-type':'application/json',          
           'Accept':'application/json',
           'cache-control': 'max-age=604800'   //设置浏览器缓存7天
       }
     })
-    .then((response) => response.json())
-    .then(result => {
-      console.log(result);
-    })
+    // .then((response) => response.json())
+    // .then(result => {
+    //   console.log(result);
+    // })
 
     //webpageTest API
     // fetch(webpageTest_URL+query2,{
