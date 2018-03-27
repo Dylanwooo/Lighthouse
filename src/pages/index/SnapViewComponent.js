@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Card,Input,Select,Button,Row, Col,Spin } from 'antd';
+import { Card,Input,Select,Button,Row, Col,Spin,Tooltip  } from 'antd';
 import {language} from "../../asserts/language";
 import './pages.less';
 
@@ -48,7 +48,10 @@ export default class SnapViewComponent extends PureComponent {
                                                     <Meta title="速度得分" description=
                                                         {<div className="cardItem">
                                                             <div style={scoreStyle}>Average</div>
-                                                            <div>1.2s FCP 1.7s DCL</div>
+                                                            <div>
+                                                                1.2s<Tooltip title="从用户请求打开新网页到浏览器呈现出首屏内容所用的时间。"><span>FCP</span></Tooltip>
+                                                                1.7s<Tooltip title="从用户请求打开新网页到浏览器完全呈现出相应网页所用的时间。"><span>DCL</span></Tooltip>
+                                                            </div>
                                                         </div>}
                                                     />
                                                 </Card>
