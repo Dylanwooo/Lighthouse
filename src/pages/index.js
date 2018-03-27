@@ -1,5 +1,5 @@
 import React, { Component, PureComponent } from 'react';
-import { Radio,Card,Input,Select,Button,Row, Col } from 'antd';
+import { Radio,Card,Input,Select,Button,Row, Col,Spin } from 'antd';
 import { language } from '../asserts/language'
 import './pages.less';
 
@@ -10,6 +10,7 @@ import './pages.less';
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
+const { Meta } = Card;
 
 const children = [];
 
@@ -41,7 +42,8 @@ export default class Index extends PureComponent {
         deviceType: 'desktop',
         lang: 'zh',
         snapViewVisible: false,
-    }
+        dataLoaded: false,
+    };
 
     componentDidMount() {
         //Google pageSpeed API
@@ -54,7 +56,6 @@ export default class Index extends PureComponent {
           }
         })
       }
-
 
     onChange = (e) => {
         this.setState({
@@ -70,7 +71,12 @@ export default class Index extends PureComponent {
         this.setState({
             snapViewVisible: true
         })
-    }
+    };
+    onChangeDataLoaded = () => {
+        this.setState({
+            dataLoaded: true
+        })
+    };
       
     render() {
         return(
@@ -82,7 +88,6 @@ export default class Index extends PureComponent {
                     </RadioGroup>
                 </div>
                 <div className="contentWrapper">
-
                     <Card>
                         <div className="itemWrapper">
                             <span>测评网址：</span>
@@ -96,26 +101,43 @@ export default class Index extends PureComponent {
                         </div>
                         { this.state.snapViewVisible?
                             <div className="snapViewWrapper">
-                                <Card>
-                                    <Row gutter={150}>
-                                        <Col span={10}>
-                                            <div className="scoreWrapper">
-                                                hhh
-                                            </div>
-                                        </Col>
-                                        <Col span={10}>
-                                            <div className="snapPicWrapper">
-                                                hhh
-                                            </div>
-                                        </Col>
-                                    </Row>
-                                </Card>
-                            </div> : null
-                        }
+                                {this.state.dataLoaded ?
+                                    <Card>
+                                        <Row gutter={150}>
+                                            <Col span={10}>
+                                                <div className="scoreWrapper">
+                                                    <Card>
+                                                        <Meta title="网页加速" description=
+                                                            {<div>
+                                                                <div>Average</div>
+                                                                <div>1.2s FCP 1.7s DCL</div>
+                                                            </div>}
+                                                        />
+                                                    </Card>
+                                                    <Card>
+                                                        <Meta title="优化分数" description=
+                                                            {<div>
+                                                                <div>Good</div>
+                                                                <div>89/100</div>
+                                                            </div>}
+                                                        />
+                                                    </Card>
+                                                </div>
+                                            </Col>
+                                            <Col span={10}>
+                                                <div className="snapPicWrapper">
 
+                                                </div>
+                                            </Col>
+                                        </Row>
+                                    </Card> : <Spin size="large" />
+                                }
+                            </div>
+                            :  null
+                        }
                         <div className="btnWrapper">
-                            <Button onClick={this.onEstimate}>开始测评</Button>
-                            <Button>结果详情</Button>
+                            <Button onClick={this.onEstimate} ghost>开始测评</Button>
+                            <Button onClick={this.onChangeDataLoaded} ghost>结果详情</Button>
                         </div>
                     </Card>
                 </div>

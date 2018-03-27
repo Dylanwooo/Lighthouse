@@ -1,6 +1,5 @@
 .deviceTypeWrapper {
-    background: white;
-    border-top: 1px solid rgb(190, 190, 190);
+    background: transparent;
     text-align: left;
     :global {
         .ant-radio-group {
@@ -12,19 +11,36 @@
             height: 40px;
             width: 200px;
             text-align: center;
+            background: black;
+            opacity: 0.8;
+            border: 1px solid white;
+            color: #ffffff;
+            margin: 0 5px;
+        }
+        .ant-radio-button-wrapper-checked {
+            border: 1px solid #1ABC9C !important;
+            color: #1ABC9C;
         }
     }
 }
 .contentWrapper {
     :global {
         .ant-input {
-            width: 80%
+            width: 80%;
+            background: transparent;
+            color: white;
+        }
+        .ant-card-bordered {
+            background: transparent;
+            border: none;
         }
         .ant-card-body {
             text-align: left;
         }
         .ant-select-selection {
             width: 300px;
+            background: transparent;
+            color: white;
         }
         .ant-btn {
             border-radius: 0;
@@ -33,14 +49,31 @@
     }
     .itemWrapper {
         margin: 20px 0;
+        span {
+            color: #ffffff;
+            margin-right: 10px;
+        }
     }
     .snapViewWrapper {
         margin: 20px;
+        text-align: center;
+        :global {
+            .ant-spin-spinning {
+                margin: 50px;
+            }
+        }
         .scoreWrapper {
-            border: 1px solid;
+            display: flex;
+            :global {
+                .ant-card-meta-title {
+                    color: #ffffff;
+                }
+                .ant-card-meta-description {
+                    color: #ffffff;
+                }
+            }
         }
         .snapPicWrapper {
-            border: 1px solid;
         }
     }
     .btnWrapper {
