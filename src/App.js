@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Layout, Menu, Icon } from 'antd';
 import Background from './asserts/Lighthouse.jpg';
-import Index from './pages/index'
+import Index from './pages/index/Index'
 import './App.less';
 
 const { Header, Footer, Sider, Content } = Layout;

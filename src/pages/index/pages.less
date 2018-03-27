@@ -32,7 +32,9 @@
         }
         .ant-card-bordered {
             background: transparent;
+            //border-color: white;
             border: none;
+            margin: 0 20px;
         }
         .ant-card-body {
             text-align: left;
@@ -55,25 +57,35 @@
         }
     }
     .snapViewWrapper {
-        margin: 20px;
+        margin: 50px 0;
         text-align: center;
         :global {
             .ant-spin-spinning {
                 margin: 50px;
             }
+            .ant-card-meta-title {
+                color: #ffffff;
+                text-align: center;
+            }
+            .ant-card-meta-description {
+                color: #ffffff;
+            }
         }
         .scoreWrapper {
             display: flex;
-            :global {
-                .ant-card-meta-title {
-                    color: #ffffff;
-                }
-                .ant-card-meta-description {
-                    color: #ffffff;
-                }
+            .cardItem {
+                text-align: center;
             }
         }
-        .snapPicWrapper {
+        .siteDescription {
+            :global {
+                .ant-card {
+                    color: #ffffff;
+                    span {
+                        text-indent: 2em;
+                    }
+                }
+            }
         }
     }
     .btnWrapper {
