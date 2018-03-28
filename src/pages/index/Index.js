@@ -1,22 +1,20 @@
+/**
+ * webpageTest API
+ * 请求方式：http://www.webpagetest.org/runtest.php?url=目标网址&k=api_key
+ */
 import React, { PureComponent } from 'react';
 import { Radio,Icon } from 'antd';
 import SnapViewComponent from './SnapViewComponent'
 import './pages.less';
 
-/**
- * webpageTest API
- * 请求方式：http://www.webpagetest.org/runtest.php?url=目标网址&k=api_key
- */
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 
-
 const API_KEY = 'AIzaSyDJO37Cx7EyABWOXVZWDBou-wau3dIsYCQ';
 const webpageTest_API = 'A.42f94b48a17054d80dd1c592a4e2d4d5';
-const URL_TO_GET_RESULTS_FOR = 'http://www.4399.com';
+const URL_TO_GET_RESULTS_FOR = 'https://www.pornhub.com';
 const API_URL = 'https://www.googleapis.com/pagespeedonline/v4/runPagespeed?';
 const webpageTest_URL = 'https://www.webpagetest.org/runtest.php?';
-
 
 const query = [
   'url=' + URL_TO_GET_RESULTS_FOR,
@@ -37,23 +35,26 @@ export default class Index extends PureComponent {
         snapViewVisible: false,
         dataLoaded: false,
         colorIndex: 0,
-        user: []
+        dataSource: {},
+        targetSite: '',
     };
 
     componentDidMount() {
         //Google pageSpeed API
-        // fetch(API_URL+query,{
-        //   headers: {
-        //       'Access-Control-Allow-Origin': '*',
-        //       'Content-type':'application/json',
-        //       'Accept':'application/json',
-        //       'cache-control': 'max-age=604800'   //设置浏览器缓存7天
-        //   }
-        // })
-        fetch('/users')
+        fetch(API_URL+query,{
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Content-type':'application/json',
+                'Accept':'application/json',
+                'cache-control': 'max-age=604800'   //设置浏览器缓存7天
+            }
+        })
             .then(res => res.json())
-            .then(users => this.setState({user: users}));   //数据存在state
-      }
+            .then(data => this.setState({ dataSource: data }))
+        // fetch('/users')
+        //     .then(res => res.json())
+        //     .then(users => this.setState({user: users}));   //数据存在state
+    }
 
     onChange = (e) => {
         this.setState({
@@ -80,7 +81,6 @@ export default class Index extends PureComponent {
 
         return(
             <div>
-                <ul>{this.state.user.map(user=><li key={user.id}>{user.username}</li>)}</ul>
                 <div className="deviceTypeWrapper" >
                     <RadioGroup onChange={this.onChange} defaultValue="desktop">
                         <RadioButton value="desktop"><Icon type="laptop" style={{marginRight: 5}}/>PC端</RadioButton>
@@ -93,6 +93,7 @@ export default class Index extends PureComponent {
                     dataLoaded={this.state.dataLoaded}
                     onEstimate={this.onEstimate}
                     onChangeDataLoaded={this.onChangeDataLoaded}
+                    targetSite={this.state.targetSite}
                 />
             </div>
         )

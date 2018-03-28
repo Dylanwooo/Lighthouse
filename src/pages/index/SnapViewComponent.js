@@ -1,5 +1,7 @@
 import React, { PureComponent } from 'react';
-import { Card,Input,Select,Button,Row, Col,Spin,Tooltip  } from 'antd';
+import { Link } from 'react-router-dom'
+
+import { Card,Input,Select,Button,Row, Col,Spin,Tooltip,Icon  } from 'antd';
 import {language} from "../../asserts/language";
 import './pages.less';
 
@@ -29,7 +31,10 @@ export default class SnapViewComponent extends PureComponent {
                 <Card>
                     <div className="itemWrapper">
                         <span>测评网址：</span>
-                        <Input />
+                        <Input
+                            prefix={<Icon type="global" />}
+                            value={this.props.targetSite}
+                        />
                     </div>
                     <div className="itemWrapper">
                         <span>选择语言：</span>
@@ -80,7 +85,12 @@ export default class SnapViewComponent extends PureComponent {
                     }
                     <div className="btnWrapper">
                         <Button onClick={this.props.onEstimate} ghost>开始测评</Button>
-                        <Button onClick={this.props.onChangeDataLoaded} ghost>结果详情</Button>
+                        <Button ghost>
+                            <Link to="/index">
+                            结果详情
+                            </Link>
+                        </Button>
+                        <Button onClick={this.props.onChangeDataLoaded} ghost>切换</Button>
                     </div>
                 </Card>
             </div>

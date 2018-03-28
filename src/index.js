@@ -1,17 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Link } from 'react-router'
-import { BrowserRouter, Route } from 'react-router-dom'
+import {  BrowserRouter as Router, Route } from 'react-router-dom'
 import './index.css';
 import App from './App';
-import Index from './pages/AnalysisDetail/index'
+import Index from './pages/AnalysisDetail/AnalysisDetail'
 import registerServiceWorker from './registerServiceWorker';
 
 ReactDOM.render((
-    <BrowserRouter>
-        <Route path="/" component={App}>
-
-        </Route>
-    </BrowserRouter>), document.getElementById('root')
+    <Router>
+        <div>
+            <Route exact path="/" component={App} />
+            <Route path="/index" component={Index} />
+        </div>
+    </Router>
+    ), document.getElementById('root')
 );
 registerServiceWorker();
