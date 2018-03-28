@@ -37,18 +37,22 @@ export default class Index extends PureComponent {
         snapViewVisible: false,
         dataLoaded: false,
         colorIndex: 0,
+        user: []
     };
 
     componentDidMount() {
         //Google pageSpeed API
-        fetch(API_URL+query,{
-          headers: {
-              'Access-Control-Allow-Origin': '*',       
-              'Content-type':'application/json',          
-              'Accept':'application/json',
-              'cache-control': 'max-age=604800'   //设置浏览器缓存7天
-          }
-        })
+        // fetch(API_URL+query,{
+        //   headers: {
+        //       'Access-Control-Allow-Origin': '*',
+        //       'Content-type':'application/json',
+        //       'Accept':'application/json',
+        //       'cache-control': 'max-age=604800'   //设置浏览器缓存7天
+        //   }
+        // })
+        fetch('/users')
+            .then(res => res.json())
+            .then(users => this.setState({user: users}));   //数据存在state
       }
 
     onChange = (e) => {
@@ -76,6 +80,7 @@ export default class Index extends PureComponent {
 
         return(
             <div>
+                <ul>{this.state.user.map(user=><li key={user.id}>{user.username}</li>)}</ul>
                 <div className="deviceTypeWrapper" >
                     <RadioGroup onChange={this.onChange} defaultValue="desktop">
                         <RadioButton value="desktop"><Icon type="laptop" style={{marginRight: 5}}/>PC端</RadioButton>
