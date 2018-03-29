@@ -1,0 +1,121 @@
+.deviceTypeWrapper {
+    background: transparent;
+    text-align: left;
+    :global {
+        .ant-radio-group {
+            margin-left: 40px;
+        }
+        .ant-radio-button-wrapper {
+            border-radius: 0;
+            padding-top: 3px;
+            height: 40px;
+            width: 200px;
+            text-align: center;
+            background: black;
+            opacity: 0.8;
+            border: 1px solid white;
+            color: #ffffff;
+            margin: 0 5px;
+        }
+        .ant-radio-button-wrapper-checked {
+            border: 1px solid #1ABC9C !important;
+            color: #1ABC9C;
+        }
+    }
+}
+.contentWrapper {
+    :global {
+        .ant-input-group-addon {
+            background: transparent;
+            .ant-select-selection {
+                width: 100px;
+            }
+        }
+        .ant-input {
+            background: transparent;
+            color: white;
+        }
+        .ant-card-bordered {
+            background: transparent;
+            //border-color: white;
+            border: none;
+            margin: 0 20px;
+        }
+        .ant-card-body {
+            text-align: left;
+        }
+        .ant-select-selection {
+            width: 300px;
+            background: transparent;
+            color: white;
+        }
+        .ant-btn {
+            border-radius: 0;
+            margin: 0 50px;
+        }
+    }
+    .itemWrapper {
+        margin: 20px 0;
+        display: flex;
+        :global {
+            .ant-input-affix-wrapper {
+                display: inline;
+            }
+            .anticon-close-circle {
+                background: transparent;
+                cursor: pointer;
+            }
+            .ant-input-suffix {
+                color: gray;
+            }
+        }
+        span {
+            color: #ffffff;
+            margin-right: 10px;
+        }
+    }
+    .snapViewWrapper {
+        margin: 50px 0;
+        text-align: center;
+        :global {
+            .ant-spin-spinning {
+                margin: 50px;
+            }
+            .ant-card-meta-title {
+                color: #ffffff;
+                text-align: center;
+            }
+            .ant-card-meta-description {
+                color: #ffffff;
+            }
+        }
+        .scoreWrapper {
+            display: flex;
+            .cardItem {
+                text-align: center;
+            }
+        }
+        .siteDescription {
+            :global {
+                .ant-card {
+                    color: #ffffff;
+                    span {
+                        text-indent: 2em;
+                    }
+                }
+            }
+        }
+    }
+    .btnWrapper {
+        text-align: center
+    }
+}
+
+:global {
+    .ant-modal-content {
+        border-radius: 0;
+        .ant-btn {
+            border-radius: 0;
+        }
+    }
+}
