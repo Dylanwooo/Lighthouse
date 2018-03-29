@@ -10,6 +10,7 @@ import './pages.less';
 const { Meta } = Card;
 const Option = Select.Option;
 const colorText = ['#06f906','#ffa500','#fb0000'];
+
 const children = [];
 
 for (let i = 0; i <language.length; i++) {

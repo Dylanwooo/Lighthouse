@@ -8,6 +8,7 @@ import SnapViewComponent from './SnapViewComponent'
 import './pages.less';
 import { map2ColorIndex } from '../../utils/utils'
 
+
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 
@@ -46,6 +47,7 @@ export default class Index extends PureComponent {
             language: value
         })
     };
+
     //开始测评
     onEstimate = () => {
         if(this.state.targetSite === '') {
@@ -99,6 +101,7 @@ export default class Index extends PureComponent {
     emitEmpty = () => {
         this.setState({ targetSite: '' });
     };
+
     render() {
 
         return(
@@ -120,6 +123,7 @@ export default class Index extends PureComponent {
                     siteDescription={this.state.siteDescription}
                     speedScore={this.state.speedScore}
                     speedRank={this.state.speedRank}
+
                 />
             </div>
         )
