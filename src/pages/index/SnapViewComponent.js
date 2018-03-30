@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom'
- import { map2ColorIndex } from '../../utils/utils'
+ import { map2ColorIndex,map2OptimizeRank,map2RankColor } from '../../utils/utils'
 
-import { Card,Input,Select,Button,Row, Col,Spin,Tooltip,Icon  } from 'antd';
+import { Card,Input,Select,Button,Row, Col,Spin,Tooltip,Icon,AutoComplete   } from 'antd';
 import {language} from "../../asserts/language";
 import './pages.less';
 
@@ -10,41 +10,57 @@ import './pages.less';
 const { Meta } = Card;
 const Option = Select.Option;
 const colorText = ['#06f906','#ffa500','#fb0000'];
-
 const children = [];
 
 for (let i = 0; i <language.length; i++) {
     children.push(<Option key={language[i].key}>{language[i].name}</Option>);
 }
 
+function onSelect(value) {
+    console.log('onSelect', value);
+}
 export default class SnapViewComponent extends PureComponent {
+
+    handleSearch = (value) => {
+        this.setState({
+            dataSource: !value ? [] : [
+                value,
+                value + value,
+                value + value + value,
+            ],
+        });
+    };
 
     render() {
         const rankStyle = {
             fontSize: 22,
-            color: colorText[map2ColorIndex(this.props.speedScore)]
+            marginRight: 5,
+            color: colorText[map2RankColor(this.props.speedRank)]
         };
         const scoreStyle = {
             fontSize:22,
             color: colorText[map2ColorIndex(this.props.speedScore)]
         };
-        const suffix = this.props.targetSite ? <Icon type="close-circle" onClick={this.props.emitEmpty} /> : null;
         return(
             <div className="contentWrapper">
                 <Card>
                     <div className="itemWrapper">
                         <span>测评网址：</span>
                         <div style={{width: '80%'}}>
-                            <Input
-                                suffix={suffix}
+                            <AutoComplete
+                                placeholder="输入测评网址"
+                                dataSource={this.props.siteSource}
+                                allowClear={true}
                                 value={this.props.targetSite}
                                 onChange={this.props.onChangeSite}
+                                onSelect={onSelect}
+                                onSearch={this.handleSearch}
                             />
                         </div>
                     </div>
                     <div className="itemWrapper">
                         <span>选择语言：</span>
-                        <Select defaultValue="简体中文" onChange={this.handleLangChange}>
+                        <Select defaultValue="简体中文" onSelect={this.props.handleLangChange} allowClea={true}>
                             {children}
                         </Select>
                     </div>
@@ -59,15 +75,21 @@ export default class SnapViewComponent extends PureComponent {
                                                     <Meta title="速度得分" description=
                                                         {<div className="cardItem">
                                                             <div style={rankStyle}>{this.props.speedRank}</div>
-                                                            <span style={rankStyle}>1.2s</span><Tooltip placement="topLeft" title="从用户请求打开新网页到浏览器呈现出首屏内容所用的时间。"><span style={{cursor: 'pointer',marginRight: 10}}>FCP</span></Tooltip>
-                                                            <span style={rankStyle}>1.7s</span><Tooltip placement="topLeft" title="从用户请求打开新网页到浏览器完全呈现出相应网页所用的时间。"><span style={{cursor: 'pointer'}}>DCL</span></Tooltip>
+                                                            <span style={rankStyle}>{parseInt(this.props.FCP)/1000}s</span>
+                                                            <Tooltip placement="topLeft" title="从用户请求打开新网页到浏览器呈现出首屏内容所用的时间。">
+                                                                <span style={{cursor: 'pointer',marginRight: 20}}>FCP</span>
+                                                            </Tooltip>
+                                                            <span style={rankStyle}>{parseInt(this.props.DCL)/1000}s</span>
+                                                            <Tooltip placement="topLeft" title="从用户请求打开新网页到浏览器完全呈现出相应网页所用的时间。">
+                                                                <span style={{cursor: 'pointer'}}>DCL</span>
+                                                            </Tooltip>
                                                         </div>}
                                                     />
                                                 </Card>
                                                 <Card>
                                                     <Meta title="优化程度得分" description=
                                                         {<div className="cardItem">
-                                                            <div style={scoreStyle}>Good</div>
+                                                            <div style={scoreStyle}>{map2OptimizeRank(this.props.speedScore)}</div>
                                                             <span style={scoreStyle}>{this.props.speedScore}</span><span>/100</span>
                                                         </div>}
                                                     />

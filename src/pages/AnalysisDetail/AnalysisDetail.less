@@ -1,18 +1,33 @@
 .sider {
   min-height: 100vh;
+  background: #333744;
 }
 
 .logo {
   height: 250px;
 }
 :global {
-  .ant-menu-item {
-    height: 100px;
+  .ant-menu {
+    background-color: #333744;
   }
+  .ant-menu-item {
+    height: 50px !important;
+    text-align: center;
+    margin: 50px 0 !important;
+    span {
+      font-size: 15px;
+      position: relative;
+      top: 30%;
+    }
+    .ant-icon {
+      font-size: 20px;
+      position: relative;
+      top: 30%;
+    }
+  }
+
   .ant-layout-header {
-    -webkit-backdrop-filter: blur(20px);
-    backdrop-filter: blur(20px);
-    background: rgba(0, 0, 0, 0.7);
+    background: #373d41;
     text-align: left;
   }
   .trigger {

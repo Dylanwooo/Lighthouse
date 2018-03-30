@@ -12,3 +12,28 @@ export function map2ColorIndex(score) {
         index = 0;
     return index;
 }
+
+export function map2OptimizeRank(score) {
+    let rank;
+    if(parseInt(score) <= 60) {
+        rank = 'Poor';
+    } else if(parseInt(score) > 60 && parseInt(score) < 80) {
+        rank = 'Medium';
+    } else
+        rank = 'Good';
+    return rank;
+}
+
+export function map2RankColor(cate) {
+    let index;
+    if(cate === 'FAST'){
+        index = 0;
+    }else if(cate === 'AVERAGE') {
+        index = 1;
+    }
+    return index;
+}
+
+export function checkPath(str) {
+    return window.location.pathname.includes(str)
+}

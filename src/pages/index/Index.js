@@ -8,7 +8,6 @@ import SnapViewComponent from './SnapViewComponent'
 import './pages.less';
 import { map2ColorIndex } from '../../utils/utils'
 
-
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 
@@ -18,23 +17,29 @@ const URL_TO_GET_RESULTS_FOR = 'https://www.baidu.com';
 const API_URL = 'https://www.googleapis.com/pagespeedonline/v4/runPagespeed?';
 const webpageTest_URL = 'https://www.webpagetest.org/runtest.php?';
 
+const siteSource = [];
+
 export default class Index extends PureComponent {
 
     state = {
-        deviceType: 'desktop',
+        deviceType: 'desktop',      //设备类型
         language: 'zh',
         snapViewVisible: false,
         dataLoaded: false,
         colorIndex: 0,
-        dataSource: {},
-        targetSite: '',
-        siteDescription: '',
-        speedScore: '',
-        speedRank: ''
+        dataSource: {},         //返回数据
+        targetSite: '',         //测评网址
+        siteDescription: '',   //网站描述
+        speedScore: '',    //优化程度得分
+        speedRank: '',   //速度得分
+        FCP: '',
+        DCL: '',
     };
 
     componentDidMount() {
-
+        if(siteSource.length >= 5){
+            siteSource.pop();
+        }
     }
 
     onChange = (e) => {
@@ -43,11 +48,18 @@ export default class Index extends PureComponent {
         })
     };
     handleLangChange = (value) => {
+        console.log(value);
         this.setState({
             language: value
         })
     };
-
+    clearState = () => {
+        this.setState({
+            //language :'',
+            //targetSite: '',
+            snapViewVisible: false
+        })
+    };
     //开始测评
     onEstimate = () => {
         if(this.state.targetSite === '') {
@@ -56,14 +68,17 @@ export default class Index extends PureComponent {
                 okText: '确定'
             });
         } else {
+            this.clearState();
             this.setState({
                 snapViewVisible: true
             });
+            localStorage.setItem('site',this.state.targetSite);
+            siteSource.push(localStorage.getItem('site'));
             const query = [
                 'url=' + this.state.targetSite,
                 'key=' + API_KEY,
                 'strategy=' + this.state.deviceType,
-                'locale=' + this.state.language,   //中文zh
+                'locale=' + this.state.language,
             ].join('&');
             //Google pageSpeed API
             fetch(API_URL+query,{
@@ -78,30 +93,25 @@ export default class Index extends PureComponent {
                 .then(data => this.setState({
                     dataSource: data,
                     dataLoaded: true,
-                    siteDescription: data.title,
-                    speedScore: data.ruleGroups.SPEED.score,
-                    speedRank:  data.loadingExperience.overall_category,
+                    siteDescription: data&&data.title || '暂无描述',
+                    speedScore: data&&data.ruleGroups&&data.ruleGroups.SPEED&&data.ruleGroups.SPEED.score || '0',
+                    speedRank:  data&&data.loadingExperience&&data.loadingExperience.overall_category || '',
+                    DCL: data&&data.loadingExperience&&data.loadingExperience.metrics&&data.loadingExperience.metrics.DOM_CONTENT_LOADED_EVENT_FIRED_MS&&data.loadingExperience.metrics.DOM_CONTENT_LOADED_EVENT_FIRED_MS.median || '',
+                    FCP: data.loadingExperience&&data.loadingExperience.metrics&&data.loadingExperience.metrics.FIRST_CONTENTFUL_PAINT_MS&&data.loadingExperience.metrics.FIRST_CONTENTFUL_PAINT_MS.median || '',
                 }));
         }
 
     };
 
-    onChangeDataLoaded = () => {
-        this.setState({
-            dataLoaded: true
-        })
-    };
     onChangeSite = (e) => {
         this.setState({
-            targetSite: e.target.value
+            targetSite: e
         });
-        console.log(e.target.value)
     };
     //清空input框
     emitEmpty = () => {
         this.setState({ targetSite: '' });
     };
-
     render() {
 
         return(
@@ -119,11 +129,14 @@ export default class Index extends PureComponent {
                     onEstimate={this.onEstimate}
                     targetSite={this.state.targetSite}
                     onChangeSite={this.onChangeSite}
+                    handleLangChange={this.handleLangChange}
                     emitEmpty={this.emitEmpty}
                     siteDescription={this.state.siteDescription}
                     speedScore={this.state.speedScore}
                     speedRank={this.state.speedRank}
-
+                    DCL={this.state.DCL}
+                    FCP={this.state.FCP}
+                    siteSource={siteSource}
                 />
             </div>
         )
