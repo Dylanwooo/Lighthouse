@@ -34,6 +34,7 @@ export default class Index extends PureComponent {
         speedRank: '',   //速度得分
         FCP: '',
         DCL: '',
+        loadingExperience: '',   //页面加载分布情况
     };
 
     componentDidMount() {
@@ -72,8 +73,8 @@ export default class Index extends PureComponent {
             this.setState({
                 snapViewVisible: true
             });
-            localStorage.setItem('site',this.state.targetSite);
-            siteSource.push(localStorage.getItem('site'));
+            // localStorage.setItem('site',this.state.targetSite);
+            // siteSource.push(localStorage.getItem('site'));
             const query = [
                 'url=' + this.state.targetSite,
                 'key=' + API_KEY,
@@ -98,6 +99,7 @@ export default class Index extends PureComponent {
                     speedRank:  data&&data.loadingExperience&&data.loadingExperience.overall_category || '',
                     DCL: data&&data.loadingExperience&&data.loadingExperience.metrics&&data.loadingExperience.metrics.DOM_CONTENT_LOADED_EVENT_FIRED_MS&&data.loadingExperience.metrics.DOM_CONTENT_LOADED_EVENT_FIRED_MS.median || '',
                     FCP: data.loadingExperience&&data.loadingExperience.metrics&&data.loadingExperience.metrics.FIRST_CONTENTFUL_PAINT_MS&&data.loadingExperience.metrics.FIRST_CONTENTFUL_PAINT_MS.median || '',
+                    loadingExperience: data && data.loadingExperience,
                 }));
         }
 
@@ -105,7 +107,7 @@ export default class Index extends PureComponent {
 
     onChangeSite = (e) => {
         this.setState({
-            targetSite: e
+            targetSite: e.target.value
         });
     };
     //清空input框
@@ -137,6 +139,7 @@ export default class Index extends PureComponent {
                     DCL={this.state.DCL}
                     FCP={this.state.FCP}
                     siteSource={siteSource}
+                    loadingExperience = {this.state.loadingExperience}
                 />
             </div>
         )

@@ -59,9 +59,12 @@ export default class AnalysisDetail extends PureComponent {
                             />
                         </Header>
                         <Content>
-                            {checkPath('/index/load') ?
-                                <PageLoadDistribution /> : null
-                            }
+                            {/*{checkPath('/index/load') ?*/}
+                                 {/*: null*/}
+                            {/*}*/}
+                            <PageLoadDistribution
+                                loadingExperience={this.props.loadingExperience}
+                            />
                         </Content>
                         <Footer>@Dylanwoo</Footer>
                     </Layout>

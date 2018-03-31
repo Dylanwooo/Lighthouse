@@ -47,20 +47,26 @@ export default class SnapViewComponent extends PureComponent {
                     <div className="itemWrapper">
                         <span>测评网址：</span>
                         <div style={{width: '80%'}}>
-                            <AutoComplete
+                            {/*<AutoComplete*/}
+                                {/*placeholder="输入测评网址"*/}
+                                {/*dataSource={this.props.siteSource}*/}
+                                {/*allowClear={true}*/}
+                                {/*value={this.props.targetSite}*/}
+                                {/*onChange={this.props.onChangeSite}*/}
+                                {/*onSelect={onSelect}*/}
+                                {/*onSearch={this.handleSearch}*/}
+                            {/*/>*/}
+                            <Input
+                                size="large"
                                 placeholder="输入测评网址"
-                                dataSource={this.props.siteSource}
-                                allowClear={true}
-                                value={this.props.targetSite}
+                                value = {this.props.targetSite}
                                 onChange={this.props.onChangeSite}
-                                onSelect={onSelect}
-                                onSearch={this.handleSearch}
                             />
                         </div>
                     </div>
                     <div className="itemWrapper">
                         <span>选择语言：</span>
-                        <Select defaultValue="简体中文" onSelect={this.props.handleLangChange} allowClea={true}>
+                        <Select defaultValue="简体中文" onSelect={this.props.handleLangChange} allowClea={true} size="large">
                             {children}
                         </Select>
                     </div>
@@ -76,11 +82,11 @@ export default class SnapViewComponent extends PureComponent {
                                                         {<div className="cardItem">
                                                             <div style={rankStyle}>{this.props.speedRank}</div>
                                                             <span style={rankStyle}>{parseInt(this.props.FCP)/1000}s</span>
-                                                            <Tooltip placement="topLeft" title="从用户请求打开新网页到浏览器呈现出首屏内容所用的时间。">
+                                                            <Tooltip placement="topLeft" title="首屏加载时间">
                                                                 <span style={{cursor: 'pointer',marginRight: 20}}>FCP</span>
                                                             </Tooltip>
                                                             <span style={rankStyle}>{parseInt(this.props.DCL)/1000}s</span>
-                                                            <Tooltip placement="topLeft" title="从用户请求打开新网页到浏览器完全呈现出相应网页所用的时间。">
+                                                            <Tooltip placement="topLeft" title="完整网页加载时间">
                                                                 <span style={{cursor: 'pointer'}}>DCL</span>
                                                             </Tooltip>
                                                         </div>}
@@ -111,8 +117,8 @@ export default class SnapViewComponent extends PureComponent {
                         :  null
                     }
                     <div className="btnWrapper">
-                        <Button onClick={this.props.onEstimate} ghost>开始测评</Button>
-                        <Button ghost>
+                        <Button size="large" onClick={this.props.onEstimate} ghost>开始测评</Button>
+                        <Button size="large" ghost>
                             <Link to="/index">
                             结果详情
                             </Link>
