@@ -57,7 +57,6 @@ export default class SnapViewComponent extends PureComponent {
                                 {/*onSearch={this.handleSearch}*/}
                             {/*/>*/}
                             <Input
-                                size="large"
                                 placeholder="输入测评网址"
                                 value = {this.props.targetSite}
                                 onChange={this.props.onChangeSite}
@@ -66,7 +65,7 @@ export default class SnapViewComponent extends PureComponent {
                     </div>
                     <div className="itemWrapper">
                         <span>选择语言：</span>
-                        <Select defaultValue="简体中文" onSelect={this.props.handleLangChange} allowClea={true} size="large">
+                        <Select defaultValue="简体中文" onSelect={this.props.handleLangChange} allowClea={true} >
                             {children}
                         </Select>
                     </div>

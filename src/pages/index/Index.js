@@ -6,14 +6,14 @@ import React, { PureComponent } from 'react';
 import { Radio,Icon,Modal } from 'antd';
 import SnapViewComponent from './SnapViewComponent'
 import './pages.less';
-import { map2ColorIndex } from '../../utils/utils'
+// import {EventEmitter2} from 'eventemitter2'
+
 
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 
 const API_KEY = 'AIzaSyDJO37Cx7EyABWOXVZWDBou-wau3dIsYCQ';
 const webpageTest_API = 'A.42f94b48a17054d80dd1c592a4e2d4d5';
-const URL_TO_GET_RESULTS_FOR = 'https://www.baidu.com';
 const API_URL = 'https://www.googleapis.com/pagespeedonline/v4/runPagespeed?';
 const webpageTest_URL = 'https://www.webpagetest.org/runtest.php?';
 
@@ -22,6 +22,7 @@ const siteSource = [];
 export default class Index extends PureComponent {
 
     state = {
+        errorModalVisible: false,
         deviceType: 'desktop',      //设备类型
         language: 'zh',
         snapViewVisible: false,
@@ -34,7 +35,7 @@ export default class Index extends PureComponent {
         speedRank: '',   //速度得分
         FCP: '',
         DCL: '',
-        loadingExperience: '',   //页面加载分布情况
+        loadingExperience: {}
     };
 
     componentDidMount() {
@@ -91,16 +92,25 @@ export default class Index extends PureComponent {
                 }
             })
                 .then(res => res.json())
-                .then(data => this.setState({
-                    dataSource: data,
-                    dataLoaded: true,
-                    siteDescription: data&&data.title || '暂无描述',
-                    speedScore: data&&data.ruleGroups&&data.ruleGroups.SPEED&&data.ruleGroups.SPEED.score || '0',
-                    speedRank:  data&&data.loadingExperience&&data.loadingExperience.overall_category || '',
-                    DCL: data&&data.loadingExperience&&data.loadingExperience.metrics&&data.loadingExperience.metrics.DOM_CONTENT_LOADED_EVENT_FIRED_MS&&data.loadingExperience.metrics.DOM_CONTENT_LOADED_EVENT_FIRED_MS.median || '',
-                    FCP: data.loadingExperience&&data.loadingExperience.metrics&&data.loadingExperience.metrics.FIRST_CONTENTFUL_PAINT_MS&&data.loadingExperience.metrics.FIRST_CONTENTFUL_PAINT_MS.median || '',
-                    loadingExperience: data && data.loadingExperience,
-                }));
+                .then(data => {
+                    this.setState({
+                        dataSource: data,
+                        dataLoaded: true,
+                        siteDescription: data&&data.title || '暂无描述',
+                        speedScore: data&&data.ruleGroups&&data.ruleGroups.SPEED&&data.ruleGroups.SPEED.score || '0',
+                        speedRank:  data&&data.loadingExperience&&data.loadingExperience.overall_category || '',
+                        DCL: data&&data.loadingExperience&&data.loadingExperience.metrics&&data.loadingExperience.metrics.DOM_CONTENT_LOADED_EVENT_FIRED_MS&&data.loadingExperience.metrics.DOM_CONTENT_LOADED_EVENT_FIRED_MS.median || '',
+                        FCP: data.loadingExperience&&data.loadingExperience.metrics&&data.loadingExperience.metrics.FIRST_CONTENTFUL_PAINT_MS&&data.loadingExperience.metrics.FIRST_CONTENTFUL_PAINT_MS.median || '',
+                        loadingExperience: data.loadingExperience,
+                });
+
+                })
+                .catch(()=>{
+                    Modal.error({
+                        title: '查询失败，请重新尝试',
+                    });
+                })
+
         }
 
     };

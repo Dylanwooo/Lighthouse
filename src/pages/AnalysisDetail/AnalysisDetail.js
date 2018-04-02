@@ -29,7 +29,7 @@ export default class AnalysisDetail extends PureComponent {
                         className="sider"
                     >
                         <div className="logo" />
-                        <Menu theme="dark" mode="inline">
+                        <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
                             <Menu.Item key="1">
                                 <Link to="/index/load">
                                     <Icon type="pie-chart" />
