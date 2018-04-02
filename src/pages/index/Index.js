@@ -93,16 +93,22 @@ export default class Index extends PureComponent {
             })
                 .then(res => res.json())
                 .then(data => {
-                    this.setState({
-                        dataSource: data,
-                        dataLoaded: true,
-                        siteDescription: data&&data.title || '暂无描述',
-                        speedScore: data&&data.ruleGroups&&data.ruleGroups.SPEED&&data.ruleGroups.SPEED.score || '0',
-                        speedRank:  data&&data.loadingExperience&&data.loadingExperience.overall_category || '',
-                        DCL: data&&data.loadingExperience&&data.loadingExperience.metrics&&data.loadingExperience.metrics.DOM_CONTENT_LOADED_EVENT_FIRED_MS&&data.loadingExperience.metrics.DOM_CONTENT_LOADED_EVENT_FIRED_MS.median || '',
-                        FCP: data.loadingExperience&&data.loadingExperience.metrics&&data.loadingExperience.metrics.FIRST_CONTENTFUL_PAINT_MS&&data.loadingExperience.metrics.FIRST_CONTENTFUL_PAINT_MS.median || '',
-                        loadingExperience: data.loadingExperience,
-                });
+                    if(data.error&&data.error.code === 400){
+                        Modal.error({
+                            title: '查询失败，请重新尝试',
+                        });
+                    }else {
+                            this.setState({
+                                dataSource: data,
+                                dataLoaded: true,
+                                siteDescription: data&&data.title || '暂无描述',
+                                speedScore: data&&data.ruleGroups&&data.ruleGroups.SPEED&&data.ruleGroups.SPEED.score || '0',
+                                speedRank:  data&&data.loadingExperience&&data.loadingExperience.overall_category || '',
+                                DCL: data&&data.loadingExperience&&data.loadingExperience.metrics&&data.loadingExperience.metrics.DOM_CONTENT_LOADED_EVENT_FIRED_MS&&data.loadingExperience.metrics.DOM_CONTENT_LOADED_EVENT_FIRED_MS.median || '',
+                                FCP: data.loadingExperience&&data.loadingExperience.metrics&&data.loadingExperience.metrics.FIRST_CONTENTFUL_PAINT_MS&&data.loadingExperience.metrics.FIRST_CONTENTFUL_PAINT_MS.median || '',
+                                loadingExperience: data.loadingExperience,
+                        });
+                    }
 
                 })
                 .catch(()=>{
