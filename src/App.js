@@ -5,8 +5,6 @@ import './App.less';
 export default class App extends PureComponent {
 
 
-
-
   render() {
     return (
       <div className="App" >

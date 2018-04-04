@@ -116,8 +116,8 @@ export default class SnapViewComponent extends PureComponent {
                         :  null
                     }
                     <div className="btnWrapper">
-                        <Button size="large" onClick={this.props.onEstimate} ghost>开始测评</Button>
-                        <Button size="large" ghost>
+                        <Button onClick={this.props.onEstimate} ghost>开始测评</Button>
+                        <Button ghost>
                             <Link to="/index">
                             结果详情
                             </Link>

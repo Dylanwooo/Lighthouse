@@ -2,20 +2,21 @@
  * webpageTest API
  * 请求方式：http://www.webpagetest.org/runtest.php?url=目标网址&k=api_key
  */
-import React, { PureComponent } from 'react';
+import React, { PureComponent,Component } from 'react';
 import { Radio,Icon,Modal } from 'antd';
+import { connect } from 'react-redux';
+import fetchData from '../../actions/fetchData'
 import SnapViewComponent from './SnapViewComponent'
 import './pages.less';
-// import {EventEmitter2} from 'eventemitter2'
 
 
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 
 const API_KEY = 'AIzaSyDJO37Cx7EyABWOXVZWDBou-wau3dIsYCQ';
-const webpageTest_API = 'A.42f94b48a17054d80dd1c592a4e2d4d5';
+//const webpageTest_API = 'A.42f94b48a17054d80dd1c592a4e2d4d5';
 const API_URL = 'https://www.googleapis.com/pagespeedonline/v4/runPagespeed?';
-const webpageTest_URL = 'https://www.webpagetest.org/runtest.php?';
+//const webpageTest_URL = 'https://www.webpagetest.org/runtest.php?';
 
 const siteSource = [];
 
@@ -39,9 +40,10 @@ export default class Index extends PureComponent {
     };
 
     componentDidMount() {
-        if(siteSource.length >= 5){
-            siteSource.pop();
-        }
+        // if(siteSource.length >= 5){
+        //     siteSource.pop();
+        // }
+        //this.props.fetchData('http://599167402df2f40011e4929a.mockapi.io/items');
     }
 
     onChange = (e) => {
@@ -97,7 +99,8 @@ export default class Index extends PureComponent {
                         Modal.error({
                             title: '查询失败，请重新尝试',
                         });
-                    }else {
+                    }else
+                        {
                             this.setState({
                                 dataSource: data,
                                 dataLoaded: true,
@@ -120,6 +123,7 @@ export default class Index extends PureComponent {
         }
 
     };
+
 
     onChangeSite = (e) => {
         this.setState({
@@ -161,3 +165,18 @@ export default class Index extends PureComponent {
         )
     }
 }
+
+const mapStateToProps = (state) => {
+    return {
+        items: state.items,
+        hasErrored: state.itemsHasErrored,
+        isLoading: state.itemsIsLoading,
+        title: state.title
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        fetchData: (url) => dispatch(itemsFetchData(url))
+    };
+};
