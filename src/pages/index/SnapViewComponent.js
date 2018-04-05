@@ -110,7 +110,7 @@ export default class SnapViewComponent extends PureComponent {
                     <div className="btnWrapper">
                         <Button onClick={this.props.onEstimate} ghost>开始测评</Button>
                         <Button ghost>
-                            <Link to="/index">
+                            <Link to="/AnalysisDetail">
                             结果详情
                             </Link>
                         </Button>

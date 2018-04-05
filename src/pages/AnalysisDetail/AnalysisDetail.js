@@ -33,7 +33,7 @@ class AnalysisDetail extends PureComponent {
                         <div className="logo" />
                         <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
                             <Menu.Item key="1">
-                                <Link to="/index/load">
+                                <Link to="/AnalysisDetail/load">
                                     <Icon type="pie-chart" />
                                     <span>页面加载分布情况</span>
                                 </Link>
@@ -61,11 +61,8 @@ class AnalysisDetail extends PureComponent {
                             />
                         </Header>
                         <Content>
-                            {/*{checkPath('/index/load') ?*/}
-                                 {/*: null*/}
-                            {/*}*/}
                             <PageLoadDistribution
-                                loadingExperience={this.props.loadingExperience}
+                                loadingExperience={this.props.items.loadingExperience}
                             />
                         </Content>
                         <Footer>@Dylanwoo</Footer>
