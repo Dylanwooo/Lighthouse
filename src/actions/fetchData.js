@@ -23,7 +23,7 @@ export function fetchSuccess(items) {
 }
 
 
-export function fetchData(url) {
+export default function fetchData(url) {
     return (dispatch) => {
         fetch(url,{
             headers: {
@@ -46,4 +46,5 @@ export function fetchData(url) {
             })
             .catch(()=>dispatch(hasError(true)))
     }
+
 }

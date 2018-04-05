@@ -31,6 +31,7 @@ export default class SnapViewComponent extends PureComponent {
         });
     };
 
+
     render() {
         const rankStyle = {
             fontSize: 22,
@@ -47,15 +48,6 @@ export default class SnapViewComponent extends PureComponent {
                     <div className="itemWrapper">
                         <span>测评网址：</span>
                         <div style={{width: '80%'}}>
-                            {/*<AutoComplete*/}
-                                {/*placeholder="输入测评网址"*/}
-                                {/*dataSource={this.props.siteSource}*/}
-                                {/*allowClear={true}*/}
-                                {/*value={this.props.targetSite}*/}
-                                {/*onChange={this.props.onChangeSite}*/}
-                                {/*onSelect={onSelect}*/}
-                                {/*onSearch={this.handleSearch}*/}
-                            {/*/>*/}
                             <Input
                                 placeholder="输入测评网址"
                                 value = {this.props.targetSite}

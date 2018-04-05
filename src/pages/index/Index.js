@@ -20,7 +20,8 @@ const API_URL = 'https://www.googleapis.com/pagespeedonline/v4/runPagespeed?';
 
 const siteSource = [];
 
-export default class Index extends PureComponent {
+
+class Index extends Component {
 
     state = {
         errorModalVisible: false,
@@ -124,7 +125,6 @@ export default class Index extends PureComponent {
 
     };
 
-
     onChangeSite = (e) => {
         this.setState({
             targetSite: e.target.value
@@ -135,7 +135,14 @@ export default class Index extends PureComponent {
         this.setState({ targetSite: '' });
     };
     render() {
+        const query = [
+            'url=' + this.state.targetSite,
+            'key=' + API_KEY,
+            'strategy=' + this.state.deviceType,
+            'locale=' + this.state.language,
+        ].join('&');
 
+        const { fetchData } = this.props;
         return(
             <div>
                 <div className="deviceTypeWrapper" >
@@ -148,7 +155,7 @@ export default class Index extends PureComponent {
                     colorIndex={this.state.colorIndex}
                     snapViewVisible={this.state.snapViewVisible}
                     dataLoaded={this.state.dataLoaded}
-                    onEstimate={this.onEstimate}
+                    onEstimate={()=>{fetchData(API_URL+query)}}
                     targetSite={this.state.targetSite}
                     onChangeSite={this.onChangeSite}
                     handleLangChange={this.handleLangChange}
@@ -171,12 +178,13 @@ const mapStateToProps = (state) => {
         items: state.items,
         hasErrored: state.itemsHasErrored,
         isLoading: state.itemsIsLoading,
-        title: state.title
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        fetchData: (url) => dispatch(itemsFetchData(url))
+        fetchData: (url) => dispatch(fetchData(url))
     };
 };
+
+export default connect(mapStateToProps, mapDispatchToProps)(Index);

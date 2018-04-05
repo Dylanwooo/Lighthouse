@@ -1,5 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Layout, Menu, Icon } from 'antd';
+import { connect } from 'react-redux';
+import fetchData from '../../actions/fetchData'
 import { Link } from 'react-router-dom'
 import { checkPath } from '../../utils/utils'
 
@@ -8,7 +10,7 @@ import PageLoadDistribution from "./PageLoadDistribution";
 const { Header, Footer, Sider, Content } = Layout;
 
 
-export default class AnalysisDetail extends PureComponent {
+class AnalysisDetail extends PureComponent {
     state = {
         collapsed: false,
     };
@@ -73,3 +75,19 @@ export default class AnalysisDetail extends PureComponent {
         )
     }
 }
+
+const mapStateToProps = (state) => {
+    return {
+        items: state.items,
+        hasErrored: state.itemsHasErrored,
+        isLoading: state.itemsIsLoading,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        fetchData: (url) => dispatch(fetchData(url))
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AnalysisDetail);
