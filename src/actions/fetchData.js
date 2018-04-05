@@ -37,7 +37,7 @@ export default function fetchData(url) {
                 if(!response.ok) {
                     throw Error(response.statusText);
                 }
-                dispatch(isLoading(false));
+                dispatch(isLoading(true));   //数据加载完成
                 return response
             })
             .then(res => res.json())

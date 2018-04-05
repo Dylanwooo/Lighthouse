@@ -29,23 +29,9 @@ class Index extends Component {
         language: 'zh',
         snapViewVisible: false,
         dataLoaded: false,
-        colorIndex: 0,
-        dataSource: {},         //返回数据
         targetSite: '',         //测评网址
-        siteDescription: '',   //网站描述
-        speedScore: '',    //优化程度得分
-        speedRank: '',   //速度得分
-        FCP: '',
-        DCL: '',
-        loadingExperience: {}
     };
 
-    componentDidMount() {
-        // if(siteSource.length >= 5){
-        //     siteSource.pop();
-        // }
-        //this.props.fetchData('http://599167402df2f40011e4929a.mockapi.io/items');
-    }
 
     onChange = (e) => {
         this.setState({
@@ -66,7 +52,66 @@ class Index extends Component {
         })
     };
     //开始测评
-    onEstimate = () => {
+    // onEstimate = () => {
+    //     if(this.state.targetSite === '') {
+    //         Modal.warning({
+    //             title: '测评网址不能为空！',
+    //             okText: '确定'
+    //         });
+    //     } else {
+    //         this.clearState();
+    //         this.setState({
+    //             snapViewVisible: true
+    //         });
+    //         // localStorage.setItem('site',this.state.targetSite);
+    //         // siteSource.push(localStorage.getItem('site'));
+    //         const query = [
+    //             'url=' + this.state.targetSite,
+    //             'key=' + API_KEY,
+    //             'strategy=' + this.state.deviceType,
+    //             'locale=' + this.state.language,
+    //         ].join('&');
+    //         //Google pageSpeed API
+    //         fetch(API_URL+query,{
+    //             headers: {
+    //                 'Access-Control-Allow-Origin': '*',
+    //                 'Content-type':'application/json',
+    //                 'Accept':'application/json',
+    //                 'cache-control': 'max-age=604800'   //设置浏览器缓存7天
+    //             }
+    //         })
+    //             .then(res => res.json())
+    //             .then(data => {
+    //                 if(data.error&&data.error.code === 400){
+    //                     Modal.error({
+    //                         title: '查询失败，请重新尝试',
+    //                     });
+    //                 }else
+    //                     {
+    //                         this.setState({
+    //                             dataSource: data,
+    //                             dataLoaded: true,
+    //                             siteDescription: data&&data.title || '暂无描述',
+    //                             speedScore: data&&data.ruleGroups&&data.ruleGroups.SPEED&&data.ruleGroups.SPEED.score || '0',
+    //                             speedRank:  data&&data.loadingExperience&&data.loadingExperience.overall_category || '',
+    //                             DCL: data&&data.loadingExperience&&data.loadingExperience.metrics&&data.loadingExperience.metrics.DOM_CONTENT_LOADED_EVENT_FIRED_MS&&data.loadingExperience.metrics.DOM_CONTENT_LOADED_EVENT_FIRED_MS.median || '',
+    //                             FCP: data.loadingExperience&&data.loadingExperience.metrics&&data.loadingExperience.metrics.FIRST_CONTENTFUL_PAINT_MS&&data.loadingExperience.metrics.FIRST_CONTENTFUL_PAINT_MS.median || '',
+    //                             loadingExperience: data.loadingExperience,
+    //                     });
+    //                 }
+    //
+    //             })
+    //             .catch(()=>{
+    //                 Modal.error({
+    //                     title: '查询失败，请重新尝试',
+    //                 });
+    //             })
+    //
+    //     }
+    //
+    // };
+
+    onEstimate = (url) => {
         if(this.state.targetSite === '') {
             Modal.warning({
                 title: '测评网址不能为空！',
@@ -75,54 +120,11 @@ class Index extends Component {
         } else {
             this.clearState();
             this.setState({
-                snapViewVisible: true
+                snapViewVisible:true,
+                //dataLoaded: true
             });
-            // localStorage.setItem('site',this.state.targetSite);
-            // siteSource.push(localStorage.getItem('site'));
-            const query = [
-                'url=' + this.state.targetSite,
-                'key=' + API_KEY,
-                'strategy=' + this.state.deviceType,
-                'locale=' + this.state.language,
-            ].join('&');
-            //Google pageSpeed API
-            fetch(API_URL+query,{
-                headers: {
-                    'Access-Control-Allow-Origin': '*',
-                    'Content-type':'application/json',
-                    'Accept':'application/json',
-                    'cache-control': 'max-age=604800'   //设置浏览器缓存7天
-                }
-            })
-                .then(res => res.json())
-                .then(data => {
-                    if(data.error&&data.error.code === 400){
-                        Modal.error({
-                            title: '查询失败，请重新尝试',
-                        });
-                    }else
-                        {
-                            this.setState({
-                                dataSource: data,
-                                dataLoaded: true,
-                                siteDescription: data&&data.title || '暂无描述',
-                                speedScore: data&&data.ruleGroups&&data.ruleGroups.SPEED&&data.ruleGroups.SPEED.score || '0',
-                                speedRank:  data&&data.loadingExperience&&data.loadingExperience.overall_category || '',
-                                DCL: data&&data.loadingExperience&&data.loadingExperience.metrics&&data.loadingExperience.metrics.DOM_CONTENT_LOADED_EVENT_FIRED_MS&&data.loadingExperience.metrics.DOM_CONTENT_LOADED_EVENT_FIRED_MS.median || '',
-                                FCP: data.loadingExperience&&data.loadingExperience.metrics&&data.loadingExperience.metrics.FIRST_CONTENTFUL_PAINT_MS&&data.loadingExperience.metrics.FIRST_CONTENTFUL_PAINT_MS.median || '',
-                                loadingExperience: data.loadingExperience,
-                        });
-                    }
-
-                })
-                .catch(()=>{
-                    Modal.error({
-                        title: '查询失败，请重新尝试',
-                    });
-                })
-
+            this.props.fetchData(url);
         }
-
     };
 
     onChangeSite = (e) => {
@@ -130,10 +132,12 @@ class Index extends Component {
             targetSite: e.target.value
         });
     };
+
     //清空input框
     emitEmpty = () => {
         this.setState({ targetSite: '' });
     };
+
     render() {
         const query = [
             'url=' + this.state.targetSite,
@@ -142,7 +146,14 @@ class Index extends Component {
             'locale=' + this.state.language,
         ].join('&');
 
-        const { fetchData } = this.props;
+        const { isLoading,hasErrored, items } = this.props;
+
+        if(hasErrored) {
+            Modal.error({
+                title: '查询失败，请重新尝试',
+            });
+        }
+
         return(
             <div>
                 <div className="deviceTypeWrapper" >
@@ -152,21 +163,18 @@ class Index extends Component {
                     </RadioGroup>
                 </div>
                 <SnapViewComponent
-                    colorIndex={this.state.colorIndex}
                     snapViewVisible={this.state.snapViewVisible}
-                    dataLoaded={this.state.dataLoaded}
-                    onEstimate={()=>{fetchData(API_URL+query)}}
+                    dataLoaded={isLoading}
+                    onEstimate={ ()=>{this.onEstimate(API_URL+query)} }
                     targetSite={this.state.targetSite}
                     onChangeSite={this.onChangeSite}
                     handleLangChange={this.handleLangChange}
                     emitEmpty={this.emitEmpty}
-                    siteDescription={this.state.siteDescription}
-                    speedScore={this.state.speedScore}
-                    speedRank={this.state.speedRank}
-                    DCL={this.state.DCL}
-                    FCP={this.state.FCP}
-                    siteSource={siteSource}
-                    loadingExperience = {this.state.loadingExperience}
+                    siteDescription={items.title || ''}
+                    speedScore={items&&items.ruleGroups&&items.ruleGroups.SPEED&&items.ruleGroups.SPEED.score}
+                    speedRank={items&&items.loadingExperience&&items.loadingExperience.overall_category}
+                    DCL={items&&items.loadingExperience&&items.loadingExperience.metrics&&items.loadingExperience.metrics.DOM_CONTENT_LOADED_EVENT_FIRED_MS&&items.loadingExperience.metrics.DOM_CONTENT_LOADED_EVENT_FIRED_MS.median}
+                    FCP={items.loadingExperience&&items.loadingExperience.metrics&&items.loadingExperience.metrics.FIRST_CONTENTFUL_PAINT_MS&&items.loadingExperience.metrics.FIRST_CONTENTFUL_PAINT_MS.median}
                 />
             </div>
         )
