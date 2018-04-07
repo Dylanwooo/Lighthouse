@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Card } from 'antd';
-
+import { map2Percetage } from '../../utils/utils'
 import echarts from 'echarts';
 import  'echarts/lib/chart/bar';
 
@@ -16,6 +16,7 @@ export default class PageLoadDistribution extends PureComponent {
         let myChart = echarts.init(this.refs.demo);
         // 绘制图表
         myChart.setOption({
+            color:['#00CD66','#FFB90F','#FF4040'],
             tooltip: {
                 trigger:'axis',
                 axisPointer: {
@@ -37,35 +38,17 @@ export default class PageLoadDistribution extends PureComponent {
                 name: 'fast',
                 type: 'bar',
                 stack: '总量',
-                label: {
-                    normal: {
-                        show:true,
-                        position: 'insideRight'
-                    }
-                },
-                data: [DCLArray[0],FCPArray[0]]
+                data: [map2Percetage(DCLArray[0]),map2Percetage(FCPArray[0])]
             },{
                 name: 'medium',
                 type: 'bar',
                 stack: '总量',
-                label: {
-                    normal: {
-                        show:true,
-                        position: 'insideRight'
-                    }
-                },
-                data: [DCLArray[1],FCPArray[1]]
+                data: [map2Percetage(DCLArray[1]),map2Percetage(FCPArray[1])]
             },{
                 name: 'slow',
                 type: 'bar',
                 stack: '总量',
-                label: {
-                    normal: {
-                        show:true,
-                        position: 'insideRight'
-                    }
-                },
-                data: [DCLArray[2],FCPArray[2] ]
+                data: [map2Percetage(DCLArray[2]),map2Percetage(FCPArray[2])]
             }]
         });
     }

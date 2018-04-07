@@ -37,3 +37,7 @@ export function map2RankColor(cate) {
 export function checkPath(str) {
     return window.location.pathname.includes(str)
 }
+
+export function map2Percetage(num) {
+    return (num.toFixed(2)*100).toString()+'%';
+}
