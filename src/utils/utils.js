@@ -39,5 +39,6 @@ export function checkPath(str) {
 }
 
 export function map2Percetage(num) {
-    return num.toFixed(2)
+    num = parseFloat(num).toFixed(2);
+    return num.slice(2,4)+'%';
 }

@@ -13,10 +13,27 @@
   }
   .ant-card {
     display: inline-block;
+    margin-right: 10px;
   }
   .ant-card-head-title {
-    font-size: 15px;
+    font-size: 16px !important;
+    text-align: left;
   }
+  .ant-card-head {
+    border: none;
+    height: 40px;
+  }
+
+  .ant-card-meta-title {
+    color: #ffffff;
+    font-size: 20px;
+  }
+
+  .ant-card-meta-description {
+    color: #ffffff;
+    font-size: 16px;
+  }
+
   .ant-layout-footer {
     text-align: center;
   }
@@ -48,3 +65,25 @@
     color: white;
   }
 }
+
+
+.outsiderWrapper {
+  margin: auto;
+  .wrapper {
+    display: flex;
+    flex-direction: row;
+    .cardGroupWrapper {
+      display: inline-block;
+      margin: 20px 50px;
+      .cardContentItem {
+        margin-right: 20px;
+      }
+      .moreDetail {
+        font-size: 15px;
+        color: #00C1DE;
+      }
+    }
+  }
+}
+
+
