@@ -51,65 +51,6 @@ class Index extends Component {
             snapViewVisible: false
         })
     };
-    //开始测评
-    // onEstimate = () => {
-    //     if(this.state.targetSite === '') {
-    //         Modal.warning({
-    //             title: '测评网址不能为空！',
-    //             okText: '确定'
-    //         });
-    //     } else {
-    //         this.clearState();
-    //         this.setState({
-    //             snapViewVisible: true
-    //         });
-    //         // localStorage.setItem('site',this.state.targetSite);
-    //         // siteSource.push(localStorage.getItem('site'));
-    //         const query = [
-    //             'url=' + this.state.targetSite,
-    //             'key=' + API_KEY,
-    //             'strategy=' + this.state.deviceType,
-    //             'locale=' + this.state.language,
-    //         ].join('&');
-    //         //Google pageSpeed API
-    //         fetch(API_URL+query,{
-    //             headers: {
-    //                 'Access-Control-Allow-Origin': '*',
-    //                 'Content-type':'application/json',
-    //                 'Accept':'application/json',
-    //                 'cache-control': 'max-age=604800'   //设置浏览器缓存7天
-    //             }
-    //         })
-    //             .then(res => res.json())
-    //             .then(data => {
-    //                 if(data.error&&data.error.code === 400){
-    //                     Modal.error({
-    //                         title: '查询失败，请重新尝试',
-    //                     });
-    //                 }else
-    //                     {
-    //                         this.setState({
-    //                             dataSource: data,
-    //                             dataLoaded: true,
-    //                             siteDescription: data&&data.title || '暂无描述',
-    //                             speedScore: data&&data.ruleGroups&&data.ruleGroups.SPEED&&data.ruleGroups.SPEED.score || '0',
-    //                             speedRank:  data&&data.loadingExperience&&data.loadingExperience.overall_category || '',
-    //                             DCL: data&&data.loadingExperience&&data.loadingExperience.metrics&&data.loadingExperience.metrics.DOM_CONTENT_LOADED_EVENT_FIRED_MS&&data.loadingExperience.metrics.DOM_CONTENT_LOADED_EVENT_FIRED_MS.median || '',
-    //                             FCP: data.loadingExperience&&data.loadingExperience.metrics&&data.loadingExperience.metrics.FIRST_CONTENTFUL_PAINT_MS&&data.loadingExperience.metrics.FIRST_CONTENTFUL_PAINT_MS.median || '',
-    //                             loadingExperience: data.loadingExperience,
-    //                     });
-    //                 }
-    //
-    //             })
-    //             .catch(()=>{
-    //                 Modal.error({
-    //                     title: '查询失败，请重新尝试',
-    //                 });
-    //             })
-    //
-    //     }
-    //
-    // };
 
     onEstimate = (url) => {
         if(this.state.targetSite === '') {

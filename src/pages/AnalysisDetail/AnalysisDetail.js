@@ -7,6 +7,8 @@ import { checkPath } from '../../utils/utils'
 
 import "./AnalysisDetail.less"
 import PageLoadDistribution from "./PageLoadDistribution";
+import ResourcesInfo from "./ResourcesInfo";
+
 const { Header, Footer, Sider, Content } = Layout;
 
 
@@ -39,8 +41,10 @@ class AnalysisDetail extends PureComponent {
                                 </Link>
                             </Menu.Item>
                             <Menu.Item key="2">
-                                <Icon type="api" />
-                                <span>页面资源情况</span>
+                                <Link to="/AnalysisDetail/ResourcesInfo">
+                                    <Icon type="api" />
+                                    <span>页面资源情况</span>
+                                </Link>
                             </Menu.Item>
                             <Menu.Item key="3">
                                 <Icon type="dot-chart" />
@@ -61,9 +65,14 @@ class AnalysisDetail extends PureComponent {
                             />
                         </Header>
                         <Content>
-                            <PageLoadDistribution
-                                loadingExperience={this.props.items.loadingExperience}
-                            />
+                            {checkPath('/AnalysisDetail')?
+                                <PageLoadDistribution
+                                    loadingExperience={this.props.items.loadingExperience}
+                                />:null
+                            }
+                            {checkPath('/AnalysisDetail/ResourcesInfo')?
+                                <ResourcesInfo /> :null
+                            }
                         </Content>
                         <Footer>@Dylanwoo</Footer>
                     </Layout>

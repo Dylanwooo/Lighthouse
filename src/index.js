@@ -6,7 +6,9 @@ import {  BrowserRouter as Router, Route } from 'react-router-dom'
 import './index.css';
 import App from './App';
 import AnalysisDetail from './pages/AnalysisDetail/AnalysisDetail';
-import PageLoadDistribution from './pages/AnalysisDetail/PageLoadDistribution'
+import PageLoadDistribution from './pages/AnalysisDetail/PageLoadDistribution';
+import ResourcesInfo from './pages/AnalysisDetail/ResourcesInfo'
+
 import registerServiceWorker from './registerServiceWorker';
 
 const store = configureStore();
@@ -18,6 +20,7 @@ ReactDOM.render((
                 <Route exact path="/" component={App} />
                 <Route path="/AnalysisDetail" component={AnalysisDetail} />
                 <Route path="/AnalysisDetail/load" component={PageLoadDistribution}/>
+                <Route path="/AnalysisDetail/resourse" component={ResourcesInfo}/>
             </div>
         </Router>
     </Provider>

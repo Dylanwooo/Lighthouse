@@ -14,8 +14,6 @@ let DCLmaxArray = [];
 let FCPminArray = [];
 let FCPmaxArray = [];
 
-const 
-
 export default class PageLoadDistribution extends PureComponent {
 
     componentWillMount() {
@@ -28,8 +26,6 @@ export default class PageLoadDistribution extends PureComponent {
         loadingExperience.metrics.DOM_CONTENT_LOADED_EVENT_FIRED_MS.distributions.map(val => DCLmaxArray.push(val.max));
         loadingExperience.metrics.FIRST_CONTENTFUL_PAINT_MS.distributions.map(val => FCPminArray.push(val.min));
         loadingExperience.metrics.FIRST_CONTENTFUL_PAINT_MS.distributions.map(val => FCPmaxArray.push(val.max));
-
-
 
     }
 
@@ -47,7 +43,8 @@ export default class PageLoadDistribution extends PureComponent {
             legend: {
                 x : 'center',
                 y : 'bottom',
-                data: ['快速加载', '中速加载','缓慢加载']
+                data: ['快速加载', '中速加载','缓慢加载'],
+                show: true
             },
             xAxis: {
                 type:'value',
@@ -136,13 +133,20 @@ export default class PageLoadDistribution extends PureComponent {
 
     render() {
 
+        const fastTextFCP = '此网页中'+map2Percetage(FCPArray[0])+'加载的First Contentful Paint属于快速';
+        const fastTextDCL = '此网页中'+map2Percetage(DCLArray[0])+'加载的DOM Content Loaded属于快速';
+        const mediumTextFCP = '此网页中'+map2Percetage(FCPArray[1])+'加载的First Contentful Paint属于中等';
+        const mediumTextDCL = '此网页中'+map2Percetage(DCLArray[1])+'加载的DOM Content Loaded属于中等';
+        const slowTextFCP = '此网页中'+map2Percetage(FCPArray[2])+'加载的First Contentful Paint属于快速';
+        const slowTextDCL = '此网页中'+map2Percetage(DCLArray[2])+'加载的DOM Content Loaded属于快速';
+
         return(
             <div className="outsiderWrapper">
                 <div className="wrapper">
                     <div className="cardGroupWrapper">
                         <Card title="快速" style={{width:200,background:'#4EEE94'}}
                               bordered={false} hoverable={true}
-                              extra={<Tooltip title="prompt text" placement="topRight"><span className="moreDetail">More</span></Tooltip>}
+                              extra={<Tooltip title={fastTextDCL} placement="bottomRight"><span className="moreDetail">More</span></Tooltip>}
                         >
                             <Meta title={<div>{map2Percetage(DCLArray[0])}</div>} description=
                                 {<div>
@@ -154,7 +158,7 @@ export default class PageLoadDistribution extends PureComponent {
                         <Card title="中速" style={{width:200,background:'#FFD700'}}
                               bordered={false}
                               hoverable={true}
-                              extra={<Tooltip title="prompt text" placement="topRight"><span className="moreDetail">More</span></Tooltip>}
+                              extra={<Tooltip title={mediumTextDCL} placement="bottomRight"><span className="moreDetail">More</span></Tooltip>}
                         >
                             <Meta title={<div>{map2Percetage(DCLArray[1])}</div>} description=
                                 {<div>
@@ -166,7 +170,7 @@ export default class PageLoadDistribution extends PureComponent {
                         <Card title="慢速" style={{width:200,background:'#FF6A6A'}}
                               bordered={false}
                               hoverable={true}
-                              extra={<Tooltip title="prompt text" placement="topRight"><span className="moreDetail">More</span></Tooltip>}
+                              extra={<Tooltip title={slowTextDCL} placement="bottomRight"><span className="moreDetail">More</span></Tooltip>}
                         >
                             <Meta title={<div>{map2Percetage(DCLArray[2])}</div>} description=
                                 {<div>
@@ -179,7 +183,7 @@ export default class PageLoadDistribution extends PureComponent {
                         <Card title="快速" style={{width:200,background:'#4EEE94'}}
                               bordered={false}
                               hoverable={true}
-                              extra={<Tooltip title="prompt text" placement="topRight"><span className="moreDetail">More</span></Tooltip>}
+                              extra={<Tooltip title={fastTextFCP} placement="bottomRight"><span className="moreDetail">More</span></Tooltip>}
                         >
                             <Meta title={<div>{map2Percetage(FCPArray[0])}</div>} description=
                                 {<div>
@@ -191,7 +195,7 @@ export default class PageLoadDistribution extends PureComponent {
                         <Card title="中速" style={{width:200,background:'#FFD700'}}
                               bordered={false}
                               hoverable={true}
-                              extra={<Tooltip title="prompt text" placement="topRight"><span className="moreDetail">More</span></Tooltip>}
+                              extra={<Tooltip title={mediumTextFCP} placement="bottomRight"><span className="moreDetail">More</span></Tooltip>}
                         >
                             <Meta title={<div>{map2Percetage(FCPArray[1])}</div>} description=
                                 {<div>
@@ -203,7 +207,7 @@ export default class PageLoadDistribution extends PureComponent {
                         <Card title="慢速" style={{width:200,background:'#FF6A6A'}}
                               bordered={false}
                               hoverable={true}
-                              extra={<Tooltip title="prompt text" placement="topRight"><span className="moreDetail">More</span></Tooltip>}
+                              extra={<Tooltip title={slowTextFCP} placement="bottomRight"><span className="moreDetail">More</span></Tooltip>}
                         >
                             <Meta title={<div>{map2Percetage(FCPArray[2])}</div>} description=
                                 {<div>
@@ -216,13 +220,13 @@ export default class PageLoadDistribution extends PureComponent {
                 <div className="wrapper">
                     <div className="cardGroupWrapper">
                         <Card bordered={false}>
-                            <div ref="disBar" style={{width:550,height:250}} />
+                            <div ref="disBar" style={{width:571,height:250}} />
 
                         </Card>
                     </div>
                     <div className="cardGroupWrapper">
                         <Card bordered={false}>
-                            <div ref="disPie" style={{width:500,height:250}} />
+                            <div ref="disPie" style={{width:571,height:250}} />
                         </Card>
                     </div>
                 </div>
