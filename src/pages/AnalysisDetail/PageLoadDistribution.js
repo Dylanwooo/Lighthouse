@@ -14,9 +14,11 @@ let DCLmaxArray = [];
 let FCPminArray = [];
 let FCPmaxArray = [];
 
+const 
+
 export default class PageLoadDistribution extends PureComponent {
 
-    componentDidMount() {
+    componentWillMount() {
         const loadingExperience = this.props.loadingExperience;
 
         loadingExperience.metrics.FIRST_CONTENTFUL_PAINT_MS.distributions.map(val => FCPArray.push(val.proportion));
@@ -27,108 +29,109 @@ export default class PageLoadDistribution extends PureComponent {
         loadingExperience.metrics.FIRST_CONTENTFUL_PAINT_MS.distributions.map(val => FCPminArray.push(val.min));
         loadingExperience.metrics.FIRST_CONTENTFUL_PAINT_MS.distributions.map(val => FCPmaxArray.push(val.max));
 
-        console.log(DCLminArray)
-        console.log(DCLmaxArray)
-        console.log(FCPminArray)
-        console.log(FCPmaxArray)
 
 
-        // let myBarChart = echarts.init(this.refs.disBar);
-        // // 绘制Bar
-        // myBarChart.setOption({
-        //     color:['#00CD66','#FFD700','#FF6A6A'],
-        //     tooltip: {
-        //         trigger:'axis',
-        //         axisPointer: {
-        //             type: 'shadow'
-        //         },
-        //     },
-        //     legend: {
-        //         data: ['快速加载', '中速加载','缓慢加载']
-        //     },
-        //     xAxis: {
-        //         type:'value',
-        //         data: ['0%','25%','50%','75%','100%']
-        //     },
-        //     yAxis: {
-        //         type:'category',
-        //         data: ['DCL','FCP']
-        //     },
-        //     series: [{
-        //         name: 'fast',
-        //         type: 'bar',
-        //         stack: '总量',
-        //         data: [map2Percetage(DCLArray[0]),map2Percetage(FCPArray[0])]
-        //     },{
-        //         name: 'medium',
-        //         type: 'bar',
-        //         stack: '总量',
-        //         data: [map2Percetage(DCLArray[1]),map2Percetage(FCPArray[1])]
-        //     },{
-        //         name: 'slow',
-        //         type: 'bar',
-        //         stack: '总量',
-        //         data: [map2Percetage(DCLArray[2]),map2Percetage(FCPArray[2])]
-        //     }]
-        // });
-        //
-        // //Pie图
-        // let myPieChart = echarts.init(this.refs.disPie);
-        // myPieChart.setOption({
-        //     color:['#00CD66','#FFB90F','#FF4040'],
-        //     tooltip : {
-        //         trigger: 'item',
-        //         formatter: "{a} <br/>{b} : {c} ({d}%)"
-        //     },
-        //     legend: {
-        //         x : 'center',
-        //         y : 'bottom',
-        //         data: FCPArray
-        //     },
-        //     toolBox: {
-        //         show: true,
-        //         feature: {
-        //             mark: {show:true},
-        //             dataView: {show: true,readOnly:false},
-        //             magicType: {
-        //                 show: true,
-        //                 type: ['pie','funnel']
-        //             },
-        //             restore : {show: true},
-        //             saveAsImage : {show: true}
-        //         }
-        //     },
-        //     series: [
-        //         {
-        //             name:'FCP',
-        //             type:'pie',
-        //             radius : [20, 110],
-        //             center : ['25%', '50%'],
-        //             roseType : 'radius',
-        //             label: {
-        //                 normal: {
-        //                     show: false
-        //                 },
-        //                 emphasis: {
-        //                     show: true
-        //                 }
-        //             },
-        //             lableLine: {
-        //                 normal: {
-        //                     show: false
-        //                 },
-        //                 emphasis: {
-        //                     show: true
-        //                 }
-        //             },
-        //             data: [
-        //                 {value:map2Percetage(FCPArray[0]),name:'快速加载'},
-        //                 {value:map2Percetage(FCPArray[1]),name:'中速加载'},
-        //                 {value:map2Percetage(FCPArray[2]),name:'慢速加载'},
-        //             ]
-        //         }
-        //     ]
-        // })
+    }
+
+    componentDidMount() {
+        let myBarChart = echarts.init(this.refs.disBar);
+        // 绘制Bar
+        myBarChart.setOption({
+            color:['#00CD66','#FFD700','#FF6A6A'],
+            tooltip: {
+                trigger:'axis',
+                axisPointer: {
+                    type: 'shadow'
+                },
+            },
+            legend: {
+                x : 'center',
+                y : 'bottom',
+                data: ['快速加载', '中速加载','缓慢加载']
+            },
+            xAxis: {
+                type:'value',
+                data: ['0%','25%','50%','75%','100%']
+            },
+            yAxis: {
+                type:'category',
+                data: ['DCL','FCP']
+            },
+            series: [{
+                name: 'fast',
+                type: 'bar',
+                stack: '总量',
+                data: [(DCLArray[0].toFixed(2)),(FCPArray[0].toFixed(2))]
+            },{
+                name: 'medium',
+                type: 'bar',
+                stack: '总量',
+                data: [(DCLArray[1].toFixed(2)),(FCPArray[1].toFixed(2))]
+            },{
+                name: 'slow',
+                type: 'bar',
+                stack: '总量',
+                data: [(DCLArray[2].toFixed(2)),(FCPArray[2].toFixed(2))]
+            }]
+        });
+
+        //Pie图
+        let myPieChart = echarts.init(this.refs.disPie);
+        myPieChart.setOption({
+            color:['#00CD66','#FFB90F','#FF4040'],
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                x : 'center',
+                y : 'bottom',
+                data: ['快速加载','中速加载','慢速加载']
+            },
+            toolBox: {
+                show: true,
+                feature: {
+                    mark: {show:true},
+                    dataView: {show: true,readOnly:false},
+                    magicType: {
+                        show: true,
+                        type: ['pie','funnel']
+                    },
+                    restore : {show: true},
+                    saveAsImage : {show: true}
+                }
+            },
+            series: [
+                {
+                    name:'FCP',
+                    type:'pie',
+                    radius : '65%',
+                    center : ['50%','50%'],
+                    roseType : 'radius',
+                    label: {
+                        normal: {
+                            show: false
+                        },
+                        emphasis: {
+                            show: true
+                        }
+                    },
+                    lableLine: {
+                        normal: {
+                            show: false
+                        },
+                        emphasis: {
+                            show: true
+                        }
+                    },
+                    data: [
+                        {value:FCPArray[0].toFixed(2),name:'快速加载'},
+                        {value:FCPArray[1].toFixed(2),name:'中速加载'},
+                        {value:FCPArray[2].toFixed(2),name:'慢速加载'},
+                    ]
+                }
+            ]
+        })
     }
 
     render() {
@@ -168,7 +171,6 @@ export default class PageLoadDistribution extends PureComponent {
                             <Meta title={<div>{map2Percetage(DCLArray[2])}</div>} description=
                                 {<div>
                                     <span className="cardContentItem">min:{DCLminArray[2]}</span>
-                                    <span className="cardContentItem">max:{DCLmaxArray[2]}</span>
                                 </div>}
                             />
                         </Card>
@@ -206,25 +208,24 @@ export default class PageLoadDistribution extends PureComponent {
                             <Meta title={<div>{map2Percetage(FCPArray[2])}</div>} description=
                                 {<div>
                                     <span className="cardContentItem">min:{FCPminArray[2]}</span>
-                                    <span className="cardContentItem">max:{FCPminArray[2]}</span>
                                 </div>}
                             />
                         </Card>
                     </div>
                 </div>
-                {/*<Card title="网页加载分布图" bordered={false} style={{ width: '80%',margin:'auto' }}>*/}
-                    {/*<Row gutter={50}>*/}
-                        {/*<Col col={12}>*/}
-                            {/*<div ref="disBar" style={{  height: 300}}/>*/}
-                        {/*</Col>*/}
-                        {/*<Col col={12}>*/}
-                            {/*<div ref="disPie" style={{  height: 300}}/>*/}
-                        {/*</Col>*/}
-                    {/*</Row>*/}
-                {/*</Card>*/}
-                {/*<div className="">*/}
+                <div className="wrapper">
+                    <div className="cardGroupWrapper">
+                        <Card bordered={false}>
+                            <div ref="disBar" style={{width:550,height:250}} />
 
-                {/*</div>*/}
+                        </Card>
+                    </div>
+                    <div className="cardGroupWrapper">
+                        <Card bordered={false}>
+                            <div ref="disPie" style={{width:500,height:250}} />
+                        </Card>
+                    </div>
+                </div>
             </div>
         )
     }

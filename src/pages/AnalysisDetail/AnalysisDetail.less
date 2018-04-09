@@ -11,10 +11,7 @@
   .ant-menu {
     background-color: #333744;
   }
-  .ant-card {
-    display: inline-block;
-    margin-right: 10px;
-  }
+
   .ant-card-head-title {
     font-size: 16px !important;
     text-align: left;
@@ -75,6 +72,12 @@
     .cardGroupWrapper {
       display: inline-block;
       margin: 20px 50px;
+      :global {
+        .ant-card {
+          display: inline-block;
+          margin-right: 10px;
+        }
+      }
       .cardContentItem {
         margin-right: 20px;
       }
