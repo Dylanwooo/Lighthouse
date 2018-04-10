@@ -103,7 +103,7 @@ export default class PageLoadDistribution extends PureComponent {
                     name:'FCP',
                     type:'pie',
                     radius : '65%',
-                    center : ['50%','50%'],
+                    center : ['50%','45%'],
                     roseType : 'radius',
                     label: {
                         normal: {
@@ -119,6 +119,13 @@ export default class PageLoadDistribution extends PureComponent {
                         },
                         emphasis: {
                             show: true
+                        }
+                    },
+                    itemStyle: {
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shaowColor: 'rgba(0,0,0,0.5)'
                         }
                     },
                     data: [

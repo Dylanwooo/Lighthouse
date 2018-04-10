@@ -21,16 +21,6 @@ function onSelect(value) {
 }
 export default class SnapViewComponent extends PureComponent {
 
-    handleSearch = (value) => {
-        this.setState({
-            dataSource: !value ? [] : [
-                value,
-                value + value,
-                value + value + value,
-            ],
-        });
-    };
-
 
     render() {
         const rankStyle = {

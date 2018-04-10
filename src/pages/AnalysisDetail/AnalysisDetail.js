@@ -65,16 +65,15 @@ class AnalysisDetail extends PureComponent {
                             />
                         </Header>
                         <Content>
-                            {checkPath('/AnalysisDetail')?
-                                <PageLoadDistribution
-                                    loadingExperience={this.props.items.loadingExperience}
-                                />:null
-                            }
-                            {checkPath('/AnalysisDetail/ResourcesInfo')?
-                                <ResourcesInfo /> :null
-                            }
+                            {/*{checkPath('/AnalysisDetail')?*/}
+                                {/*<PageLoadDistribution*/}
+                                    {/*loadingExperience={this.props.items.loadingExperience}*/}
+                                {/*/>:null*/}
+                            {/*}*/}
+                                <ResourcesInfo />
+
                         </Content>
-                        <Footer>@Dylanwoo</Footer>
+                        <Footer>@Lighthouse</Footer>
                     </Layout>
                 </Layout>
             </div>
@@ -97,3 +96,4 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AnalysisDetail);
+
