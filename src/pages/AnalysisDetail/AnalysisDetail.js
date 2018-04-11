@@ -13,15 +13,7 @@ const { Header, Footer, Sider, Content } = Layout;
 
 
 class AnalysisDetail extends PureComponent {
-    state = {
-        collapsed: false,
-    };
 
-    toggle = () => {
-        this.setState({
-            collapsed: !this.state.collapsed,
-        });
-    };
     render() {
         return(
             <div>
@@ -43,7 +35,7 @@ class AnalysisDetail extends PureComponent {
                             <Menu.Item key="2">
                                 <Link to="/AnalysisDetail/ResourcesInfo">
                                     <Icon type="api" />
-                                    <span>页面资源情况</span>
+                                    <span>页面资源加载情况</span>
                                 </Link>
                             </Menu.Item>
                             <Menu.Item key="3">
@@ -58,11 +50,7 @@ class AnalysisDetail extends PureComponent {
                     </Sider>
                     <Layout>
                         <Header>
-                            <Icon
-                            className="trigger"
-                            type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
-                            onClick={this.toggle}
-                            />
+                            <span className="headTitle">前端性能监测系统</span>
                         </Header>
                         <Content>
                             {/*{checkPath('/AnalysisDetail')?*/}
@@ -70,8 +58,9 @@ class AnalysisDetail extends PureComponent {
                                     {/*loadingExperience={this.props.items.loadingExperience}*/}
                                 {/*/>:null*/}
                             {/*}*/}
-                                <ResourcesInfo />
-
+                            {checkPath('/ResourcesInfo')?
+                                <ResourcesInfo />:null
+                            }
                         </Content>
                         <Footer>@Lighthouse</Footer>
                     </Layout>

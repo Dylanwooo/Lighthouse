@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Card,Row,Col,Tooltip } from 'antd';
-import { map2Percetage } from '../../utils/utils'
+import { map2Percetage,map2toFix } from '../../utils/utils'
 import echarts from 'echarts';
 import  'echarts/lib/chart/bar';
 import './AnalysisDetail.less'
@@ -17,16 +17,16 @@ let FCPmaxArray = [];
 export default class PageLoadDistribution extends PureComponent {
 
     componentWillMount() {
-        const loadingExperience = this.props.loadingExperience;
+        const loadingExperience = this.props.loadingExperience || null;
+        if(loadingExperience !== null){
+            loadingExperience.metrics.FIRST_CONTENTFUL_PAINT_MS.distributions.map(val => FCPArray.push(val.proportion));
+            loadingExperience.metrics.DOM_CONTENT_LOADED_EVENT_FIRED_MS.distributions.map(val => DCLArray.push(val.proportion));
 
-        loadingExperience.metrics.FIRST_CONTENTFUL_PAINT_MS.distributions.map(val => FCPArray.push(val.proportion));
-        loadingExperience.metrics.DOM_CONTENT_LOADED_EVENT_FIRED_MS.distributions.map(val => DCLArray.push(val.proportion));
-
-        loadingExperience.metrics.DOM_CONTENT_LOADED_EVENT_FIRED_MS.distributions.map(val => DCLminArray.push(val.min));
-        loadingExperience.metrics.DOM_CONTENT_LOADED_EVENT_FIRED_MS.distributions.map(val => DCLmaxArray.push(val.max));
-        loadingExperience.metrics.FIRST_CONTENTFUL_PAINT_MS.distributions.map(val => FCPminArray.push(val.min));
-        loadingExperience.metrics.FIRST_CONTENTFUL_PAINT_MS.distributions.map(val => FCPmaxArray.push(val.max));
-
+            loadingExperience.metrics.DOM_CONTENT_LOADED_EVENT_FIRED_MS.distributions.map(val => DCLminArray.push(val.min));
+            loadingExperience.metrics.DOM_CONTENT_LOADED_EVENT_FIRED_MS.distributions.map(val => DCLmaxArray.push(val.max));
+            loadingExperience.metrics.FIRST_CONTENTFUL_PAINT_MS.distributions.map(val => FCPminArray.push(val.min));
+            loadingExperience.metrics.FIRST_CONTENTFUL_PAINT_MS.distributions.map(val => FCPmaxArray.push(val.max));
+        }
     }
 
     componentDidMount() {
@@ -58,17 +58,22 @@ export default class PageLoadDistribution extends PureComponent {
                 name: 'fast',
                 type: 'bar',
                 stack: '总量',
-                data: [(DCLArray[0].toFixed(2)),(FCPArray[0].toFixed(2))]
+                // data: [(DCLArray[0].toFixed(2)),(FCPArray[0].toFixed(2))]
+                data: [map2toFix(DCLArray[0]),map2toFix(FCPArray[0])]
             },{
                 name: 'medium',
                 type: 'bar',
                 stack: '总量',
-                data: [(DCLArray[1].toFixed(2)),(FCPArray[1].toFixed(2))]
+                //data: [(DCLArray[1].toFixed(2)),(FCPArray[1].toFixed(2))]
+                data: [map2toFix(DCLArray[1]),map2toFix(FCPArray[1])]
+
             },{
                 name: 'slow',
                 type: 'bar',
                 stack: '总量',
-                data: [(DCLArray[2].toFixed(2)),(FCPArray[2].toFixed(2))]
+                //data: [(DCLArray[2].toFixed(2)),(FCPArray[2].toFixed(2))]
+                data: [map2toFix(DCLArray[2]),map2toFix(FCPArray[2])]
+
             }]
         });
 
@@ -129,9 +134,12 @@ export default class PageLoadDistribution extends PureComponent {
                         }
                     },
                     data: [
-                        {value:FCPArray[0].toFixed(2),name:'快速加载'},
-                        {value:FCPArray[1].toFixed(2),name:'中速加载'},
-                        {value:FCPArray[2].toFixed(2),name:'慢速加载'},
+                        // {value:FCPArray[0].toFixed(2),name:'快速加载'},
+                        // {value:FCPArray[1].toFixed(2),name:'中速加载'},
+                        // {value:FCPArray[2].toFixed(2),name:'慢速加载'},
+                        {value:map2toFix(FCPArray[0]),name:'快速加载'},
+                        {value:map2toFix(FCPArray[1]),name:'中速加载'},
+                        {value:map2toFix(FCPArray[2]),name:'慢速加载'},
                     ]
                 }
             ]

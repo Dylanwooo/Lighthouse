@@ -18,8 +18,6 @@ const API_KEY = 'AIzaSyDJO37Cx7EyABWOXVZWDBou-wau3dIsYCQ';
 const API_URL = 'https://www.googleapis.com/pagespeedonline/v4/runPagespeed?';
 //const webpageTest_URL = 'https://www.webpagetest.org/runtest.php?';
 
-const siteSource = [];
-
 
 class Index extends Component {
 

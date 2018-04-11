@@ -42,3 +42,9 @@ export function map2Percetage(num) {
     num = parseFloat(num).toFixed(2);
     return num.slice(2,4)+'%';
 }
+
+export function map2toFix(num) {
+    if(num){
+        return num.toFixed(2);
+    }
+}
