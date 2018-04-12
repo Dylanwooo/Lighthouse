@@ -48,3 +48,26 @@ export function map2toFix(num) {
         return num.toFixed(2);
     }
 }
+
+export function mapTime2MS(time) {
+    return time/1000
+}
+
+export function map2LoadType(type) {
+    let str;
+    switch(type){
+        case 0:
+            str = '点击链接、地址栏输入、表单提交、脚本操作等方式加载';
+            break;
+        case 1:
+            str = '通过“重新加载”按钮或者location.reload()方法加载';
+            break;
+        case 2:
+            str = '网页通过“前进”或“后退”按钮加载';
+            break;
+        default:
+            str = '任何其他来源的加载';
+            break;
+    }
+    return str;
+}

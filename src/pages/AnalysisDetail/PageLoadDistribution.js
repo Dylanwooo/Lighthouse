@@ -131,9 +131,6 @@ export default class PageLoadDistribution extends PureComponent {
                         }
                     },
                     data: [
-                        // {value:FCPArray[0].toFixed(2),name:'快速加载'},
-                        // {value:FCPArray[1].toFixed(2),name:'中速加载'},
-                        // {value:FCPArray[2].toFixed(2),name:'慢速加载'},
                         {value:map2toFix(FCPArray[0]),name:'快速加载'},
                         {value:map2toFix(FCPArray[1]),name:'中速加载'},
                         {value:map2toFix(FCPArray[2]),name:'慢速加载'},
