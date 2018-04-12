@@ -58,20 +58,17 @@ export default class PageLoadDistribution extends PureComponent {
                 name: 'fast',
                 type: 'bar',
                 stack: '总量',
-                // data: [(DCLArray[0].toFixed(2)),(FCPArray[0].toFixed(2))]
                 data: [map2toFix(DCLArray[0]),map2toFix(FCPArray[0])]
             },{
                 name: 'medium',
                 type: 'bar',
                 stack: '总量',
-                //data: [(DCLArray[1].toFixed(2)),(FCPArray[1].toFixed(2))]
                 data: [map2toFix(DCLArray[1]),map2toFix(FCPArray[1])]
 
             },{
                 name: 'slow',
                 type: 'bar',
                 stack: '总量',
-                //data: [(DCLArray[2].toFixed(2)),(FCPArray[2].toFixed(2))]
                 data: [map2toFix(DCLArray[2]),map2toFix(FCPArray[2])]
 
             }]
