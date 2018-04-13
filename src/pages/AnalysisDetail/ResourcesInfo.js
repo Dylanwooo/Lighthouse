@@ -5,6 +5,8 @@
 import React, { PureComponent } from 'react';
 import { Card,Row,Col } from 'antd';
 import { mapTime2MS,map2LoadType } from '../../utils/utils'
+import echarts from 'echarts';
+import  'echarts/lib/chart/bar';
 import './AnalysisDetail.less'
 
 
@@ -33,17 +35,52 @@ export default class ResourcesInfo extends PureComponent {
                 pageStats: pageStats
             })
         }
-        console.log(pageStats)
     }
 
     componentDidMount() {
         const iframe = this.refs.proxy;
         const setState = (t,p) =>{ this.setTimingState(t,p) };
+        const ref = this.refs.bytesPie;
         window.onload = function () {
             const t = iframe.contentWindow.performance.timing;
             const p = iframe.contentWindow.performance.navigation;
             setState(t,p);
-        }
+
+            let myPieChart = echarts.init(ref);
+            myPieChart.setOption = {
+                tooltip : {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: 'left',
+                    data: ['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+                },
+                series : [
+                    {
+                        name: '访问来源',
+                        type: 'pie',
+                        radius : '55%',
+                        center: ['50%', '60%'],
+                        data:[
+                            {value:335, name:'直接访问'},
+                            {value:310, name:'邮件营销'},
+                            {value:234, name:'联盟广告'},
+                            {value:135, name:'视频广告'},
+                            {value:1548, name:'搜索引擎'}
+                        ],
+                        itemStyle: {
+                            emphasis: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        }
+                    }
+                ]
+            };
+        };
     }
 
     setTimingState = (t,p) => {
@@ -150,10 +187,19 @@ export default class ResourcesInfo extends PureComponent {
                     </Card>
                 </div>
                 <div className="pageStatsWrapper">
-                    <Card style={{width:'100%'}} title="页面加载资源">
-                        <div>
-                            {this.state.pageStats.numberResources}
-                        </div>
+                    <Card style={{width:'100%'}}>
+                        <Card.Grid style={{width:'30%',paddingTop:10}}>
+                            <p className="gridTitle">加载字节统计</p>
+                            <Row>
+                                <Col span={8}>
+                                    <p>请求字节数：</p>
+                                    <p>42562 Bytes</p>
+                                </Col>
+                                <Col span={16}>
+                                    <div ref="bytesPie" style={{width:300,height:200}}/>
+                                </Col>
+                            </Row>
+                        </Card.Grid>
                     </Card>
                 </div>
             </div>
