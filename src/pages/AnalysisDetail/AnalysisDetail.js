@@ -59,7 +59,9 @@ class AnalysisDetail extends PureComponent {
                                 {/*/>:null*/}
                             {/*}*/}
                             {checkPath('/ResourcesInfo')?
-                                <ResourcesInfo />:null
+                                <ResourcesInfo
+                                    pageStats={this.props.items.pageStats}
+                                />:null
                             }
                         </Content>
                         <Footer>@Lighthouse</Footer>

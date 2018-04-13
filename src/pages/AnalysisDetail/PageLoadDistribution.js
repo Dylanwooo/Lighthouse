@@ -17,8 +17,8 @@ let FCPmaxArray = [];
 export default class PageLoadDistribution extends PureComponent {
 
     componentWillMount() {
-        const loadingExperience = this.props.loadingExperience || null;
-        if(loadingExperience !== null){
+        const loadingExperience = this.props.loadingExperience;
+        if(loadingExperience){
             loadingExperience.metrics.FIRST_CONTENTFUL_PAINT_MS.distributions.map(val => FCPArray.push(val.proportion));
             loadingExperience.metrics.DOM_CONTENT_LOADED_EVENT_FIRED_MS.distributions.map(val => DCLArray.push(val.proportion));
 

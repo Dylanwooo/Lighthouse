@@ -21,6 +21,10 @@ function onSelect(value) {
 }
 export default class SnapViewComponent extends PureComponent {
 
+    componentDidMount() {
+        this.refs.siteInput.focus();
+    }
+
 
     render() {
         const rankStyle = {
@@ -39,6 +43,8 @@ export default class SnapViewComponent extends PureComponent {
                         <span>测评网址：</span>
                         <div style={{width: '80%'}}>
                             <Input
+                                ref="siteInput"
+                                size="large"
                                 placeholder="输入测评网址"
                                 value = {this.props.targetSite}
                                 onChange={this.props.onChangeSite}
@@ -47,7 +53,7 @@ export default class SnapViewComponent extends PureComponent {
                     </div>
                     <div className="itemWrapper">
                         <span>选择语言：</span>
-                        <Select defaultValue="简体中文" onSelect={this.props.handleLangChange} allowClea={true} >
+                        <Select ref="langSelect" defaultValue="简体中文" onSelect={this.props.handleLangChange} allowClea={true} size="large">
                             {children}
                         </Select>
                     </div>

@@ -22,8 +22,19 @@ export default class ResourcesInfo extends PureComponent {
         unloadEvent: '',
         connect: '',
         redirectCount: '',
-        loadType: ''
+        loadType: '',
+        pageStats: {}
     };
+
+    componentWillMount() {
+        const pageStats = this.props.pageStats;
+        if(pageStats){
+            this.setState({
+                pageStats: pageStats
+            })
+        }
+        console.log(pageStats)
+    }
 
     componentDidMount() {
         const iframe = this.refs.proxy;
@@ -136,6 +147,13 @@ export default class ResourcesInfo extends PureComponent {
                                 </Card>
                             </Col>
                         </Row>
+                    </Card>
+                </div>
+                <div className="pageStatsWrapper">
+                    <Card style={{width:'100%'}} title="页面加载资源">
+                        <div>
+                            {this.state.pageStats.numberResources}
+                        </div>
                     </Card>
                 </div>
             </div>
