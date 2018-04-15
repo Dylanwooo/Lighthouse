@@ -46,7 +46,7 @@ export default class ResourcesInfo extends PureComponent {
             setState(t,p);
         };
 
-        let myPieChart = echarts.init(this.refs.bytesPie);
+        let myPieChart = echarts.init(this.refs.numBar);
         myPieChart.setOption = {
             tooltip : {
                 trigger: 'item',
@@ -54,8 +54,8 @@ export default class ResourcesInfo extends PureComponent {
             },
             legend: {
                 orient: 'vertical',
-                left: 'left',
-                data: ['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+                left: 'right',
+                data: ['CSS资源','图片资源','JS资源','HTML资源']
             },
             series : [
                 {
@@ -64,11 +64,10 @@ export default class ResourcesInfo extends PureComponent {
                     radius : '55%',
                     center: ['50%', '60%'],
                     data:[
-                        {value:335, name:'直接访问'},
-                        {value:310, name:'邮件营销'},
-                        {value:234, name:'联盟广告'},
-                        {value:135, name:'视频广告'},
-                        {value:1548, name:'搜索引擎'}
+                        {value:this.state.pageStats.cssResponseBytes, name:'CSS资源'},
+                        {value:this.state.pageStats.imageResponseBytes, name:'图片资源'},
+                        {value:this.state.pageStats.javascriptResponseBytes, name:'JS资源'},
+                        {value:this.state.pageStats.htmlResponseBytes, name:'HTML资源'},
                     ],
                     itemStyle: {
                         emphasis: {
@@ -187,7 +186,7 @@ export default class ResourcesInfo extends PureComponent {
                 </div>
                 <div className="pageStatsWrapper">
                     <Card style={{width:'100%'}}>
-                        <Card.Grid style={{width:'30%',paddingTop:10}}>
+                        <Card.Grid>
                             <p className="gridTitle">加载字节统计</p>
                             <Row>
                                 <Col span={8}>
@@ -195,9 +194,17 @@ export default class ResourcesInfo extends PureComponent {
                                     <p>42562 Bytes</p>
                                 </Col>
                                 <Col span={16}>
-                                    <div ref="bytesPie" style={{width:300,height:200}}/>
+                                    <div ref="bytesPie" style={{width:200,height:200}}/>
                                 </Col>
                             </Row>
+                        </Card.Grid>
+                        <Card.Grid>
+                            <p className="gridTitle">加载资源数量统计</p>
+                            <div ref="numBar" style={{width:200,height:200}} />
+                        </Card.Grid>
+                        <Card.Grid>
+                            <p className="gridTitle">xxx统计</p>
+
                         </Card.Grid>
                     </Card>
                 </div>
