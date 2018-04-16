@@ -46,7 +46,7 @@ export default class ResourcesInfo extends PureComponent {
             setState(t,p);
         };
 
-        let myPieChart = echarts.init(this.refs.numBar);
+        let myPieChart = echarts.init(this.refs.bytesPie);
         myPieChart.setOption = {
             tooltip : {
                 trigger: 'item',
@@ -101,7 +101,7 @@ export default class ResourcesInfo extends PureComponent {
     render() {
         return(
             <div>
-                <iframe ref='proxy' src="http://localhost:3000/proxy" style={{display:'none'}}/>
+                <iframe ref='proxy' src="http://localhost:3000/proxy" style={{display:'none'}} />
                 <div className="timingWrapper">
                     <Card style={{width:'100%'}} title="页面加载耗时">
                         <Row>
@@ -204,7 +204,7 @@ export default class ResourcesInfo extends PureComponent {
                         </Card.Grid>
                         <Card.Grid>
                             <p className="gridTitle">xxx统计</p>
-
+                            <div ref="numBar" style={{width:200,height:200}} />
                         </Card.Grid>
                     </Card>
                 </div>
