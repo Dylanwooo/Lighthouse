@@ -41,6 +41,9 @@ export default class ResourcesInfo extends PureComponent {
         const iframe = this.refs.proxy;
         const setState = (t,p) =>{ this.setTimingState(t,p) };
         window.onload = function () {
+            if(!iframe.contentWindow.performance){
+                console.log('不支持performance属性')
+            }
             const t = iframe.contentWindow.performance.timing;
             const p = iframe.contentWindow.performance.navigation;
             setState(t,p);
