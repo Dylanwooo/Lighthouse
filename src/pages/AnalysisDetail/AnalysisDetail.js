@@ -14,6 +14,20 @@ const { Header, Footer, Sider, Content } = Layout;
 
 class AnalysisDetail extends PureComponent {
 
+    state = {
+        defaultkey: "1"
+    };
+
+    //sider的选中状态
+    componentWillMount() {
+        if(checkPath('/load')){
+            this.setState({ defaultkey: "1" })
+        } else if(checkPath('/ResourcesInfo')) {
+            this.setState({ defaultkey: "2" })
+        }
+
+    }
+
     render() {
         return(
             <div>
@@ -25,7 +39,7 @@ class AnalysisDetail extends PureComponent {
                         className="sider"
                     >
                         <div className="logo" />
-                        <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
+                        <Menu theme="dark" mode="inline" defaultSelectedKeys={[this.state.defaultkey]}>
                             <Menu.Item key="1">
                                 <Link to="/AnalysisDetail/load">
                                     <Icon type="pie-chart" />
