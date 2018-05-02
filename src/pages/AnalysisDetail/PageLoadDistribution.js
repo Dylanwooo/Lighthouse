@@ -30,6 +30,7 @@ export default class PageLoadDistribution extends PureComponent {
     }
 
     componentDidMount() {
+        console.log(this.props.loadingExperience)
         let myBarChart = echarts.init(this.refs.disBar);
         // 绘制Bar
         myBarChart.setOption({

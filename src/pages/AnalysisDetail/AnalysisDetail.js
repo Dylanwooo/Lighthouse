@@ -2,12 +2,13 @@ import React, { PureComponent } from 'react';
 import { Layout, Menu, Icon } from 'antd';
 import { connect } from 'react-redux';
 import fetchData from '../../actions/fetchData'
-import { Link } from 'react-router-dom'
+import { Link,Route } from 'react-router-dom'
 import { checkPath } from '../../utils/utils'
 
 import "./AnalysisDetail.less"
 import PageLoadDistribution from "./PageLoadDistribution";
 import ResourcesInfo from "./ResourcesInfo";
+import Suggestion from './Suggestion'
 
 const { Header, Footer, Sider, Content } = Layout;
 
@@ -22,8 +23,10 @@ class AnalysisDetail extends PureComponent {
     componentWillMount() {
         if(checkPath('/load')){
             this.setState({ defaultkey: "1" })
-        } else if(checkPath('/ResourcesInfo')) {
+        } else if(checkPath('/resourse')) {
             this.setState({ defaultkey: "2" })
+        } else if(checkPath('/suggestion')) {
+            this.setState({ defaultkey:"3" })
         }
 
     }
@@ -40,6 +43,12 @@ class AnalysisDetail extends PureComponent {
                     >
                         <div className="logo" />
                         <Menu theme="dark" mode="inline" defaultSelectedKeys={[this.state.defaultkey]}>
+                            <Menu.Item key="0">
+                                <Link to="/">
+                                    <Icon type="home" />
+                                    <span>返回主页</span>
+                                </Link>
+                            </Menu.Item>
                             <Menu.Item key="1">
                                 <Link to="/AnalysisDetail/load">
                                     <Icon type="pie-chart" />
@@ -47,14 +56,16 @@ class AnalysisDetail extends PureComponent {
                                 </Link>
                             </Menu.Item>
                             <Menu.Item key="2">
-                                <Link to="/AnalysisDetail/ResourcesInfo">
+                                <Link to="/AnalysisDetail/resourse">
                                     <Icon type="api" />
                                     <span>页面资源加载情况</span>
                                 </Link>
                             </Menu.Item>
                             <Menu.Item key="3">
-                                <Icon type="dot-chart" />
-                                <span>优化建议</span>
+                                <Link to="/AnalysisDetail/suggestion">
+                                    <Icon type="dot-chart" />
+                                    <span>优化建议</span>
+                                </Link>
                             </Menu.Item>
                             <Menu.Item key="4">
                                 <Icon type="codepen" />
@@ -67,16 +78,10 @@ class AnalysisDetail extends PureComponent {
                             <span className="headTitle">前端性能监测系统</span>
                         </Header>
                         <Content>
-                            {/*{checkPath('/AnalysisDetail')?*/}
-                                {/*<PageLoadDistribution*/}
-                                    {/*loadingExperience={this.props.items.loadingExperience}*/}
-                                {/*/>:null*/}
-                            {/*}*/}
-                            {checkPath('/ResourcesInfo')?
-                                <ResourcesInfo
-                                    pageStats={this.props.items.pageStats}
-                                />:null
-                            }
+                            <Route path="/AnalysisDetail/load" render={()=><PageLoadDistribution  loadingExperience={this.props.items.loadingExperience}/>}/>
+                            <Route path="/AnalysisDetail/resourse" render={()=><ResourcesInfo pageStats={this.props.items.pageStats}/>} />
+                            <Route path="/AnalysisDetail/suggestion" render={()=><Suggestion />} />
+
                         </Content>
                         <Footer>@Lighthouse</Footer>
                     </Layout>

@@ -38,6 +38,7 @@ export default class ResourcesInfo extends PureComponent {
     }
 
     componentDidMount() {
+        console.log(this.props.pageStats);
         const iframe = this.refs.proxy;
         const setState = (t,p) =>{ this.setTimingState(t,p) };
         window.onload = function () {
