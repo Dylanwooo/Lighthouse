@@ -16,11 +16,13 @@ const { Header, Footer, Sider, Content } = Layout;
 class AnalysisDetail extends PureComponent {
 
     state = {
-        defaultkey: "1"
+        defaultkey: "1",
+        iframe: null
     };
 
     //sider的选中状态
     componentWillMount() {
+
         if(checkPath('/load')){
             this.setState({ defaultkey: "1" })
         } else if(checkPath('/resourse')) {
@@ -31,9 +33,14 @@ class AnalysisDetail extends PureComponent {
 
     }
 
+    componentDidMount() {
+        this.setState({ iframe: this.refs.proxy });
+    }
+
     render() {
         return(
             <div>
+                <iframe ref='proxy' src="http://localhost:3000/proxy" style={{display:'none'}} />
                 <Layout>
                     <Sider
                         trigger={null}
@@ -79,9 +86,8 @@ class AnalysisDetail extends PureComponent {
                         </Header>
                         <Content>
                             <Route path="/AnalysisDetail/load" render={()=><PageLoadDistribution  loadingExperience={this.props.items.loadingExperience}/>}/>
-                            <Route path="/AnalysisDetail/resourse" render={()=><ResourcesInfo pageStats={this.props.items.pageStats}/>} />
-                            <Route path="/AnalysisDetail/suggestion" render={()=><Suggestion />} />
-
+                            <Route path="/AnalysisDetail/resourse" render={()=><ResourcesInfo pageStats={this.props.items.pageStats} iframe={this.state.iframe} />} />
+                            <Route path="/AnalysisDetail/suggestion" render={()=><Suggestion formattedResults={this.props.items.formattedResults}/>} />
                         </Content>
                         <Footer>@Lighthouse</Footer>
                     </Layout>

@@ -35,20 +35,23 @@ export default class ResourcesInfo extends PureComponent {
                 pageStats: pageStats
             })
         }
-    }
 
-    componentDidMount() {
-        console.log(this.props.pageStats);
-        const iframe = this.refs.proxy;
+        const iframe = this.props.iframe;
+        console.log(iframe);
         const setState = (t,p) =>{ this.setTimingState(t,p) };
         window.onload = function () {
-            if(!iframe.contentWindow.performance){
+            if(iframe&&!iframe.contentWindow.performance){
                 console.log('不支持performance属性')
             }
             const t = iframe.contentWindow.performance.timing;
             const p = iframe.contentWindow.performance.navigation;
             setState(t,p);
         };
+    }
+
+    componentDidMount() {
+        console.log(this.props.pageStats);
+        console.log(this.props.iframe);
 
         let myPieChart = echarts.init(this.refs.bytesPie);
         myPieChart.setOption = {
