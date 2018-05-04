@@ -3,6 +3,9 @@
  */
 
 import React, { PureComponent,Component } from 'react';
+import { mapFormat2Link } from '../../utils/utils'
+
+const rRuleImpact = []
 
 export default class Suggestion extends Component {
 
@@ -50,11 +53,13 @@ export default class Suggestion extends Component {
             OptimizeImages,
             PrioritizeVisibleContent
         } = this.state;
-        
 
+        //const format = AvoidLandingPageRedirects.summary.format;
+
+        const format = "压缩 {{URL}} 可减少{{SIZE_IN_BYTES}} ({{PERCENTAGE}})。";
         return (
             <div>
-                <div>避免使用着落页重定向:<span>{format}</span></div>
+                <div>避免使用着落页重定向:<span>{mapFormat2Link(format)}</span></div>
             </div>
         )
     }

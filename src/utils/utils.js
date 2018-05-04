@@ -71,3 +71,21 @@ export function map2LoadType(type) {
     }
     return str;
 }
+
+
+export function mapFormat2Link(format,args) {
+
+    const keyArr = [];
+    const valueArr = [];
+
+    const re = /\{\{|\}\}|\(|\)/g;
+    format = format.replace(re,'');
+
+    // args.map(item => {
+    //     keyArr.push(item.key);
+    //     valueArr.push(item.value);
+    // })
+
+    return format;
+
+}
