@@ -101,14 +101,11 @@ export function extractObject(arr) {
     return result;
 }
 
-export function mapLink2Vaule(urlBlocks) {
-    if(urlBlocks !=={}) {
-        urlBlocks = extractObject(urlBlocks);
-        let format = urlBlocks.header.format;
-        const re = /\{\{|\}\}|BEGIN_LINK|END_LINK/g;
-        format = format.replace(re,'');
-        return format
-    }
-
-    return urlBlocks
+//去除LINK，将args中变量赋值
+export function mapLink2Vaule(header) {
+    const re = /\{\{|\}\}|BEGIN_LINK|END_LINK/g;
+    const args = header.args;
+    let title = header.format.replace(re,'');
+    title = mapKey2Value(title,args);
+    return title
 }

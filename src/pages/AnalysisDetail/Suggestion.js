@@ -67,10 +67,8 @@ export default class Suggestion extends Component {
         //const args = EnableGzipCompression.urlBlocks.header.args;
         //const format = "压缩 {{URL}} 可减少{{SIZE_IN_BYTES}} ({{PERCENTAGE}})。";
 
-        //const urlBlocks = EnableGzipCompression.urlBlocks?EnableGzipCompression.urlBlocks:{};
-        //debugger;
-        const value = [{'header':{'format':1}}];
-        const format = "为以下资源{{BEGIN_LINK}}启用压缩{{END_LINK}}可将其传送大小减少{{SIZE_IN_BYTES}} ({{PERCENTAGE}})。"
+        const GzipUrlBlocks = EnableGzipCompression.urlBlocks?extractObject(EnableGzipCompression.urlBlocks):{};
+
         return (
             <div>
                 {/*<div>避免使用着落页重定向:<span>{mapKey2Value(format,args)}</span></div>*/}
@@ -83,7 +81,7 @@ export default class Suggestion extends Component {
                     <div className="adviceContainer">
                         <Tabs>
                             <TabPane tab="启用压缩" key="1">
-                                <Gzip />
+                                <Gzip dataSource={GzipUrlBlocks} />
                             </TabPane>
                             <TabPane tab="浏览器缓存" key="2">
                                 <BrowserCaching/>
