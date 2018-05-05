@@ -81,9 +81,9 @@ class AnalysisDetail extends PureComponent {
                         </Menu>
                     </Sider>
                     <Layout>
-                        <Header>
-                            <span className="headTitle">前端性能监测系统</span>
-                        </Header>
+                        {/*<Header>*/}
+                            {/*<span className="headTitle">前端性能监测系统</span>*/}
+                        {/*</Header>*/}
                         <Content>
                             <Route path="/AnalysisDetail/load" render={()=><PageLoadDistribution  loadingExperience={this.props.items.loadingExperience}/>}/>
                             <Route path="/AnalysisDetail/resourse" render={()=><ResourcesInfo pageStats={this.props.items.pageStats} iframe={this.state.iframe} />} />

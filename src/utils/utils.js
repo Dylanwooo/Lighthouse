@@ -73,19 +73,42 @@ export function map2LoadType(type) {
 }
 
 
-export function mapFormat2Link(format,args) {
+export function mapKey2Value(format,args) {
 
     const keyArr = [];
     const valueArr = [];
-
+    //剔除{}和（）
     const re = /\{\{|\}\}|\(|\)/g;
     format = format.replace(re,'');
 
-    // args.map(item => {
-    //     keyArr.push(item.key);
-    //     valueArr.push(item.value);
-    // })
+    args.map(item => {
+        keyArr.push(item.key);
+        valueArr.push(item.value);
+    });
+
+    keyArr.map(item => {
+        format = format.replace(item,valueArr[keyArr.indexOf(item)])
+    });
 
     return format;
+}
 
+export function extractObject(arr) {
+    let result = {};
+    arr.map(item => {
+        result = item;
+    });
+    return result;
+}
+
+export function mapLink2Vaule(urlBlocks) {
+    if(urlBlocks !=={}) {
+        urlBlocks = extractObject(urlBlocks);
+        let format = urlBlocks.header.format;
+        const re = /\{\{|\}\}|BEGIN_LINK|END_LINK/g;
+        format = format.replace(re,'');
+        return format
+    }
+
+    return urlBlocks
 }
