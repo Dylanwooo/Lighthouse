@@ -62,12 +62,14 @@ export default class Suggestion extends Component {
             PrioritizeVisibleContent
         } = this.state;
 
-        //const format = EnableGzipCompression.urlBlocks[0].header.format;
-
-        //const args = EnableGzipCompression.urlBlocks.header.args;
-        //const format = "压缩 {{URL}} 可减少{{SIZE_IN_BYTES}} ({{PERCENTAGE}})。";
 
         const GzipUrlBlocks = EnableGzipCompression.urlBlocks?extractObject(EnableGzipCompression.urlBlocks):{};
+        const GzipRuleImpact = EnableGzipCompression.ruleImpact;
+        const GzipSummary = EnableGzipCompression.summary.format;
+
+        const BrowserBlocks = LeverageBrowserCaching.urlBlocks?extractObject(LeverageBrowserCaching.urlBlocks):{};
+        const BrowserRuleImpact = LeverageBrowserCaching.ruleImpact;
+        const BrowserSummary = LeverageBrowserCaching.summary.format;
 
         return (
             <div>
@@ -81,10 +83,17 @@ export default class Suggestion extends Component {
                     <div className="adviceContainer">
                         <Tabs>
                             <TabPane tab="启用压缩" key="1">
-                                <Gzip dataSource={GzipUrlBlocks} />
+                                <Gzip dataSource={GzipUrlBlocks}
+                                      GzipRuleImpact={GzipRuleImpact}
+                                      GzipSummary={GzipSummary}
+                                />
                             </TabPane>
                             <TabPane tab="浏览器缓存" key="2">
-                                <BrowserCaching/>
+                                <BrowserCaching
+                                    dataSource={BrowserBlocks}
+                                    BrowserRuleImpact={BrowserRuleImpact}
+                                    BrowserSummary={BrowserSummary}
+                                />
                             </TabPane>
                             <TabPane tab="资源优化" key="3">
                                 <ResourceOptimize/>

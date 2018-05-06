@@ -27,7 +27,7 @@ class Index extends Component {
         language: 'zh',
         snapViewVisible: false,
         dataLoaded: false,
-        targetSite: '',         //测评网址
+        targetSite: "https://www.pornhub.com",         //测评网址
     };
 
 
