@@ -71,6 +71,8 @@ export default class Suggestion extends Component {
         const BrowserRuleImpact = LeverageBrowserCaching.ruleImpact;
         const BrowserSummary = LeverageBrowserCaching.summary.format;
 
+        const serverRuleImpact = MainResourceServerResponseTime.ruleImpact;
+        const serverSummary = MainResourceServerResponseTime.summary;
         return (
             <div>
                 {/*<div>避免使用着落页重定向:<span>{mapKey2Value(format,args)}</span></div>*/}
@@ -96,7 +98,10 @@ export default class Suggestion extends Component {
                                 />
                             </TabPane>
                             <TabPane tab="资源优化" key="3">
-                                <ResourceOptimize/>
+                                <ResourceOptimize
+                                    serverRuleImpact={serverRuleImpact}
+                                    serverSummary={serverSummary}
+                                />
                             </TabPane>
                             <TabPane tab="首屏阻塞" key="4">
                                 <FirstPaintBlock />
