@@ -72,7 +72,15 @@ export default class Suggestion extends Component {
         const BrowserSummary = LeverageBrowserCaching.summary.format;
 
         const serverRuleImpact = MainResourceServerResponseTime.ruleImpact;
-        const serverSummary = MainResourceServerResponseTime.summary;
+        const serverBlocks = MainResourceServerResponseTime.urlBlocks?extractObject(MainResourceServerResponseTime.urlBlocks):MainResourceServerResponseTime.summary;
+        const cssRuleImpact = MinifyCss.ruleImpact;
+        //const cssBlocks =
+
+        const htmlRuleImpact = MinifyHTML.ruleImpact;
+
+        const jsRuleImpact = MinifyJavaScript.ruleImpact;
+
+        const imgRuleImpact = OptimizeImages.ruleImpact;
         return (
             <div>
                 {/*<div>避免使用着落页重定向:<span>{mapKey2Value(format,args)}</span></div>*/}
@@ -100,7 +108,11 @@ export default class Suggestion extends Component {
                             <TabPane tab="资源优化" key="3">
                                 <ResourceOptimize
                                     serverRuleImpact={serverRuleImpact}
-                                    serverSummary={serverSummary}
+                                    serverData={serverBlocks}
+                                    cssRuleImpact={cssRuleImpact}
+                                    htmlImpact={htmlRuleImpact}
+                                    jsImpact={jsRuleImpact}
+                                    imgRuleImpact={imgRuleImpact}
                                 />
                             </TabPane>
                             <TabPane tab="首屏阻塞" key="4">

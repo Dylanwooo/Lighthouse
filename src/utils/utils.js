@@ -78,7 +78,7 @@ export function mapKey2Value(format,args) {
     const keyArr = [];
     const valueArr = [];
     //剔除{}和（）
-    const re = /\{\{|\}\}|\(|\)/g;
+    const re = /\{\{|\}\}|\(|\)|BEGIN_LINK|END_LINK/g;
     format = format.replace(re,'');
 
     args.map(item => {
@@ -108,4 +108,9 @@ export function mapLink2Vaule(header) {
     let title = header.format.replace(re,'');
     title = mapKey2Value(title,args);
     return title
+}
+
+export function removeLink(format) {
+    const re = /\{\{|\}\}|BEGIN_LINK|END_LINK/g;
+    return format.replace(re,'');
 }
