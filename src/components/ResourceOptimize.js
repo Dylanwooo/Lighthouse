@@ -4,14 +4,28 @@
 
 import React, { PureComponent } from 'react';
 import { mapLink2Vaule,mapKey2Value,map2toFix,removeLink } from '../utils/utils'
+import './style.less'
 
 
 export default class ResourceOptimize extends PureComponent {
     render() {
 
         const ruleName = '资源优化';
-        let serverTitle;
+        let serverTitle,cssTitle,htmlTitle,jsTitle,imgTitle;
+
         const serverData = this.props.serverData;
+        const cssData = this.props.cssData;
+        const htmlData = this.props.htmlData;
+        const jsData = this.props.jsData;
+        const imgData = this.props.imgData;
+
+        const htmlUrl = htmlData.urls ? htmlData.urls:null;
+        const jsUrl = jsData.urls ? jsData.urls:null;
+        const imgUrl = imgData.urls ? imgData.urls:null;
+
+        const htmlFormat = [];
+        const jsFormat = [];
+        const imgFormat = [];
 
         if(serverData.header) {
             serverTitle = mapKey2Value(serverData.header.format,serverData.header.args);
@@ -19,6 +33,38 @@ export default class ResourceOptimize extends PureComponent {
             serverTitle = removeLink(serverData.format);
         }
 
+        if(cssData.header) {
+            cssTitle = mapKey2Value(cssData.header.format,cssData.header.args);
+        } else if(cssData.format) {
+            cssTitle = removeLink(cssData.format);
+        }
+
+        if(htmlData.header&&htmlUrl) {
+            htmlTitle = mapKey2Value(htmlData.header.format,htmlData.header.args);
+            htmlUrl.map(item => {
+                htmlFormat.push(mapKey2Value(item.result.format,item.result.args));
+            })
+        } else if(cssData.format) {
+            htmlTitle = removeLink(cssData.format);
+        }
+
+        if(jsData.header&&jsUrl) {
+            jsTitle = mapKey2Value(jsData.header.format,jsData.header.args);
+            jsUrl.map(item => {
+                jsFormat.push(mapKey2Value(item.result.format,item.result.args));
+            })
+        } else if(jsData.format) {
+            jsTitle = removeLink(jsData.format);
+        }
+
+        if(imgData.header&&jsUrl) {
+            imgTitle = mapKey2Value(imgData.header.format,imgData.header.args);
+            imgUrl.map(item => {
+                imgFormat.push(mapKey2Value(item.result.format,item.result.args));
+            })
+        } else if(imgData.format) {
+            imgTitle = removeLink(imgData.format);
+        }
 
         return(
             <div>
@@ -31,18 +77,40 @@ export default class ResourceOptimize extends PureComponent {
                 <div className="itemWrapper">
                     <p>缩减CSS</p>
                     <p>规则影响：{this.props.cssRuleImpact}</p>
+                    <p>{cssTitle}</p>
                 </div>
                 <div className="itemWrapper">
                     <p>缩减HTML</p>
-                    <p>规则影响：{this.props.htmlRuleImpact}</p>
+                    <p>规则影响：{map2toFix(this.props.htmlRuleImpact)}</p>
+                    <p>{htmlTitle}</p>
+                    {htmlFormat.length === 0?
+                        null :
+                        htmlFormat.map(item =>
+                            <p key={htmlFormat.indexOf(item)}>{item}</p>
+                        )
+                    }
                 </div>
                 <div className="itemWrapper">
                     <p>缩减JavaScript</p>
-                    <p>规则影响：{this.props.jsRuleImpact}</p>
+                    <p>规则影响：{map2toFix(this.props.jsRuleImpact)}</p>
+                    <p>{jsTitle}</p>
+                    {jsFormat.length === 0?
+                        null :
+                        jsFormat.map(item =>
+                            <p key={jsFormat.indexOf(item)}>{item}</p>
+                        )
+                    }
                 </div>
                 <div className="itemWrapper">
                     <p>图片优化</p>
-                    <p>规则影响：{this.props.imgRuleImpact}</p>
+                    <p>规则影响：{map2toFix(this.props.imgRuleImpact)}</p>
+                    <p>{imgTitle}</p>
+                    {imgFormat.length === 0?
+                        null :
+                        imgFormat.map(item =>
+                            <p key={imgFormat.indexOf(item)}>{item}</p>
+                        )
+                    }
                 </div>
             </div>
         )

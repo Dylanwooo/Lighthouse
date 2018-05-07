@@ -74,13 +74,16 @@ export default class Suggestion extends Component {
         const serverRuleImpact = MainResourceServerResponseTime.ruleImpact;
         const serverBlocks = MainResourceServerResponseTime.urlBlocks?extractObject(MainResourceServerResponseTime.urlBlocks):MainResourceServerResponseTime.summary;
         const cssRuleImpact = MinifyCss.ruleImpact;
-        //const cssBlocks =
+        const cssBlocks = MinifyCss.urlBlocks?extractObject(MinifyCss.urlBlocks):MinifyCss.summary;
 
         const htmlRuleImpact = MinifyHTML.ruleImpact;
+        const htmlBlocks = MinifyHTML.urlBlocks?extractObject(MinifyHTML.urlBlocks):MinifyHTML.summary;
 
         const jsRuleImpact = MinifyJavaScript.ruleImpact;
+        const jsBlocks = MinifyJavaScript.urlBlocks?extractObject(MinifyJavaScript.urlBlocks):MinifyJavaScript.summary;
 
         const imgRuleImpact = OptimizeImages.ruleImpact;
+        const imgBlocks = OptimizeImages.urlBlocks?extractObject(OptimizeImages.urlBlocks):OptimizeImages.summary;
         return (
             <div>
                 {/*<div>避免使用着落页重定向:<span>{mapKey2Value(format,args)}</span></div>*/}
@@ -110,9 +113,13 @@ export default class Suggestion extends Component {
                                     serverRuleImpact={serverRuleImpact}
                                     serverData={serverBlocks}
                                     cssRuleImpact={cssRuleImpact}
+                                    cssData = {cssBlocks}
                                     htmlImpact={htmlRuleImpact}
+                                    htmlData = {htmlBlocks}
                                     jsImpact={jsRuleImpact}
+                                    jsData = {jsBlocks}
                                     imgRuleImpact={imgRuleImpact}
+                                    imgData = {imgBlocks}
                                 />
                             </TabPane>
                             <TabPane tab="首屏阻塞" key="4">
