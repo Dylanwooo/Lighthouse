@@ -84,6 +84,12 @@ export default class Suggestion extends Component {
 
         const imgRuleImpact = OptimizeImages.ruleImpact;
         const imgBlocks = OptimizeImages.urlBlocks?extractObject(OptimizeImages.urlBlocks):OptimizeImages.summary;
+
+        const FPBBlcoks = MinimizeRenderBlockingResources.urlBlocks;
+        const FPBCSSBlock = FPBBlcoks[1];
+        const FPBJSBlock = FPBBlcoks[2];
+        const FPBImpact = MinimizeRenderBlockingResources.ruleImpact;
+        const FPBSummary = MinimizeRenderBlockingResources.summary;
         return (
             <div>
                 {/*<div>避免使用着落页重定向:<span>{mapKey2Value(format,args)}</span></div>*/}
@@ -123,7 +129,12 @@ export default class Suggestion extends Component {
                                 />
                             </TabPane>
                             <TabPane tab="首屏阻塞" key="4">
-                                <FirstPaintBlock />
+                                <FirstPaintBlock
+                                    FPBCSSBlock = {FPBCSSBlock}
+                                    FPBJSBlock = {FPBJSBlock}
+                                    FPBImpact = {FPBImpact}
+                                    FPBSummary = {FPBSummary}
+                                />
                             </TabPane>
                         </Tabs>
                     </div>
