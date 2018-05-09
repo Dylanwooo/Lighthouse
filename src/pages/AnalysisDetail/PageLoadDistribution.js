@@ -154,6 +154,7 @@ export default class PageLoadDistribution extends PureComponent {
             <div className="outsiderWrapper">
                 <div className="wrapper">
                     <div className="cardGroupWrapper">
+                        <p style={{fontSize: 16}}>DCL加载</p>
                         <Card title="快速" style={{width:200,background:'#4EEE94'}}
                               bordered={false} hoverable={true}
                               extra={<Tooltip title={fastTextDCL} placement="bottomRight"><span className="moreDetail">More</span></Tooltip>}
@@ -190,6 +191,7 @@ export default class PageLoadDistribution extends PureComponent {
                         </Card>
                     </div>
                     <div className="cardGroupWrapper">
+                        <p style={{fontSize: 16}}>FCP加载</p>
                         <Card title="快速" style={{width:200,background:'#4EEE94'}}
                               bordered={false}
                               hoverable={true}

@@ -8,7 +8,9 @@ import { checkPath } from '../../utils/utils'
 import "./AnalysisDetail.less"
 import PageLoadDistribution from "./PageLoadDistribution";
 import ResourcesInfo from "./ResourcesInfo";
-import Suggestion from './Suggestion'
+import Suggestion from './Suggestion';
+import WebpageTest from './WebpageTest';
+
 
 const { Header, Footer, Sider, Content } = Layout;
 
@@ -75,8 +77,10 @@ class AnalysisDetail extends PureComponent {
                                 </Link>
                             </Menu.Item>
                             <Menu.Item key="4">
-                                <Icon type="codepen" />
-                                <span>WebPageTest分析</span>
+                                <Link to="/AnalysisDetail/webpagetest">
+                                    <Icon type="codepen" />
+                                    <span>WebPageTest分析</span>
+                                </Link>
                             </Menu.Item>
                         </Menu>
                     </Sider>
@@ -88,6 +92,7 @@ class AnalysisDetail extends PureComponent {
                             <Route path="/AnalysisDetail/load" render={()=><PageLoadDistribution  loadingExperience={this.props.items.loadingExperience}/>}/>
                             <Route path="/AnalysisDetail/resourse" render={()=><ResourcesInfo pageStats={this.props.items.pageStats} iframe={this.state.iframe} />} />
                             <Route path="/AnalysisDetail/suggestion" render={()=><Suggestion formattedResults={this.props.items.formattedResults}/>} />
+                            <Route path="/AnalysisDetail/webpagetest" render={()=><WebpageTest/>} />
                         </Content>
                         <Footer>@Lighthouse</Footer>
                     </Layout>
