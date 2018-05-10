@@ -8,7 +8,7 @@ export default class Proxy extends PureComponent {
 
     render() {
         return(
-            <iframe src="https://www.pornhub.com" style={{display:'none'}}/>
+            <iframe src="https://www.baidu.com" style={{display:'none'}}/>
         )
     }
 }

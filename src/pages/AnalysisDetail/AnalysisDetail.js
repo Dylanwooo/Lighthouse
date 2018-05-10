@@ -33,10 +33,12 @@ class AnalysisDetail extends PureComponent {
             this.setState({ defaultkey:"3" })
         }
 
+        this.setState({ iframe: this.refs.proxy });
+
     }
 
     componentDidMount() {
-        this.setState({ iframe: this.refs.proxy });
+
     }
 
     render() {
