@@ -37,7 +37,6 @@ export default class ResourcesInfo extends PureComponent {
         }
 
         const iframe = this.props.iframe;
-        console.log(iframe);
         const setState = (t,p) =>{ this.setTimingState(t,p) };
         window.onload = function () {
             if(iframe&&!iframe.contentWindow.performance){
@@ -108,7 +107,7 @@ export default class ResourcesInfo extends PureComponent {
     render() {
         return(
             <div>
-                <iframe ref='proxy' src="http://localhost:3000/proxy" style={{display:'none'}} />
+                {/*<iframe ref='proxy' src="http://localhost:3000/proxy" style={{display:'none'}} />*/}
                 <div className="timingWrapper">
                     <Card style={{width:'100%'}} title="页面加载耗时">
                         <Row>

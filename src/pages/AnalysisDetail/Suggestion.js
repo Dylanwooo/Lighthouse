@@ -63,7 +63,7 @@ export default class Suggestion extends Component {
         } = this.state;
 
 
-        const GzipUrlBlocks = EnableGzipCompression.urlBlocks?extractObject(EnableGzipCompression.urlBlocks):{};
+        const GzipUrlBlocks = EnableGzipCompression.urlBlocks?extractObject(EnableGzipCompression.urlBlocks):EnableGzipCompression.summary;
         const GzipRuleImpact = EnableGzipCompression.ruleImpact;
         const GzipSummary = EnableGzipCompression.summary.format;
 
