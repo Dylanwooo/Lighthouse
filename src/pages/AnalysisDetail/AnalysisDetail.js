@@ -14,7 +14,6 @@ import WebpageTest from './WebpageTest';
 
 const { Header, Footer, Sider, Content } = Layout;
 
-
 class AnalysisDetail extends PureComponent {
 
     state = {
@@ -32,13 +31,12 @@ class AnalysisDetail extends PureComponent {
         } else if(checkPath('/suggestion')) {
             this.setState({ defaultkey:"3" })
         }
-
-        this.setState({ iframe: this.refs.proxy });
-
+        
     }
 
     componentDidMount() {
-
+        console.log(this.refs.proxy);
+        this.setState({ iframe: this.refs.proxy });
     }
 
     render() {

@@ -28,7 +28,7 @@ export default class ResourcesInfo extends PureComponent {
         pageStats: {}
     };
 
-    componentWillMount() {
+    componentDidMount() {
         const pageStats = this.props.pageStats;
         if(pageStats){
             this.setState({
@@ -37,20 +37,28 @@ export default class ResourcesInfo extends PureComponent {
         }
 
         const iframe = this.props.iframe;
-        const setState = (t,p) =>{ this.setTimingState(t,p) };
-        window.onload = function () {
-            if(iframe&&!iframe.contentWindow.performance){
-                console.log('不支持performance属性')
-            }
-            const t = iframe.contentWindow.performance.timing;
-            const p = iframe.contentWindow.performance.navigation;
-            setState(t,p);
-        };
-    }
 
-    componentDidMount() {
-        console.log(this.props.pageStats);
-        console.log(this.props.iframe);
+        if(iframe&&!iframe.contentWindow.performance){
+            console.log('不支持performance属性')
+        }
+        const t = iframe.contentWindow.performance.timing;
+        const p = iframe.contentWindow.performance.navigation;
+
+        this.setState({
+            loadPage: mapTime2MS(t.loadEventEnd-t.navigationStart),
+            domReady: mapTime2MS(t.domComplete - t.responseEnd),
+            redirect: mapTime2MS(t.redirectEnd - t.redirectStart),
+            lookupDomain: mapTime2MS(t.domainLookupEnd - t.domainLookupStart),
+            ttfb: t.responseStart - t.navigationStart,
+            request: mapTime2MS(t.responseEnd - t.requestStart),
+            loadEvent: mapTime2MS(t.loadEventEnd - t.loadEventStart),
+            appcache: mapTime2MS(t.domainLookupStart - t.fetchStart),
+            unloadEvent: mapTime2MS(t.unloadEventEnd - t.unloadEventStart),
+            connect: mapTime2MS(t.connectEnd - t.connectStart),
+            redirectCount: p.redirectCount,
+            loadType: map2LoadType(p.type)
+        });
+
 
         let myPieChart = echarts.init(this.refs.bytesPie);
         myPieChart.setOption = {
@@ -87,27 +95,9 @@ export default class ResourcesInfo extends PureComponent {
         };
     }
 
-    setTimingState = (t,p) => {
-        this.setState({
-            loadPage: mapTime2MS(t.loadEventEnd-t.navigationStart),
-            domReady: mapTime2MS(t.domComplete - t.responseEnd),
-            redirect: mapTime2MS(t.redirectEnd - t.redirectStart),
-            lookupDomain: mapTime2MS(t.domainLookupEnd - t.domainLookupStart),
-            ttfb: t.responseStart - t.navigationStart,
-            request: mapTime2MS(t.responseEnd - t.requestStart),
-            loadEvent: mapTime2MS(t.loadEventEnd - t.loadEventStart),
-            appcache: mapTime2MS(t.domainLookupStart - t.fetchStart),
-            unloadEvent: mapTime2MS(t.unloadEventEnd - t.unloadEventStart),
-            connect: mapTime2MS(t.connectEnd - t.connectStart),
-            redirectCount: p.redirectCount,
-            loadType: map2LoadType(p.type)
-        });
-    };
-
     render() {
         return(
             <div>
-                {/*<iframe ref='proxy' src="http://localhost:3000/proxy" style={{display:'none'}} />*/}
                 <div className="timingWrapper">
                     <Card style={{width:'100%'}} title="页面加载耗时">
                         <Row>
