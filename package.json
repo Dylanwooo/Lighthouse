@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@antv/g2": "^3.0.12",
     "antd": "^3.3.2",
     "echarts": "^4.0.4",
     "g2": "^2.3.13",

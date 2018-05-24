@@ -5,7 +5,7 @@
 import React, { PureComponent } from 'react';
 import { Tabs } from 'antd';
 import { mapLink2Vaule,mapKey2Value,map2toFix,removeLink } from '../utils/utils'
-//import './style.less'
+import './style.less'
 
 const TabPane = Tabs.TabPane;
 
