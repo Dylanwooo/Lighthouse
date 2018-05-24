@@ -4,10 +4,11 @@
 
 import React, { PureComponent } from 'react';
 import { Card,Row,Col } from 'antd';
-import { mapTime2MS,map2LoadType } from '../../utils/utils'
-import echarts from 'echarts';
-import  'echarts/lib/chart/bar';
+import { mapTime2MS,map2LoadType } from '../../utils/utils';
+import { Chart, Tooltip, Axis, Legend, Coord, Guide, Pie, registerShape, Series } from 'viser-react';
 import './AnalysisDetail.less'
+
+const DataSet = require('@antv/data-set');
 
 
 export default class ResourcesInfo extends PureComponent {
@@ -25,16 +26,9 @@ export default class ResourcesInfo extends PureComponent {
         connect: '',
         redirectCount: '',
         loadType: '',
-        pageStats: {}
     };
 
     componentDidMount() {
-        const pageStats = this.props.pageStats;
-        if(pageStats){
-            this.setState({
-                pageStats: pageStats
-            })
-        }
 
         const iframe = this.props.iframe;
 
@@ -58,45 +52,99 @@ export default class ResourcesInfo extends PureComponent {
             redirectCount: p.redirectCount,
             loadType: map2LoadType(p.type)
         });
-
-
-        let myPieChart = echarts.init(this.refs.bytesPie);
-
-        myPieChart.setOption = {
-            tooltip : {
-                trigger: 'item',
-                formatter: "{a} <br/>{b} : {c} ({d}%)"
-            },
-            legend: {
-                orient: 'vertical',
-                left: 'right',
-                data: ['CSS资源','图片资源','JS资源','HTML资源']
-            },
-            series : [
-                {
-                    name: '访问来源',
-                    type: 'pie',
-                    radius : '55%',
-                    center: ['50%', '60%'],
-                    data:[
-                        {value:this.state.pageStats.cssResponseBytes, name:'CSS资源'},
-                        {value:this.state.pageStats.imageResponseBytes, name:'图片资源'},
-                        {value:this.state.pageStats.javascriptResponseBytes, name:'JS资源'},
-                        {value:this.state.pageStats.htmlResponseBytes, name:'HTML资源'},
-                    ],
-                    itemStyle: {
-                        emphasis: {
-                            shadowBlur: 10,
-                            shadowOffsetX: 0,
-                            shadowColor: 'rgba(0, 0, 0, 0.5)'
-                        }
-                    }
-                }
-            ]
-        };
     }
 
     render() {
+        //字节数
+        const sourceData = [
+            { item: 'CSS', count: parseInt(this.props.pageStats.cssResponseBytes) },
+            { item: '图片', count: parseInt(this.props.pageStats.imageResponseBytes) },
+            { item: 'JS', count: parseInt(this.props.pageStats.javascriptResponseBytes) },
+            { item: 'HTML', count: parseInt(this.props.pageStats.htmlResponseBytes) },
+            { item: '其他资源', count: parseInt(this.props.pageStats.otherResponseBytes)|| 0 }
+        ];
+
+        const scale = [{
+            dataKey: 'percent',
+            min: 0,
+            formatter: '.0%',
+        }];
+
+        const dv = new DataSet.View().source(sourceData);
+        dv.transform({
+            type: 'percent',
+            field: 'count',
+            dimension: 'item',
+            as: 'percent'
+        });
+        const data = dv.rows;
+
+
+        registerShape('point', 'image', {
+            drawShape: function(cfg: any, container: any) {
+                cfg.points = this.parsePoints(cfg.points);
+                const coord = this._coord;
+                container.addShape('line', {
+                    attrs: {
+                        x1: cfg.points[0].x,
+                        y1: cfg.points[0].y,
+                        x2: cfg.points[0].x,
+                        y2: coord.start.y,
+                        stroke: '#ccc',
+                        lineWidth: 1,
+                        lineDash: [4, 2]
+                    }
+                });
+                return container.addShape('image', {
+                    attrs: {
+                        x: cfg.points[0].x - (12 * cfg.size / 2),
+                        y: cfg.points[0].y - 12 * cfg.size,
+                        width: 12 * cfg.size,
+                        height: 12 * cfg.size,
+                        img: cfg.shape[1]
+                    }
+                });
+            }
+        });
+
+        //资源数目
+        const data2 = [
+            {name: '资源总数', value: this.props.pageStats.numberResources},
+            {name: 'JS', value: this.props.pageStats.numberJsResources},
+            {name: 'CSS', value: this.props.pageStats.numberCssResources},
+            {name: '静态资源', value: this.props.pageStats.staticResources|| 0},
+        ];
+
+        const imageMap = {
+            'Opera': 'https://gw.alipayobjects.com/zos/rmsportal/vXiGOWCGZNKuVVpVYQAw.png',
+            'Internet Explorer': 'https://gw.alipayobjects.com/zos/rmsportal/eOYRaLPOmkieVvjyjTzM.png',
+            'Chrome': 'https://gw.alipayobjects.com/zos/rmsportal/dWJWRLWfpOEbwCyxmZwu.png',
+            'Firefox': 'https://gw.alipayobjects.com/zos/rmsportal/ZEPeDluKmAoTioCABBTc.png',
+        };
+
+        const scale2 = [{
+            dataKey: 'value',
+            nice: false,
+            max: 60,
+            min: 0
+        }];
+
+        const seriesOpts = {
+            gemo: 'point',
+            position: 'name*value',
+            size: 'value',
+            color: 'name',
+            shape: ['name', function(name){
+                return ['image', imageMap[name]];
+            }],
+            label: ['value', {
+                offset: -20,
+                textStyle: {
+                    fontSize:16, // 文本大小
+                }
+            }]
+        };
+
         return(
             <div>
                 <div className="timingWrapper">
@@ -182,27 +230,43 @@ export default class ResourcesInfo extends PureComponent {
                     </Card>
                 </div>
                 <div className="pageStatsWrapper">
-                    <Card style={{width:'100%'}}>
-                        <Card.Grid>
-                            <p className="gridTitle">加载字节统计</p>
-                            <Row>
-                                <Col span={8}>
-                                    <p>请求字节数：</p>
-                                    <p>42562 Bytes</p>
-                                </Col>
-                                <Col span={16}>
-                                    <div ref="bytesPie" style={{width:200,height:200}}/>
-                                </Col>
-                            </Row>
-                        </Card.Grid>
-                        <Card.Grid>
-                            <p className="gridTitle">加载资源数量统计</p>
-                            <div ref="numBar" style={{width:200,height:200}} />
-                        </Card.Grid>
-                        <Card.Grid>
-                            <p className="gridTitle">xxx统计</p>
-                            <div ref="numBar" style={{width:200,height:200}} />
-                        </Card.Grid>
+                    <Card>
+                        <Row>
+                            <Col span={12}>
+                                <p className="gridTitle">加载字节统计</p>
+                                <Chart forceFit height={400} data={data} scale={scale}>
+                                    <Tooltip showTitle={false} />
+                                    <Axis />
+                                    <Legend dataKey="item" />
+                                    <Coord type="theta" radius={0.75} innerRadius={0.6} />
+                                    <Pie position="percent" color="item" style={{ stroke: '#fff', lineWidth: 1 }}
+                                         label={['percent', {
+                                             formatter: (val, item) => {
+                                                 return item.point.item + ': ' + val;
+                                             }
+                                         }]}
+                                    />
+                                </Chart>
+                            </Col>
+                            <Col span={12}>
+                                <p className="gridTitle">加载资源数量统计</p>
+                                <Chart forceFit height={400} data={data2} scale={scale2}>
+                                    <Tooltip />
+                                    <Axis dataKey="value" show={false} />
+                                    <Series {...seriesOpts} />
+                                </Chart>
+                            </Col>
+
+                        </Row>
+
+                        {/*<Card.Grid>*/}
+                            {/*<p className="gridTitle">加载资源数量统计</p>*/}
+                            {/*<div ref="numBar" style={{width:200,height:200}} />*/}
+                        {/*</Card.Grid>*/}
+                        {/*<Card.Grid>*/}
+                            {/*<p className="gridTitle">xxx统计</p>*/}
+                            {/*<div ref="numBar" style={{width:200,height:200}} />*/}
+                        {/*</Card.Grid>*/}
                     </Card>
                 </div>
             </div>
