@@ -64,36 +64,35 @@ export default class Suggestion extends Component {
 
 
         const GzipUrlBlocks = EnableGzipCompression.urlBlocks?extractObject(EnableGzipCompression.urlBlocks):EnableGzipCompression.summary;
-        const GzipRuleImpact = EnableGzipCompression.ruleImpact;
+        const GzipRuleImpact = EnableGzipCompression.ruleImpact || '无';
         const GzipSummary = EnableGzipCompression.summary.format;
 
         const BrowserBlocks = LeverageBrowserCaching.urlBlocks?extractObject(LeverageBrowserCaching.urlBlocks):{};
-        const BrowserRuleImpact = LeverageBrowserCaching.ruleImpact;
+        const BrowserRuleImpact = LeverageBrowserCaching.ruleImpact || '无';
         const BrowserSummary = LeverageBrowserCaching.summary.format;
 
         const serverRuleImpact = MainResourceServerResponseTime.ruleImpact;
         const serverBlocks = MainResourceServerResponseTime.urlBlocks?extractObject(MainResourceServerResponseTime.urlBlocks):MainResourceServerResponseTime.summary;
-        const cssRuleImpact = MinifyCss.ruleImpact;
+        const cssRuleImpact = MinifyCss.ruleImpact || '无';
         const cssBlocks = MinifyCss.urlBlocks?extractObject(MinifyCss.urlBlocks):MinifyCss.summary;
 
-        const htmlRuleImpact = MinifyHTML.ruleImpact;
+        const htmlRuleImpact = MinifyHTML.ruleImpact || '无';
         const htmlBlocks = MinifyHTML.urlBlocks?extractObject(MinifyHTML.urlBlocks):MinifyHTML.summary;
 
-        const jsRuleImpact = MinifyJavaScript.ruleImpact;
+        const jsRuleImpact = MinifyJavaScript.ruleImpact || '无';
         const jsBlocks = MinifyJavaScript.urlBlocks?extractObject(MinifyJavaScript.urlBlocks):MinifyJavaScript.summary;
 
-        const imgRuleImpact = OptimizeImages.ruleImpact;
+        const imgRuleImpact = OptimizeImages.ruleImpact || '无';
         const imgBlocks = OptimizeImages.urlBlocks?extractObject(OptimizeImages.urlBlocks):OptimizeImages.summary;
 
         const FPBBlcoks = MinimizeRenderBlockingResources.urlBlocks;
         const FPBCSSBlock = FPBBlcoks[1];
         const FPBJSBlock = FPBBlcoks[2];
-        const FPBImpact = MinimizeRenderBlockingResources.ruleImpact;
+        const FPBImpact = MinimizeRenderBlockingResources.ruleImpact || '无';
         const FPBSummary = MinimizeRenderBlockingResources.summary;
         return (
             <div>
-                {/*<div>避免使用着落页重定向:<span>{mapKey2Value(format,args)}</span></div>*/}
-                {/*{extractObject(value).header.format}*/}
+
                 <Card>
                     <div className="headContainer">
                         <p>着陆页重定向：</p>

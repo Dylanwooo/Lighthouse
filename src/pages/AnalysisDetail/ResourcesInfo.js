@@ -61,6 +61,7 @@ export default class ResourcesInfo extends PureComponent {
 
 
         let myPieChart = echarts.init(this.refs.bytesPie);
+
         myPieChart.setOption = {
             tooltip : {
                 trigger: 'item',

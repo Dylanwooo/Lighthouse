@@ -31,7 +31,7 @@ class AnalysisDetail extends PureComponent {
         } else if(checkPath('/suggestion')) {
             this.setState({ defaultkey:"3" })
         }
-        
+
     }
 
     componentDidMount() {

@@ -14,6 +14,9 @@ let DCLmaxArray = [];
 let FCPminArray = [];
 let FCPmaxArray = [];
 
+let data1 = [];
+let data2 = [];
+
 export default class PageLoadDistribution extends PureComponent {
 
     componentWillMount() {
@@ -30,8 +33,18 @@ export default class PageLoadDistribution extends PureComponent {
     }
 
     componentDidMount() {
+        console.log(FCPArray)
+        data1.push(FCPArray);
+        data2.push(DCLArray);
+        const lineStyle = {
+            normal: {
+                width: 1,
+                opacity: 0.5
+            }
+        };
         //console.log(this.props.loadingExperience)
         let myBarChart = echarts.init(this.refs.disBar);
+
         // 绘制Bar
         myBarChart.setOption({
             color:['#00CD66','#FFD700','#FF6A6A'],
@@ -78,66 +91,165 @@ export default class PageLoadDistribution extends PureComponent {
         //Pie图
         let myPieChart = echarts.init(this.refs.disPie);
         myPieChart.setOption({
-            color:['#00CD66','#FFB90F','#FF4040'],
-            tooltip : {
-                trigger: 'item',
-                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            // color:['#00CD66','#FFB90F','#FF4040'],
+            // tooltip : {
+            //     trigger: 'item',
+            //     formatter: "{a} <br/>{b} : {c} ({d}%)"
+            // },
+            // legend: {
+            //     x : 'center',
+            //     y : 'bottom',
+            //     data: ['快速加载','中速加载','慢速加载']
+            // },
+            // toolBox: {
+            //     show: true,
+            //     feature: {
+            //         mark: {show:true},
+            //         dataView: {show: true,readOnly:false},
+            //         magicType: {
+            //             show: true,
+            //             type: ['pie','funnel']
+            //         },
+            //         restore : {show: true},
+            //         saveAsImage : {show: true}
+            //     }
+            // },
+
+            backgroundColor: '#161627',
+            title: {
+                text: '加载分布雷达图',
+                left: 'center',
+                textStyle: {
+                    color: '#eee'
+                }
             },
             legend: {
-                x : 'center',
-                y : 'bottom',
-                data: ['快速加载','中速加载','慢速加载']
+                bottom: 5,
+                data: ['DCL', 'FCP'],
+                itemGap: 20,
+                textStyle: {
+                    color: '#fff',
+                    fontSize: 14
+                },
+                selectedMode: 'single'
             },
-            toolBox: {
-                show: true,
-                feature: {
-                    mark: {show:true},
-                    dataView: {show: true,readOnly:false},
-                    magicType: {
-                        show: true,
-                        type: ['pie','funnel']
-                    },
-                    restore : {show: true},
-                    saveAsImage : {show: true}
+            // visualMap: {
+            //     show: true,
+            //     min: 0,
+            //     max: 20,
+            //     dimension: 6,
+            //     inRange: {
+            //         colorLightness: [0.5, 0.8]
+            //     }
+            // },
+            radar: {
+                indicator: [
+                    {name: '快速加载', max: 1},
+                    {name: '中速加载', max: 1},
+                    {name: '慢速加载', max: 1},
+                    // {name: 'CO', max: 5},
+                    // {name: 'NO2', max: 200},
+                    // {name: 'SO2', max: 100}
+                ],
+                shape: 'circle',
+                splitNumber: 5,
+                name: {
+                    textStyle: {
+                        color: 'rgb(238, 197, 102)'
+                    }
+                },
+                splitLine: {
+                    lineStyle: {
+                        color: [
+                            'rgba(238, 197, 102, 0.1)', 'rgba(238, 197, 102, 0.2)',
+                            'rgba(238, 197, 102, 0.4)', 'rgba(238, 197, 102, 0.6)',
+                            'rgba(238, 197, 102, 0.8)', 'rgba(238, 197, 102, 1)'
+                        ].reverse()
+                    }
+                },
+                splitArea: {
+                    show: false
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: 'rgba(238, 197, 102, 0.5)'
+                    }
                 }
             },
+
             series: [
                 {
-                    name:'FCP',
-                    type:'pie',
-                    radius : '65%',
-                    center : ['50%','45%'],
-                    roseType : 'radius',
-                    label: {
-                        normal: {
-                            show: false
-                        },
-                        emphasis: {
-                            show: true
-                        }
-                    },
-                    lableLine: {
-                        normal: {
-                            show: false
-                        },
-                        emphasis: {
-                            show: true
-                        }
-                    },
+                    name: 'DCL',
+                    type: 'radar',
+                    lineStyle: lineStyle,
+                    data: data2,
+                    symbol: 'none',
                     itemStyle: {
-                        emphasis: {
-                            shadowBlur: 10,
-                            shadowOffsetX: 0,
-                            shaowColor: 'rgba(0,0,0,0.5)'
+                        normal: {
+                            color: '#F9713C'
                         }
                     },
-                    data: [
-                        {value:map2toFix(FCPArray[0]),name:'快速加载'},
-                        {value:map2toFix(FCPArray[1]),name:'中速加载'},
-                        {value:map2toFix(FCPArray[2]),name:'慢速加载'},
-                    ]
-                }
+                    areaStyle: {
+                        normal: {
+                            opacity: 0.2
+                        }
+                    }
+                },
+                {
+                    name: 'FCP',
+                    type: 'radar',
+                    lineStyle: lineStyle,
+                    data: data1,
+                    symbol: 'none',
+                    itemStyle: {
+                        normal: {
+                            color: '#B3E4A1'
+                        }
+                    },
+                    areaStyle: {
+                        normal: {
+                            opacity: 0.2
+                        }
+                    }
+                },
             ]
+            // series: [
+            //     {
+            //         name:'FCP',
+            //         type:'pie',
+            //         radius : '65%',
+            //         center : ['50%','45%'],
+            //         roseType : 'radius',
+            //         label: {
+            //             normal: {
+            //                 show: false
+            //             },
+            //             emphasis: {
+            //                 show: true
+            //             }
+            //         },
+            //         lableLine: {
+            //             normal: {
+            //                 show: false
+            //             },
+            //             emphasis: {
+            //                 show: true
+            //             }
+            //         },
+            //         itemStyle: {
+            //             emphasis: {
+            //                 shadowBlur: 10,
+            //                 shadowOffsetX: 0,
+            //                 shaowColor: 'rgba(0,0,0,0.5)'
+            //             }
+            //         },
+            //         data: [
+            //             {value:map2toFix(FCPArray[0]),name:'快速加载'},
+            //             {value:map2toFix(FCPArray[1]),name:'中速加载'},
+            //             {value:map2toFix(FCPArray[2]),name:'慢速加载'},
+            //         ]
+            //     }
+            // ]
         })
     }
 
@@ -231,14 +343,14 @@ export default class PageLoadDistribution extends PureComponent {
                 </div>
                 <div className="wrapper">
                     <div className="cardGroupWrapper">
-                        <Card bordered={false}>
-                            <div ref="disBar" style={{width:571,height:250}} />
+                        <Card bordered={false} bodyStyle={{padding:0,width:620}}>
+                            <div ref="disBar" style={{width:'100%',height:500}} />
 
                         </Card>
                     </div>
                     <div className="cardGroupWrapper">
-                        <Card bordered={false}>
-                            <div ref="disPie" style={{width:571,height:250}} />
+                        <Card bordered={false} bodyStyle={{padding:0,width:620}}>
+                            <div ref="disPie" style={{width:'100%',height:500}} />
                         </Card>
                     </div>
                 </div>
