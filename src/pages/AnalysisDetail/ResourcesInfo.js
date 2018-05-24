@@ -125,7 +125,7 @@ export default class ResourcesInfo extends PureComponent {
         const scale2 = [{
             dataKey: 'value',
             nice: false,
-            max: 60,
+            max: 120,
             min: 0
         }];
 
