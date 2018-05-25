@@ -5,8 +5,11 @@
 import React, { PureComponent } from 'react';
 import { Card,Row,Col } from 'antd';
 import { mapTime2MS,map2LoadType } from '../../utils/utils';
-import { Chart, Tooltip, Axis, Legend, Coord, Guide, Pie, registerShape, Series } from 'viser-react';
+//import { Chart, Tooltip, Axis, Legend, Coord, Guide, Pie, registerShape, Series } from 'viser-react';
 import './AnalysisDetail.less'
+
+import { Chart, Geom, Axis, Tooltip, Coord, Label, Legend, View, Guide, Shape } from 'bizcharts';
+
 
 const DataSet = require('@antv/data-set');
 
@@ -55,94 +58,32 @@ export default class ResourcesInfo extends PureComponent {
     }
 
     render() {
+
         //字节数
-        const sourceData = [
+        const { DataView } = DataSet;
+        const { Html } = Guide;
+        const totalBytes = parseInt(this.props.pageStats.totalRequestBytes);
+        const byteData = [
             { item: 'CSS', count: parseInt(this.props.pageStats.cssResponseBytes) },
             { item: '图片', count: parseInt(this.props.pageStats.imageResponseBytes) },
             { item: 'JS', count: parseInt(this.props.pageStats.javascriptResponseBytes) },
             { item: 'HTML', count: parseInt(this.props.pageStats.htmlResponseBytes) },
             { item: '其他资源', count: parseInt(this.props.pageStats.otherResponseBytes)|| 0 }
         ];
-
-        const scale = [{
-            dataKey: 'percent',
-            min: 0,
-            formatter: '.0%',
-        }];
-
-        const dv = new DataSet.View().source(sourceData);
-        dv.transform({
+        const dv = new DataView();
+        dv.source(byteData).transform({
             type: 'percent',
             field: 'count',
             dimension: 'item',
             as: 'percent'
         });
-        const data = dv.rows;
-
-
-        registerShape('point', 'image', {
-            drawShape: function(cfg: any, container: any) {
-                cfg.points = this.parsePoints(cfg.points);
-                const coord = this._coord;
-                container.addShape('line', {
-                    attrs: {
-                        x1: cfg.points[0].x,
-                        y1: cfg.points[0].y,
-                        x2: cfg.points[0].x,
-                        y2: coord.start.y,
-                        stroke: '#ccc',
-                        lineWidth: 1,
-                        lineDash: [4, 2]
-                    }
-                });
-                return container.addShape('image', {
-                    attrs: {
-                        x: cfg.points[0].x - (12 * cfg.size / 2),
-                        y: cfg.points[0].y - 12 * cfg.size,
-                        width: 12 * cfg.size,
-                        height: 12 * cfg.size,
-                        img: cfg.shape[1]
-                    }
-                });
-            }
-        });
-
-        //资源数目
-        const data2 = [
-            {name: '资源总数', value: this.props.pageStats.numberResources},
-            {name: 'JS', value: this.props.pageStats.numberJsResources},
-            {name: 'CSS', value: this.props.pageStats.numberCssResources},
-            {name: '静态资源', value: this.props.pageStats.staticResources|| 0},
-        ];
-
-        const imageMap = {
-            'Opera': 'https://gw.alipayobjects.com/zos/rmsportal/vXiGOWCGZNKuVVpVYQAw.png',
-            'Internet Explorer': 'https://gw.alipayobjects.com/zos/rmsportal/eOYRaLPOmkieVvjyjTzM.png',
-            'Chrome': 'https://gw.alipayobjects.com/zos/rmsportal/dWJWRLWfpOEbwCyxmZwu.png',
-            'Firefox': 'https://gw.alipayobjects.com/zos/rmsportal/ZEPeDluKmAoTioCABBTc.png',
-        };
-
-        const scale2 = [{
-            dataKey: 'value',
-            nice: false,
-            max: 120,
-            min: 0
-        }];
-
-        const seriesOpts = {
-            gemo: 'point',
-            position: 'name*value',
-            size: 'value',
-            color: 'name',
-            shape: ['name', function(name){
-                return ['image', imageMap[name]];
-            }],
-            label: ['value', {
-                offset: -20,
-                textStyle: {
-                    fontSize:16, // 文本大小
+        const cols = {
+            percent: {
+                formatter: val => {
+                    val = (val * 100).toFixed(2) + '%';
+                    return val;
                 }
-            }]
+            }
         };
 
         return(
@@ -232,41 +173,46 @@ export default class ResourcesInfo extends PureComponent {
                 <div className="pageStatsWrapper">
                     <Card>
                         <Row>
-                            <Col span={12}>
+                            <Col span={10}>
                                 <p className="gridTitle">加载字节统计</p>
-                                <Chart forceFit height={400} data={data} scale={scale}>
-                                    <Tooltip showTitle={false} />
-                                    <Axis />
-                                    <Legend dataKey="item" />
-                                    <Coord type="theta" radius={0.75} innerRadius={0.6} />
-                                    <Pie position="percent" color="item" style={{ stroke: '#fff', lineWidth: 1 }}
-                                         label={['percent', {
-                                             formatter: (val, item) => {
-                                                 return item.point.item + ': ' + val;
-                                             }
-                                         }]}
+                                <Chart height={480}  data={dv} scale={cols} forceFit>
+                                    <Coord type={'theta'} radius={0.75} innerRadius={0.6} />
+                                    <Axis name="percent" />
+                                    <Legend position='top' />
+                                    <Tooltip
+                                        showTitle={false}
+                                        itemTpl='<li><span style="background-color:{color};" class="g2-tooltip-marker"></span>{name}: {value}</li>'
                                     />
+                                    <Guide >
+                                        <Html position ={[ '50%', '50%' ]} html='<div style="color:#8c8c8c;font-size:1em;text-align: center;width: 10em;">总字节数<br><span style="color:#262626;font-size:1.16em">23505</span><br>bytes</div>' alignX='middle' alignY='middle'/>
+                                    </Guide>
+                                    <Geom
+                                        type="intervalStack"
+                                        position="percent"
+                                        color='item'
+                                        tooltip={['item*percent',(item, percent) => {
+                                            percent = percent * 100 + '%';
+                                            return {
+                                                name: item,
+                                                value: percent
+                                            };
+                                        }]}
+                                        style={{lineWidth: 1,stroke: '#fff'}}
+                                    >
+                                        <Label content='percent' formatter={(val, item) => {
+                                            return item.point.item + ': ' + val;}} />
+                                    </Geom>
                                 </Chart>
+                            </Col>
+                            <Col span={2}>
+
                             </Col>
                             <Col span={12}>
                                 <p className="gridTitle">加载资源数量统计</p>
-                                <Chart forceFit height={400} data={data2} scale={scale2}>
-                                    <Tooltip />
-                                    <Axis dataKey="value" show={false} />
-                                    <Series {...seriesOpts} />
-                                </Chart>
                             </Col>
 
                         </Row>
 
-                        {/*<Card.Grid>*/}
-                            {/*<p className="gridTitle">加载资源数量统计</p>*/}
-                            {/*<div ref="numBar" style={{width:200,height:200}} />*/}
-                        {/*</Card.Grid>*/}
-                        {/*<Card.Grid>*/}
-                            {/*<p className="gridTitle">xxx统计</p>*/}
-                            {/*<div ref="numBar" style={{width:200,height:200}} />*/}
-                        {/*</Card.Grid>*/}
                     </Card>
                 </div>
             </div>
