@@ -33,7 +33,6 @@ export default class ResourcesInfo extends PureComponent {
 
     componentDidMount() {
 
-        console.log(this.props.pageStats.numberResources)
         const iframe = this.props.iframe;
 
         if(iframe&&!iframe.contentWindow.performance){
