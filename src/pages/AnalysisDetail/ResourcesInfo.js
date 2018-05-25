@@ -33,6 +33,7 @@ export default class ResourcesInfo extends PureComponent {
 
     componentDidMount() {
 
+        console.log(this.props.pageStats.numberResources)
         const iframe = this.props.iframe;
 
         if(iframe&&!iframe.contentWindow.performance){
@@ -77,12 +78,59 @@ export default class ResourcesInfo extends PureComponent {
             dimension: 'item',
             as: 'percent'
         });
-        const cols = {
+        const bytesCols = {
             percent: {
                 formatter: val => {
                     val = (val * 100).toFixed(2) + '%';
                     return val;
                 }
+            }
+        };
+
+        //资源数
+        Shape.registerShape('point', 'image', {
+            drawShape: function(cfg, container) {
+                cfg.points = this.parsePoints(cfg.points);
+                const coord = this._coord;
+                container.addShape('line', {
+                    attrs: {
+                        x1: cfg.points[0].x,
+                        y1: cfg.points[0].y,
+                        x2: cfg.points[0].x,
+                        y2: coord.start.y,
+                        stroke: '#ccc',
+                        lineWidth: 1,
+                        lineDash: [4, 2]
+                    }
+                });
+                return container.addShape('image', {
+                    attrs: {
+                        x: cfg.points[0].x - (12 * cfg.size / 2),
+                        y: cfg.points[0].y - 12 * cfg.size,
+                        width: 12 * cfg.size,
+                        height: 12 * cfg.size,
+                        img: cfg.shape[1]
+                    }
+                });
+            }
+        });
+        const numData = [
+            {name: '总资源数', value: this.props.pageStats.numberResources},
+            {name: 'JS', value: this.props.pageStats.numberJsResources},
+            {name: 'CSS', value: this.props.pageStats.numberCssResources},
+            {name: '静态资源',  value: this.props.pageStats.staticResources || 0},
+        ];
+        const imageMap = {
+            '总资源数': 'https://gw.alipayobjects.com/zos/rmsportal/eOYRaLPOmkieVvjyjTzM.png',
+            'JS': 'https://gw.alipayobjects.com/zos/rmsportal/dWJWRLWfpOEbwCyxmZwu.png',
+            'CSS': 'https://gw.alipayobjects.com/zos/rmsportal/ZEPeDluKmAoTioCABBTc.png',
+            '静态资源': 'https://gw.alipayobjects.com/zos/rmsportal/eZYhlLzqWLAYwOHQAXmc.png',
+        };
+        const numCols = {
+            value: {
+                nice: false,
+                max: 150,
+                min: 0
             }
         };
 
@@ -173,12 +221,12 @@ export default class ResourcesInfo extends PureComponent {
                 <div className="pageStatsWrapper">
                     <Card>
                         <Row>
-                            <Col span={10}>
+                            <Col span={12}>
                                 <p className="gridTitle">加载字节统计</p>
-                                <Chart height={480}  data={dv} scale={cols} forceFit>
+                                <Chart height={480}  data={dv} scale={bytesCols} forceFit>
                                     <Coord type={'theta'} radius={0.75} innerRadius={0.6} />
                                     <Axis name="percent" />
-                                    <Legend position='top' />
+                                    <Legend position='right'offsetY={-window.innerHeight / 2 + 300} offsetX={-70} textStyle={{fontSize:14}} />
                                     <Tooltip
                                         showTitle={false}
                                         itemTpl='<li><span style="background-color:{color};" class="g2-tooltip-marker"></span>{name}: {value}</li>'
@@ -204,11 +252,22 @@ export default class ResourcesInfo extends PureComponent {
                                     </Geom>
                                 </Chart>
                             </Col>
-                            <Col span={2}>
-
-                            </Col>
                             <Col span={12}>
                                 <p className="gridTitle">加载资源数量统计</p>
+                                <Chart height={500} data={numData} padding={[20, 20, 90]} scale={numCols} forceFit>
+                                    <Axis name="name" />
+                                    <Axis name="value" visible={false} />
+                                    <Tooltip />
+                                    <Geom type='point' position="name*value" color="name" shape={['name', (name) => {
+                                        return ['image', imageMap[name]]; // 根据具体的字段指定 shape
+                                    }]} size='value' style={{stroke: '#fff',
+                                        lineWidth: 1,
+                                        fillOpacity: 1}} >
+                                        <Label content="value" offset={-20} textStyle={{
+                                            fontSize:16, // 文本大小
+                                        }}/>
+                                    </Geom>
+                                </Chart>
                             </Col>
 
                         </Row>
