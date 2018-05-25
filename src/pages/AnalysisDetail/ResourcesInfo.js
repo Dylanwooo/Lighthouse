@@ -60,15 +60,89 @@ export default class ResourcesInfo extends PureComponent {
 
     render() {
 
-        //字节数
+        //请求，返回字节
+        Shape.registerShape('interval', 'burstPie', {
+            getPoints(cfg) {
+                let width = cfg.size;
+                let x = cfg.x;
+                let min = cfg.y[0];
+                let max = cfg.y[1];
+                let res = [];
+                for (let i = 0; i < max; i += 0.1) {
+                    if (min > i) {
+                        continue;
+                    } else if (min < i && min > i - 0.1) {
+                        res.push(
+                            { x: x - width / 2, y: min },
+                            { x: x - width / 2, y: i - 0.01 },
+                            { x: x + width / 2, y: i - 0.01 },
+                            { x: x + width / 2, y: min }
+                        );
+                    }
+                    let start = i;
+                    let end = parseFloat((i + 0.1) > max ? max : i + 0.09);
+                    res.push(
+                        { x: x - width / 2, y: start },
+                        { x: x - width / 2, y: end },
+                        { x: x + width / 2, y: end },
+                        { x: x + width / 2, y: start }
+                    );
+                }
+                return res;
+            },
+            draw(cfg, container) {
+                // 将归一化后的数据转换为画布上的坐标
+                let points = cfg.origin.points;
+                let path = [];
+                for (let i = 0; i < cfg.origin.points.length; i += 4) {
+                    path.push(['M', points[i].x, points[i].y]);
+                    path.push(['L', points[i + 1].x, points[i + 1].y]);
+                    path.push(['L', points[i + 2].x, points[i + 2].y]);
+                    path.push(['L', points[i + 3].x, points[i + 3].y]);
+                    path.push(['L', points[i].x, points[i].y]);
+                    path.push(['z']);
+                }
+                path = this.parsePath(path, true);
+                let _shape = container.addShape('path', {
+                    attrs: {
+                        fill: cfg.color || '#00D9DF',
+                        path,
+                    },
+                });
+                return _shape;
+            }
+        });
+        const data = [
+            { value: parseInt(this.props.pageStats.totalRequestBytes), key: '请求字节数' },
+            { value: parseInt(this.props.pageStats.overTheWireResponseBytes), key: '线上字节数' },
+        ];
         const { DataView } = DataSet;
+        const _dv = new DataView();
+        _dv.source(data)
+            .transform({
+                type: 'percent',
+                field: 'value',
+                dimension: 'key',
+                as: 'percent'
+            });
+        const cols = {
+            percent: {
+                formatter: val => {
+                    return (val * 100).toFixed(2) + '%';
+                }
+            }
+        };
+
+
+        //字节数
+        //const { DataView } = DataSet;
         const { Html } = Guide;
-        const totalBytes = parseInt(this.props.pageStats.totalRequestBytes);
         const byteData = [
             { item: 'CSS', count: parseInt(this.props.pageStats.cssResponseBytes) },
             { item: '图片', count: parseInt(this.props.pageStats.imageResponseBytes) },
             { item: 'JS', count: parseInt(this.props.pageStats.javascriptResponseBytes) },
             { item: 'HTML', count: parseInt(this.props.pageStats.htmlResponseBytes) },
+            { item: '线上字节总数', count: parseInt(this.props.pageStats.overTheWireResponseBytes) },
             { item: '其他资源', count: parseInt(this.props.pageStats.otherResponseBytes)|| 0 }
         ];
         const dv = new DataView();
@@ -115,16 +189,22 @@ export default class ResourcesInfo extends PureComponent {
             }
         });
         const numData = [
-            {name: '总资源数', value: this.props.pageStats.numberResources},
+            {name: 'HTTP资源数', value: this.props.pageStats.numberResources},
             {name: 'JS', value: this.props.pageStats.numberJsResources},
             {name: 'CSS', value: this.props.pageStats.numberCssResources},
-            {name: '静态资源',  value: this.props.pageStats.staticResources || 0},
+            {name: '静态资源',  value: this.props.pageStats.numberStaticResources || 0},
+            {name: '引用主机数',  value: this.props.pageStats.numberHosts || 0},
+            {name: '加载往返次数',  value: this.props.pageStats.numTotalRoundTrips || 0},
+            {name: '阻塞资源加载往返次数',  value: this.props.pageStats.numRenderBlockingRoundTrips || 0},
         ];
         const imageMap = {
-            '总资源数': 'https://gw.alipayobjects.com/zos/rmsportal/eOYRaLPOmkieVvjyjTzM.png',
+            'HTTP资源数': 'https://gw.alipayobjects.com/zos/rmsportal/eOYRaLPOmkieVvjyjTzM.png',
             'JS': 'https://gw.alipayobjects.com/zos/rmsportal/dWJWRLWfpOEbwCyxmZwu.png',
             'CSS': 'https://gw.alipayobjects.com/zos/rmsportal/ZEPeDluKmAoTioCABBTc.png',
             '静态资源': 'https://gw.alipayobjects.com/zos/rmsportal/eZYhlLzqWLAYwOHQAXmc.png',
+            '引用主机数': 'https://gw.alipayobjects.com/zos/rmsportal/vXiGOWCGZNKuVVpVYQAw.png',
+            '加载往返次数': 'https://gw.alipayobjects.com/zos/rmsportal/NjApYXminrnhBgOXyuaK.png',
+            '阻塞资源加载往返次数': 'https://gw.alipayobjects.com/zos/rmsportal/NjApYXminrnhBgOXyuaK.png'
         };
         const numCols = {
             value: {
@@ -221,18 +301,31 @@ export default class ResourcesInfo extends PureComponent {
                 <div className="pageStatsWrapper">
                     <Card>
                         <Row>
-                            <Col span={12}>
+                            <Col span={4}>
+                                <p className="gridTitle">请求加载字节比</p>
+                                <Chart height={480} data={_dv} scale={cols} forceFit>
+                                    <Coord type="theta" radius={0.8} innerRadius={0.7} />
+                                    <Tooltip showTitle={false} />
+                                    <Legend />
+                                    <Axis name="percent"  title={{
+                                        offset: 40,
+                                        text: '百分比'
+                                    }}/>
+                                    <Geom type='intervalStack' shape='burstPie' position="percent" color={['key', [ '#1890ff', '#f04864', '#bfbfbf']]} />
+                                </Chart>
+                            </Col>
+                            <Col span={10}>
                                 <p className="gridTitle">加载字节统计</p>
                                 <Chart height={480}  data={dv} scale={bytesCols} forceFit>
                                     <Coord type={'theta'} radius={0.75} innerRadius={0.6} />
                                     <Axis name="percent" />
-                                    <Legend position='right'offsetY={-window.innerHeight / 2 + 300} offsetX={-70} textStyle={{fontSize:14}} />
+                                    <Legend position='right'offsetY={-window.innerHeight / 2 + 300} offsetX={-120} textStyle={{fontSize:14}} />
                                     <Tooltip
                                         showTitle={false}
                                         itemTpl='<li><span style="background-color:{color};" class="g2-tooltip-marker"></span>{name}: {value}</li>'
                                     />
                                     <Guide >
-                                        <Html position ={[ '50%', '50%' ]} html='<div style="color:#8c8c8c;font-size:1em;text-align: center;width: 10em;">总字节数<br><span style="color:#262626;font-size:1.16em">23505</span><br>bytes</div>' alignX='middle' alignY='middle'/>
+                                        <Html position ={[ '50%', '50%' ]} html='<div style="color:#8c8c8c;font-size:1em;text-align: center;width: 10em;">总字节数<br><span style="color:#262626;font-size:1.16em">2,352,112</span><br>bytes</div>' alignX='middle' alignY='middle'/>
                                     </Guide>
                                     <Geom
                                         type="intervalStack"
@@ -252,10 +345,10 @@ export default class ResourcesInfo extends PureComponent {
                                     </Geom>
                                 </Chart>
                             </Col>
-                            <Col span={12}>
+                            <Col span={10}>
                                 <p className="gridTitle">加载资源数量统计</p>
-                                <Chart height={500} data={numData} padding={[20, 20, 90]} scale={numCols} forceFit>
-                                    <Axis name="name" />
+                                <Chart height={500} data={numData} scale={numCols} forceFit>
+                                    <Axis name="name" title={{textStyle:{fontSie:14}}}/>
                                     <Axis name="value" visible={false} />
                                     <Tooltip />
                                     <Geom type='point' position="name*value" color="name" shape={['name', (name) => {
