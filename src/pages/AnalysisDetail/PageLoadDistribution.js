@@ -1,11 +1,12 @@
 import React, { PureComponent } from 'react';
-import { Card,Row,Col,Tooltip } from 'antd';
-import { map2Percetage,map2toFix } from '../../utils/utils'
-import echarts from 'echarts';
-import  'echarts/lib/chart/bar';
+import { Card,Row,Col,Tooltip,Icon } from 'antd';
+import { map2Percetage,map2toFix } from '../../utils/utils';
+import { Chart, Geom, Axis, Coord, Label, Legend, View, Guide, Shape } from "bizcharts";
 import './AnalysisDetail.less'
 
 const { Meta } = Card;
+const DataSet = require('@antv/data-set');
+
 
 let FCPArray =[];
 let DCLArray = [];
@@ -14,8 +15,6 @@ let DCLmaxArray = [];
 let FCPminArray = [];
 let FCPmaxArray = [];
 
-let data1 = [];
-let data2 = [];
 
 export default class PageLoadDistribution extends PureComponent {
 
@@ -33,224 +32,7 @@ export default class PageLoadDistribution extends PureComponent {
     }
 
     componentDidMount() {
-        console.log(FCPArray)
-        data1.push(FCPArray);
-        data2.push(DCLArray);
-        const lineStyle = {
-            normal: {
-                width: 1,
-                opacity: 0.5
-            }
-        };
-        //console.log(this.props.loadingExperience)
-        let myBarChart = echarts.init(this.refs.disBar);
 
-        // 绘制Bar
-        myBarChart.setOption({
-            color:['#00CD66','#FFD700','#FF6A6A'],
-            tooltip: {
-                trigger:'axis',
-                axisPointer: {
-                    type: 'shadow'
-                },
-            },
-            legend: {
-                x : 'center',
-                y : 'bottom',
-                data: ['快速加载', '中速加载','缓慢加载'],
-                show: true
-            },
-            xAxis: {
-                type:'value',
-                data: ['0%','25%','50%','75%','100%']
-            },
-            yAxis: {
-                type:'category',
-                data: ['DCL','FCP']
-            },
-            series: [{
-                name: 'fast',
-                type: 'bar',
-                stack: '总量',
-                data: [map2toFix(DCLArray[0]),map2toFix(FCPArray[0])]
-            },{
-                name: 'medium',
-                type: 'bar',
-                stack: '总量',
-                data: [map2toFix(DCLArray[1]),map2toFix(FCPArray[1])]
-
-            },{
-                name: 'slow',
-                type: 'bar',
-                stack: '总量',
-                data: [map2toFix(DCLArray[2]),map2toFix(FCPArray[2])]
-
-            }]
-        });
-
-        //Pie图
-        let myPieChart = echarts.init(this.refs.disPie);
-        myPieChart.setOption({
-            // color:['#00CD66','#FFB90F','#FF4040'],
-            // tooltip : {
-            //     trigger: 'item',
-            //     formatter: "{a} <br/>{b} : {c} ({d}%)"
-            // },
-            // legend: {
-            //     x : 'center',
-            //     y : 'bottom',
-            //     data: ['快速加载','中速加载','慢速加载']
-            // },
-            // toolBox: {
-            //     show: true,
-            //     feature: {
-            //         mark: {show:true},
-            //         dataView: {show: true,readOnly:false},
-            //         magicType: {
-            //             show: true,
-            //             type: ['pie','funnel']
-            //         },
-            //         restore : {show: true},
-            //         saveAsImage : {show: true}
-            //     }
-            // },
-
-            backgroundColor: '#161627',
-            title: {
-                text: '加载分布雷达图',
-                left: 'center',
-                textStyle: {
-                    color: '#eee'
-                }
-            },
-            legend: {
-                bottom: 5,
-                data: ['DCL', 'FCP'],
-                itemGap: 20,
-                textStyle: {
-                    color: '#fff',
-                    fontSize: 14
-                },
-                selectedMode: 'single'
-            },
-            // visualMap: {
-            //     show: true,
-            //     min: 0,
-            //     max: 20,
-            //     dimension: 6,
-            //     inRange: {
-            //         colorLightness: [0.5, 0.8]
-            //     }
-            // },
-            radar: {
-                indicator: [
-                    {name: '快速加载', max: 1},
-                    {name: '中速加载', max: 1},
-                    {name: '慢速加载', max: 1},
-                    // {name: 'CO', max: 5},
-                    // {name: 'NO2', max: 200},
-                    // {name: 'SO2', max: 100}
-                ],
-                shape: 'circle',
-                splitNumber: 5,
-                name: {
-                    textStyle: {
-                        color: 'rgb(238, 197, 102)'
-                    }
-                },
-                splitLine: {
-                    lineStyle: {
-                        color: [
-                            'rgba(238, 197, 102, 0.1)', 'rgba(238, 197, 102, 0.2)',
-                            'rgba(238, 197, 102, 0.4)', 'rgba(238, 197, 102, 0.6)',
-                            'rgba(238, 197, 102, 0.8)', 'rgba(238, 197, 102, 1)'
-                        ].reverse()
-                    }
-                },
-                splitArea: {
-                    show: false
-                },
-                axisLine: {
-                    lineStyle: {
-                        color: 'rgba(238, 197, 102, 0.5)'
-                    }
-                }
-            },
-
-            series: [
-                {
-                    name: 'DCL',
-                    type: 'radar',
-                    lineStyle: lineStyle,
-                    data: data2,
-                    symbol: 'none',
-                    itemStyle: {
-                        normal: {
-                            color: '#F9713C'
-                        }
-                    },
-                    areaStyle: {
-                        normal: {
-                            opacity: 0.2
-                        }
-                    }
-                },
-                {
-                    name: 'FCP',
-                    type: 'radar',
-                    lineStyle: lineStyle,
-                    data: data1,
-                    symbol: 'none',
-                    itemStyle: {
-                        normal: {
-                            color: '#B3E4A1'
-                        }
-                    },
-                    areaStyle: {
-                        normal: {
-                            opacity: 0.2
-                        }
-                    }
-                },
-            ]
-            // series: [
-            //     {
-            //         name:'FCP',
-            //         type:'pie',
-            //         radius : '65%',
-            //         center : ['50%','45%'],
-            //         roseType : 'radius',
-            //         label: {
-            //             normal: {
-            //                 show: false
-            //             },
-            //             emphasis: {
-            //                 show: true
-            //             }
-            //         },
-            //         lableLine: {
-            //             normal: {
-            //                 show: false
-            //             },
-            //             emphasis: {
-            //                 show: true
-            //             }
-            //         },
-            //         itemStyle: {
-            //             emphasis: {
-            //                 shadowBlur: 10,
-            //                 shadowOffsetX: 0,
-            //                 shaowColor: 'rgba(0,0,0,0.5)'
-            //             }
-            //         },
-            //         data: [
-            //             {value:map2toFix(FCPArray[0]),name:'快速加载'},
-            //             {value:map2toFix(FCPArray[1]),name:'中速加载'},
-            //             {value:map2toFix(FCPArray[2]),name:'慢速加载'},
-            //         ]
-            //     }
-            // ]
-        })
     }
 
     render() {
@@ -262,85 +44,350 @@ export default class PageLoadDistribution extends PureComponent {
         const slowTextFCP = '此网页中'+map2Percetage(FCPArray[2])+'加载的First Contentful Paint属于快速';
         const slowTextDCL = '此网页中'+map2Percetage(DCLArray[2])+'加载的DOM Content Loaded属于快速';
 
+        //card
+        const { DataView } = DataSet;
+        const { Html } = Guide;
+        const DCLfast = [
+            { item: '事例一', count: DCLArray[0]*100 },
+            { item: '事例二', count: 100-DCLArray[0]*100 },
+        ];
+        const DCLmedium = [
+            { item: '事例一', count: DCLArray[1]*100 },
+            { item: '事例二', count: 100-DCLArray[1]*100 },
+        ];
+        const DCLslow = [
+            { item: '事例一', count: DCLArray[2]*100 },
+            { item: '事例二', count: 100-DCLArray[2]*100 },
+        ];
+
+        const FCPfast = [
+            { item: '事例一', count: FCPArray[0]*100 },
+            { item: '事例二', count: 100-FCPArray[0]*100 },
+        ];
+        const FCPmedium = [
+            { item: '事例一', count: FCPArray[1]*100 },
+            { item: '事例二', count: 100-FCPArray[1]*100 },
+        ];
+        const FCPslow = [
+            { item: '事例一', count: FCPArray[2]*100 },
+            { item: '事例二', count: 100-FCPArray[2]*100 },
+        ];
+
+        const DCLFastdv = new DataView();
+        const DCLMediumdv = new DataView();
+        const DCLSlowdv = new DataView();
+        const FCPFastdv = new DataView();
+        const FCPMediumdv = new DataView();
+        const FCPSlowdv = new DataView();
+
+        DCLFastdv.source(DCLfast).transform({
+            type: 'percent',
+            field: 'count',
+            dimension: 'item',
+            as: 'percent'
+        });
+        DCLMediumdv.source(DCLmedium).transform({
+            type: 'percent',
+            field: 'count',
+            dimension: 'item',
+            as: 'percent'
+        });
+        DCLSlowdv.source(DCLslow).transform({
+            type: 'percent',
+            field: 'count',
+            dimension: 'item',
+            as: 'percent'
+        });
+
+        FCPFastdv.source(FCPfast).transform({
+            type: 'percent',
+            field: 'count',
+            dimension: 'item',
+            as: 'percent'
+        });
+        FCPMediumdv.source(FCPmedium).transform({
+            type: 'percent',
+            field: 'count',
+            dimension: 'item',
+            as: 'percent'
+        });
+        FCPSlowdv.source(FCPslow).transform({
+            type: 'percent',
+            field: 'count',
+            dimension: 'item',
+            as: 'percent'
+        });
+
+        const cols = {
+            percent: {
+                formatter: val => {
+                    val = (val * 100) + '%';
+                    return val;
+                }
+            }
+        };
+
         return(
             <div className="outsiderWrapper">
-                <div className="wrapper">
-                    <div className="cardGroupWrapper">
-                        <p style={{fontSize: 16}}>DCL加载</p>
-                        <Card title="快速" style={{width:200,background:'#4EEE94'}}
-                              bordered={false} hoverable={true}
-                              extra={<Tooltip title={fastTextDCL} placement="bottomRight"><span className="moreDetail">More</span></Tooltip>}
-                        >
-                            <Meta title={<div>{map2Percetage(DCLArray[0])}</div>} description=
-                                {<div>
-                                    <span className="cardContentItem">min:{DCLminArray[0]}</span>
-                                    <span className="cardContentItem">max:{DCLmaxArray[0]}</span>
-                                </div>}
-                            />
-                        </Card>
-                        <Card title="中速" style={{width:200,background:'#FFD700'}}
-                              bordered={false}
-                              hoverable={true}
-                              extra={<Tooltip title={mediumTextDCL} placement="bottomRight"><span className="moreDetail">More</span></Tooltip>}
-                        >
-                            <Meta title={<div>{map2Percetage(DCLArray[1])}</div>} description=
-                                {<div>
-                                    <span className="cardContentItem">min:{DCLminArray[1]}</span>
-                                    <span className="cardContentItem">max:{DCLmaxArray[1]}</span>
-                                </div>}
-                            />
-                        </Card>
-                        <Card title="慢速" style={{width:200,background:'#FF6A6A'}}
-                              bordered={false}
-                              hoverable={true}
-                              extra={<Tooltip title={slowTextDCL} placement="bottomRight"><span className="moreDetail">More</span></Tooltip>}
-                        >
-                            <Meta title={<div>{map2Percetage(DCLArray[2])}</div>} description=
-                                {<div>
-                                    <span className="cardContentItem">min:{DCLminArray[2]}</span>
-                                </div>}
-                            />
-                        </Card>
-                    </div>
-                    <div className="cardGroupWrapper">
-                        <p style={{fontSize: 16}}>FCP加载</p>
-                        <Card title="快速" style={{width:200,background:'#4EEE94'}}
-                              bordered={false}
-                              hoverable={true}
-                              extra={<Tooltip title={fastTextFCP} placement="bottomRight"><span className="moreDetail">More</span></Tooltip>}
-                        >
-                            <Meta title={<div>{map2Percetage(FCPArray[0])}</div>} description=
-                                {<div>
-                                    <span className="cardContentItem">min:{FCPminArray[0]}</span>
-                                    <span className="cardContentItem">max:{FCPmaxArray[0]}</span>
-                                </div>}
-                            />
-                        </Card>
-                        <Card title="中速" style={{width:200,background:'#FFD700'}}
-                              bordered={false}
-                              hoverable={true}
-                              extra={<Tooltip title={mediumTextFCP} placement="bottomRight"><span className="moreDetail">More</span></Tooltip>}
-                        >
-                            <Meta title={<div>{map2Percetage(FCPArray[1])}</div>} description=
-                                {<div>
-                                    <span className="cardContentItem">min:{FCPminArray[1]}</span>
-                                    <span className="cardContentItem">max:{FCPmaxArray[1]}</span>
-                                </div>}
-                            />
-                        </Card>
-                        <Card title="慢速" style={{width:200,background:'#FF6A6A'}}
-                              bordered={false}
-                              hoverable={true}
-                              extra={<Tooltip title={slowTextFCP} placement="bottomRight"><span className="moreDetail">More</span></Tooltip>}
-                        >
-                            <Meta title={<div>{map2Percetage(FCPArray[2])}</div>} description=
-                                {<div>
-                                    <span className="cardContentItem">min:{FCPminArray[2]}</span>
-                                </div>}
-                            />
-                        </Card>
-                    </div>
+                {/*<div className="wrapper">*/}
+                    {/*<div className="cardGroupWrapper">*/}
+                        {/*<p style={{fontSize: 16}}>DCL加载</p>*/}
+                        {/*<Card title="快速" style={{width:200,background:'#4EEE94'}}*/}
+                              {/*bordered={false} hoverable={true}*/}
+                              {/*extra={<Tooltip title={fastTextDCL} placement="bottomRight"><span className="moreDetail">More</span></Tooltip>}*/}
+                        {/*>*/}
+                            {/*<Meta title={<div>{map2Percetage(DCLArray[0])}</div>} description=*/}
+                                {/*{<div>*/}
+                                    {/*<span className="cardContentItem">min:{DCLminArray[0]}</span>*/}
+                                    {/*<span className="cardContentItem">max:{DCLmaxArray[0]}</span>*/}
+                                {/*</div>}*/}
+                            {/*/>*/}
+                        {/*</Card>*/}
+                        {/*<Card title="中速" style={{width:200,background:'#FFD700'}}*/}
+                              {/*bordered={false}*/}
+                              {/*hoverable={true}*/}
+                              {/*extra={<Tooltip title={mediumTextDCL} placement="bottomRight"><span className="moreDetail">More</span></Tooltip>}*/}
+                        {/*>*/}
+                            {/*<Meta title={<div>{map2Percetage(DCLArray[1])}</div>} description=*/}
+                                {/*{<div>*/}
+                                    {/*<span className="cardContentItem">min:{DCLminArray[1]}</span>*/}
+                                    {/*<span className="cardContentItem">max:{DCLmaxArray[1]}</span>*/}
+                                {/*</div>}*/}
+                            {/*/>*/}
+                        {/*</Card>*/}
+                        {/*<Card title="慢速" style={{width:200,background:'#FF6A6A'}}*/}
+                              {/*bordered={false}*/}
+                              {/*hoverable={true}*/}
+                              {/*extra={<Tooltip title={slowTextDCL} placement="bottomRight"><span className="moreDetail">More</span></Tooltip>}*/}
+                        {/*>*/}
+                            {/*<Meta title={<div>{map2Percetage(DCLArray[2])}</div>} description=*/}
+                                {/*{<div>*/}
+                                    {/*<span className="cardContentItem">min:{DCLminArray[2]}</span>*/}
+                                {/*</div>}*/}
+                            {/*/>*/}
+                        {/*</Card>*/}
+                <div style={{margin:20}}>
+                    <Row gutter={48}>
+                        <Col span={12}>
+                            <p style={{fontSize: 16}}>DCL加载</p>
+                            <Row gutter={16}>
+                                <Col span={8}>
+                                    <Card title="快速"
+                                          extra={<Tooltip title={fastTextDCL} placement="bottomRight"><Icon type="info-circle-o" /></Tooltip> }
+                                          hoverable={true}
+                                    >
+                                        <Chart height={100} data={DCLFastdv} scale={cols} padding={[-15,20,0,5]} forceFit>
+                                            <Coord type={'theta'} radius={0.75} innerRadius={0.6} />
+                                            <Axis  name="percent"/>
+                                            {/*<Guide >*/}
+                                                {/*<Html position ={[ '50%', '50%' ]} html='<div style="color:#8c8c8c;font-size:1.16em;text-align: center;width: 10em;">主机<br><span style="color:#262626;font-size:2.5em">200</span>台</div>' alignX='middle' alignY='middle'/>*/}
+                                            {/*</Guide>*/}
+                                            <Geom
+                                                type="intervalStack"
+                                                position="percent"
+                                                color={['item', ['#2ECC71', '#f0f2f5']]}
+                                                tooltip={['item*percent',(item, percent) => {
+                                                    percent = percent * 100 + '%';
+                                                    return {
+                                                        name: item,
+                                                        value: percent
+                                                    };
+                                                }]}
+                                                style={{lineWidth: 1,stroke: '#fff'}}
+                                            >
+                                            </Geom>
+                                        </Chart>
+                                    </Card>
+                                </Col>
+                                <Col span={8}>
+                                    <Card title="中速"
+                                          extra={<Tooltip title={mediumTextDCL} placement="bottomRight"><Icon type="info-circle-o" /></Tooltip> }
+                                          hoverable={true}
+                                    >
+                                        <Chart height={100} data={DCLMediumdv} scale={cols} padding={[-15,20,0,5]} forceFit>
+                                            <Coord type={'theta'} radius={0.75} innerRadius={0.6} />
+                                            <Axis  name="percent"/>
+                                            {/*<Guide >*/}
+                                            {/*<Html position ={[ '50%', '50%' ]} html='<div style="color:#8c8c8c;font-size:1.16em;text-align: center;width: 10em;">主机<br><span style="color:#262626;font-size:2.5em">200</span>台</div>' alignX='middle' alignY='middle'/>*/}
+                                            {/*</Guide>*/}
+                                            <Geom
+                                                type="intervalStack"
+                                                position="percent"
+                                                color={['item', ['#F1C40F', '#f0f2f5']]}
+                                                tooltip={['item*percent',(item, percent) => {
+                                                    percent = percent * 100 + '%';
+                                                    return {
+                                                        name: item,
+                                                        value: percent
+                                                    };
+                                                }]}
+                                                style={{lineWidth: 1,stroke: '#fff'}}
+                                            >
+                                            </Geom>
+                                        </Chart>
+                                    </Card>
+                                </Col>
+                                <Col span={8}>
+                                    <Card title="慢速"
+                                          extra={<Tooltip title={slowTextDCL} placement="bottomRight"><Icon type="info-circle-o" /></Tooltip> }
+                                          hoverable={true}
+                                    >
+                                        <Chart height={100} data={DCLSlowdv} scale={cols} padding={[-15,20,0,5]} forceFit>
+                                            <Coord type={'theta'} radius={0.75} innerRadius={0.6} />
+                                            <Axis  name="percent"/>
+                                            {/*<Guide >*/}
+                                            {/*<Html position ={[ '50%', '50%' ]} html='<div style="color:#8c8c8c;font-size:1.16em;text-align: center;width: 10em;">主机<br><span style="color:#262626;font-size:2.5em">200</span>台</div>' alignX='middle' alignY='middle'/>*/}
+                                            {/*</Guide>*/}
+                                            <Geom
+                                                type="intervalStack"
+                                                position="percent"
+                                                color={['item', ['#F1948A', '#f0f2f5']]}
+                                                tooltip={['item*percent',(item, percent) => {
+                                                    percent = percent * 100 + '%';
+                                                    return {
+                                                        name: item,
+                                                        value: percent
+                                                    };
+                                                }]}
+                                                style={{lineWidth: 1,stroke: '#fff'}}
+                                            >
+                                            </Geom>
+                                        </Chart>
+                                    </Card>
+                                </Col>
+                            </Row>
+                        </Col>
+                        <Col span={12}>
+                            <p style={{fontSize: 16}}>FCP加载</p>
+                            <Row gutter={16}>
+                                <Col span={8}>
+                                    <Card title="快速"
+                                          extra={<Tooltip title={fastTextFCP} placement="bottomRight"><Icon type="info-circle-o" /></Tooltip> }
+                                          hoverable={true}
+                                    >
+                                        <Chart height={100} data={FCPFastdv} scale={cols} padding={[-15,20,0,5]} forceFit>
+                                            <Coord type={'theta'} radius={0.75} innerRadius={0.6} />
+                                            <Axis  name="percent"/>
+                                            {/*<Guide >*/}
+                                            {/*<Html position ={[ '50%', '50%' ]} html='<div style="color:#8c8c8c;font-size:1.16em;text-align: center;width: 10em;">主机<br><span style="color:#262626;font-size:2.5em">200</span>台</div>' alignX='middle' alignY='middle'/>*/}
+                                            {/*</Guide>*/}
+                                            <Geom
+                                                type="intervalStack"
+                                                position="percent"
+                                                color={['item', ['#2ECC71', '#f0f2f5']]}
+                                                tooltip={['item*percent',(item, percent) => {
+                                                    percent = percent * 100 + '%';
+                                                    return {
+                                                        name: item,
+                                                        value: percent
+                                                    };
+                                                }]}
+                                                style={{lineWidth: 1,stroke: '#fff'}}
+                                            >
+                                            </Geom>
+                                        </Chart>
+                                    </Card>
+                                </Col>
+                                <Col span={8}>
+                                    <Card title="中速"
+                                          extra={<Tooltip title={mediumTextFCP} placement="bottomRight"><Icon type="info-circle-o" /></Tooltip> }
+                                          hoverable={true}
+                                    >
+                                        <Chart height={100} data={FCPMediumdv} scale={cols} padding={[-15,20,0,5]} forceFit>
+                                            <Coord type={'theta'} radius={0.75} innerRadius={0.6} />
+                                            <Axis  name="percent"/>
+                                            {/*<Guide >*/}
+                                            {/*<Html position ={[ '50%', '50%' ]} html='<div style="color:#8c8c8c;font-size:1.16em;text-align: center;width: 10em;">主机<br><span style="color:#262626;font-size:2.5em">200</span>台</div>' alignX='middle' alignY='middle'/>*/}
+                                            {/*</Guide>*/}
+                                            <Geom
+                                                type="intervalStack"
+                                                position="percent"
+                                                color={['item',['#F1C40F', '#f0f2f5']]}
+                                                tooltip={['item*percent',(item, percent) => {
+                                                    percent = percent * 100 + '%';
+                                                    return {
+                                                        name: item,
+                                                        value: percent
+                                                    };
+                                                }]}
+                                                style={{lineWidth: 1,stroke: '#fff'}}
+                                            >
+                                            </Geom>
+                                        </Chart>
+                                    </Card>
+                                </Col>
+                                <Col span={8}>
+                                    <Card title="慢速"
+                                          extra={<Tooltip title={slowTextFCP} placement="bottomRight"><Icon type="info-circle-o" /></Tooltip> }
+                                          hoverable={true}
+                                    >
+                                        <Chart height={100} data={FCPSlowdv} scale={cols} padding={[-15,20,0,5]} forceFit>
+                                            <Coord type={'theta'} radius={0.75} innerRadius={0.6} />
+                                            <Axis  name="percent"/>
+                                            {/*<Guide >*/}
+                                            {/*<Html position ={[ '50%', '50%' ]} html='<div style="color:#8c8c8c;font-size:1.16em;text-align: center;width: 10em;">主机<br><span style="color:#262626;font-size:2.5em">200</span>台</div>' alignX='middle' alignY='middle'/>*/}
+                                            {/*</Guide>*/}
+                                            <Geom
+                                                type="intervalStack"
+                                                position="percent"
+                                                color={['item',['#F1948A', '#f0f2f5']]}
+                                                tooltip={['item*percent',(item, percent) => {
+                                                    percent = percent * 100 + '%';
+                                                    return {
+                                                        name: item,
+                                                        value: percent
+                                                    };
+                                                }]}
+                                                style={{lineWidth: 1,stroke: '#fff'}}
+                                            >
+                                            </Geom>
+                                        </Chart>
+                                    </Card>
+                                </Col>
+                            </Row>
+                        </Col>
+                    </Row>
                 </div>
+                    {/*</div>*/}
+                    {/*<div className="cardGroupWrapper">*/}
+                        {/*<p style={{fontSize: 16}}>FCP加载</p>*/}
+                        {/*<Card title="快速" style={{width:200,background:'#4EEE94'}}*/}
+                              {/*bordered={false}*/}
+                              {/*hoverable={true}*/}
+                              {/*extra={<Tooltip title={fastTextFCP} placement="bottomRight"><span className="moreDetail">More</span></Tooltip>}*/}
+                        {/*>*/}
+                            {/*<Meta title={<div>{map2Percetage(FCPArray[0])}</div>} description=*/}
+                                {/*{<div>*/}
+                                    {/*<span className="cardContentItem">min:{FCPminArray[0]}</span>*/}
+                                    {/*<span className="cardContentItem">max:{FCPmaxArray[0]}</span>*/}
+                                {/*</div>}*/}
+                            {/*/>*/}
+                        {/*</Card>*/}
+                        {/*<Card title="中速" style={{width:200,background:'#FFD700'}}*/}
+                              {/*bordered={false}*/}
+                              {/*hoverable={true}*/}
+                              {/*extra={<Tooltip title={mediumTextFCP} placement="bottomRight"><span className="moreDetail">More</span></Tooltip>}*/}
+                        {/*>*/}
+                            {/*<Meta title={<div>{map2Percetage(FCPArray[1])}</div>} description=*/}
+                                {/*{<div>*/}
+                                    {/*<span className="cardContentItem">min:{FCPminArray[1]}</span>*/}
+                                    {/*<span className="cardContentItem">max:{FCPmaxArray[1]}</span>*/}
+                                {/*</div>}*/}
+                            {/*/>*/}
+                        {/*</Card>*/}
+                        {/*<Card title="慢速" style={{width:200,background:'#FF6A6A'}}*/}
+                              {/*bordered={false}*/}
+                              {/*hoverable={true}*/}
+                              {/*extra={<Tooltip title={slowTextFCP} placement="bottomRight"><span className="moreDetail">More</span></Tooltip>}*/}
+                        {/*>*/}
+                            {/*<Meta title={<div>{map2Percetage(FCPArray[2])}</div>} description=*/}
+                                {/*{<div>*/}
+                                    {/*<span className="cardContentItem">min:{FCPminArray[2]}</span>*/}
+                                {/*</div>}*/}
+                            {/*/>*/}
+                        {/*</Card>*/}
+                    {/*</div>*/}
+                {/*</div>*/}
                 <div className="wrapper">
                     <div className="cardGroupWrapper">
                         <Card bordered={false} bodyStyle={{padding:0,width:620}}>

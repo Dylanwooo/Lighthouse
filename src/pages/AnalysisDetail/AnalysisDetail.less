@@ -67,6 +67,22 @@
 
 .outsiderWrapper {
   margin: auto;
+  p {
+    margin-bottom: 0 !important;
+  }
+  :global {
+    .ant-card-head-title {
+      color: rgba(0,0,0,.45);
+      font-size: 14px !important;
+      line-height: 22px;
+    }
+    .ant-card-head {
+      border-bottom: none;
+    }
+    .ant-card-body {
+      padding: 0 24px;
+    }
+  }
   .wrapper {
     display: flex;
     flex-direction: row;
@@ -87,10 +103,6 @@
 
       .cardContentItem {
         margin-right: 20px;
-      }
-      .moreDetail {
-        font-size: 15px;
-        color: #00C1DE;
       }
     }
   }

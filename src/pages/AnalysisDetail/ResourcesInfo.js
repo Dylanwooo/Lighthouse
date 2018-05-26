@@ -5,7 +5,6 @@
 import React, { PureComponent } from 'react';
 import { Card,Row,Col } from 'antd';
 import { mapTime2MS,map2LoadType } from '../../utils/utils';
-//import { Chart, Tooltip, Axis, Legend, Coord, Guide, Pie, registerShape, Series } from 'viser-react';
 import './AnalysisDetail.less'
 
 import { Chart, Geom, Axis, Tooltip, Coord, Label, Legend, View, Guide, Shape } from 'bizcharts';
