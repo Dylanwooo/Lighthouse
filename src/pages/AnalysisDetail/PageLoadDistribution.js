@@ -1,12 +1,12 @@
 import React, { PureComponent } from 'react';
-import { Card,Row,Col,Tooltip,Icon } from 'antd';
+import { Card,Row,Col,Tooltip,Icon,Tabs } from 'antd';
 import { map2Percetage,map2toFix } from '../../utils/utils';
 import { Chart, Geom, Axis, Coord, Label, Legend, View, Guide, Shape } from "bizcharts";
 import './AnalysisDetail.less'
 
 const { Meta } = Card;
 const DataSet = require('@antv/data-set');
-
+const TabPane = Tabs.TabPane;
 
 let FCPArray =[];
 let DCLArray = [];
@@ -118,7 +118,7 @@ export default class PageLoadDistribution extends PureComponent {
             as: 'percent'
         });
 
-        const cols = {
+        const cardCols = {
             percent: {
                 formatter: val => {
                     val = (val * 100) + '%';
@@ -127,47 +127,59 @@ export default class PageLoadDistribution extends PureComponent {
             }
         };
 
+        //箱型图
+        const boxData = [
+            { x: '测试1', low: 3481.5, q1: 4224, median: 4470, q3: 4719, high: 5416.5},
+            { x: '测试2', low: 3940, q1: 4214, median: 4410, q3: 4685, high: 4904.8},
+            { x: '测试3', low: 3514.2, q1: 4454, median: 4808.1, q3: 4879, high: 5688.4},
+            { x: '测试4', low: 3805, q1: 4442, median: 4500, q3: 4921, high: 5162},
+            { x: '测试5', low: 4002.5, q1: 4213, median: 4658, q3: 4876.5, high: 5156.9},
+        ];
+
+        const boxDv = new DataView().source(boxData);
+        boxDv.transform({
+            type: 'map',
+            callback: (obj) => {
+                obj.range = [ obj.low, obj.q1, obj.median, obj.q3, obj.high ];
+                return obj;
+            }
+        });
+        const boxCols ={
+            range: {
+                min: 0,
+                max: 7000
+            },
+            outliers: {
+                min: 0,
+                max: 3000
+            }
+        };
+
+        //雷达
+        const data = [
+            { item: '快速', DCL: DCLArray[0], FCP: FCPArray[0] },
+            { item: '中速', DCL: DCLArray[1], FCP: FCPArray[1] },
+            { item: '慢速', DCL: DCLArray[2], FCP: FCPArray[2] },
+        ];
+        const dv = new DataView().source(data);
+        dv.transform({
+            type: 'fold',
+            fields: [ 'DCL', 'FCP' ], // 展开字段集
+            key: 'user', // key字段
+            value: 'score', // value字段
+        });
+
+        const cols = {
+            score: {
+                min: 0,
+                max: 1
+            }
+        };
+
         return(
             <div className="outsiderWrapper">
-                {/*<div className="wrapper">*/}
-                    {/*<div className="cardGroupWrapper">*/}
-                        {/*<p style={{fontSize: 16}}>DCL加载</p>*/}
-                        {/*<Card title="快速" style={{width:200,background:'#4EEE94'}}*/}
-                              {/*bordered={false} hoverable={true}*/}
-                              {/*extra={<Tooltip title={fastTextDCL} placement="bottomRight"><span className="moreDetail">More</span></Tooltip>}*/}
-                        {/*>*/}
-                            {/*<Meta title={<div>{map2Percetage(DCLArray[0])}</div>} description=*/}
-                                {/*{<div>*/}
-                                    {/*<span className="cardContentItem">min:{DCLminArray[0]}</span>*/}
-                                    {/*<span className="cardContentItem">max:{DCLmaxArray[0]}</span>*/}
-                                {/*</div>}*/}
-                            {/*/>*/}
-                        {/*</Card>*/}
-                        {/*<Card title="中速" style={{width:200,background:'#FFD700'}}*/}
-                              {/*bordered={false}*/}
-                              {/*hoverable={true}*/}
-                              {/*extra={<Tooltip title={mediumTextDCL} placement="bottomRight"><span className="moreDetail">More</span></Tooltip>}*/}
-                        {/*>*/}
-                            {/*<Meta title={<div>{map2Percetage(DCLArray[1])}</div>} description=*/}
-                                {/*{<div>*/}
-                                    {/*<span className="cardContentItem">min:{DCLminArray[1]}</span>*/}
-                                    {/*<span className="cardContentItem">max:{DCLmaxArray[1]}</span>*/}
-                                {/*</div>}*/}
-                            {/*/>*/}
-                        {/*</Card>*/}
-                        {/*<Card title="慢速" style={{width:200,background:'#FF6A6A'}}*/}
-                              {/*bordered={false}*/}
-                              {/*hoverable={true}*/}
-                              {/*extra={<Tooltip title={slowTextDCL} placement="bottomRight"><span className="moreDetail">More</span></Tooltip>}*/}
-                        {/*>*/}
-                            {/*<Meta title={<div>{map2Percetage(DCLArray[2])}</div>} description=*/}
-                                {/*{<div>*/}
-                                    {/*<span className="cardContentItem">min:{DCLminArray[2]}</span>*/}
-                                {/*</div>}*/}
-                            {/*/>*/}
-                        {/*</Card>*/}
                 <div style={{margin:20}}>
-                    <Row gutter={48}>
+                    <Row gutter={32}>
                         <Col span={12}>
                             <p style={{fontSize: 16}}>DCL加载</p>
                             <Row gutter={16}>
@@ -176,12 +188,12 @@ export default class PageLoadDistribution extends PureComponent {
                                           extra={<Tooltip title={fastTextDCL} placement="bottomRight"><Icon type="info-circle-o" /></Tooltip> }
                                           hoverable={true}
                                     >
-                                        <Chart height={100} data={DCLFastdv} scale={cols} padding={[-15,20,0,5]} forceFit>
+                                        <Chart height={100} data={DCLFastdv} scale={cardCols} padding={[-15,20,0,5]} forceFit>
                                             <Coord type={'theta'} radius={0.75} innerRadius={0.6} />
                                             <Axis  name="percent"/>
-                                            {/*<Guide >*/}
-                                                {/*<Html position ={[ '50%', '50%' ]} html='<div style="color:#8c8c8c;font-size:1.16em;text-align: center;width: 10em;">主机<br><span style="color:#262626;font-size:2.5em">200</span>台</div>' alignX='middle' alignY='middle'/>*/}
-                                            {/*</Guide>*/}
+                                            <Guide >
+                                                <Html position ={[ '50%', '50%' ]} html='<span style="color:#2ECC71;font-size:18px">84%</span>' alignX='middle' alignY='middle'/>
+                                            </Guide>
                                             <Geom
                                                 type="intervalStack"
                                                 position="percent"
@@ -204,12 +216,12 @@ export default class PageLoadDistribution extends PureComponent {
                                           extra={<Tooltip title={mediumTextDCL} placement="bottomRight"><Icon type="info-circle-o" /></Tooltip> }
                                           hoverable={true}
                                     >
-                                        <Chart height={100} data={DCLMediumdv} scale={cols} padding={[-15,20,0,5]} forceFit>
+                                        <Chart height={100} data={DCLMediumdv} scale={cardCols} padding={[-15,20,0,5]} forceFit>
                                             <Coord type={'theta'} radius={0.75} innerRadius={0.6} />
                                             <Axis  name="percent"/>
-                                            {/*<Guide >*/}
-                                            {/*<Html position ={[ '50%', '50%' ]} html='<div style="color:#8c8c8c;font-size:1.16em;text-align: center;width: 10em;">主机<br><span style="color:#262626;font-size:2.5em">200</span>台</div>' alignX='middle' alignY='middle'/>*/}
-                                            {/*</Guide>*/}
+                                            <Guide >
+                                                <Html position ={[ '50%', '50%' ]} html='<span style="color:#F1C40F;font-size:18px">11%</span>' alignX='middle' alignY='middle'/>
+                                            </Guide>
                                             <Geom
                                                 type="intervalStack"
                                                 position="percent"
@@ -232,12 +244,12 @@ export default class PageLoadDistribution extends PureComponent {
                                           extra={<Tooltip title={slowTextDCL} placement="bottomRight"><Icon type="info-circle-o" /></Tooltip> }
                                           hoverable={true}
                                     >
-                                        <Chart height={100} data={DCLSlowdv} scale={cols} padding={[-15,20,0,5]} forceFit>
+                                        <Chart height={100} data={DCLSlowdv} scale={cardCols} padding={[-15,20,0,5]} forceFit>
                                             <Coord type={'theta'} radius={0.75} innerRadius={0.6} />
                                             <Axis  name="percent"/>
-                                            {/*<Guide >*/}
-                                            {/*<Html position ={[ '50%', '50%' ]} html='<div style="color:#8c8c8c;font-size:1.16em;text-align: center;width: 10em;">主机<br><span style="color:#262626;font-size:2.5em">200</span>台</div>' alignX='middle' alignY='middle'/>*/}
-                                            {/*</Guide>*/}
+                                            <Guide >
+                                                <Html position ={[ '50%', '50%' ]} html='<span style="color:#F1948A;font-size:18px">5%</span>' alignX='middle' alignY='middle'/>
+                                            </Guide>
                                             <Geom
                                                 type="intervalStack"
                                                 position="percent"
@@ -265,12 +277,12 @@ export default class PageLoadDistribution extends PureComponent {
                                           extra={<Tooltip title={fastTextFCP} placement="bottomRight"><Icon type="info-circle-o" /></Tooltip> }
                                           hoverable={true}
                                     >
-                                        <Chart height={100} data={FCPFastdv} scale={cols} padding={[-15,20,0,5]} forceFit>
+                                        <Chart height={100} data={FCPFastdv} scale={cardCols} padding={[-15,20,0,5]} forceFit>
                                             <Coord type={'theta'} radius={0.75} innerRadius={0.6} />
                                             <Axis  name="percent"/>
-                                            {/*<Guide >*/}
-                                            {/*<Html position ={[ '50%', '50%' ]} html='<div style="color:#8c8c8c;font-size:1.16em;text-align: center;width: 10em;">主机<br><span style="color:#262626;font-size:2.5em">200</span>台</div>' alignX='middle' alignY='middle'/>*/}
-                                            {/*</Guide>*/}
+                                            <Guide >
+                                                <Html position ={[ '50%', '50%' ]} html='<span style="color:#2ECC71;font-size:18px">83%</span>' alignX='middle' alignY='middle'/>
+                                            </Guide>
                                             <Geom
                                                 type="intervalStack"
                                                 position="percent"
@@ -293,12 +305,12 @@ export default class PageLoadDistribution extends PureComponent {
                                           extra={<Tooltip title={mediumTextFCP} placement="bottomRight"><Icon type="info-circle-o" /></Tooltip> }
                                           hoverable={true}
                                     >
-                                        <Chart height={100} data={FCPMediumdv} scale={cols} padding={[-15,20,0,5]} forceFit>
+                                        <Chart height={100} data={FCPMediumdv} scale={cardCols} padding={[-15,20,0,5]} forceFit>
                                             <Coord type={'theta'} radius={0.75} innerRadius={0.6} />
                                             <Axis  name="percent"/>
-                                            {/*<Guide >*/}
-                                            {/*<Html position ={[ '50%', '50%' ]} html='<div style="color:#8c8c8c;font-size:1.16em;text-align: center;width: 10em;">主机<br><span style="color:#262626;font-size:2.5em">200</span>台</div>' alignX='middle' alignY='middle'/>*/}
-                                            {/*</Guide>*/}
+                                            <Guide >
+                                                <Html position ={[ '50%', '50%' ]} html='<span style="color:#F1C40F;font-size:18px">12%</span>' alignX='middle' alignY='middle'/>
+                                            </Guide>
                                             <Geom
                                                 type="intervalStack"
                                                 position="percent"
@@ -321,12 +333,12 @@ export default class PageLoadDistribution extends PureComponent {
                                           extra={<Tooltip title={slowTextFCP} placement="bottomRight"><Icon type="info-circle-o" /></Tooltip> }
                                           hoverable={true}
                                     >
-                                        <Chart height={100} data={FCPSlowdv} scale={cols} padding={[-15,20,0,5]} forceFit>
+                                        <Chart height={100} data={FCPSlowdv} scale={cardCols} padding={[-15,20,0,5]} forceFit>
                                             <Coord type={'theta'} radius={0.75} innerRadius={0.6} />
                                             <Axis  name="percent"/>
-                                            {/*<Guide >*/}
-                                            {/*<Html position ={[ '50%', '50%' ]} html='<div style="color:#8c8c8c;font-size:1.16em;text-align: center;width: 10em;">主机<br><span style="color:#262626;font-size:2.5em">200</span>台</div>' alignX='middle' alignY='middle'/>*/}
-                                            {/*</Guide>*/}
+                                            <Guide >
+                                                <Html position ={[ '50%', '50%' ]} html='<span style="color:#F1948A;font-size:18px">5%</span>' alignX='middle' alignY='middle'/>
+                                            </Guide>
                                             <Geom
                                                 type="intervalStack"
                                                 position="percent"
@@ -348,58 +360,84 @@ export default class PageLoadDistribution extends PureComponent {
                         </Col>
                     </Row>
                 </div>
-                    {/*</div>*/}
-                    {/*<div className="cardGroupWrapper">*/}
-                        {/*<p style={{fontSize: 16}}>FCP加载</p>*/}
-                        {/*<Card title="快速" style={{width:200,background:'#4EEE94'}}*/}
-                              {/*bordered={false}*/}
-                              {/*hoverable={true}*/}
-                              {/*extra={<Tooltip title={fastTextFCP} placement="bottomRight"><span className="moreDetail">More</span></Tooltip>}*/}
-                        {/*>*/}
-                            {/*<Meta title={<div>{map2Percetage(FCPArray[0])}</div>} description=*/}
-                                {/*{<div>*/}
-                                    {/*<span className="cardContentItem">min:{FCPminArray[0]}</span>*/}
-                                    {/*<span className="cardContentItem">max:{FCPmaxArray[0]}</span>*/}
-                                {/*</div>}*/}
-                            {/*/>*/}
-                        {/*</Card>*/}
-                        {/*<Card title="中速" style={{width:200,background:'#FFD700'}}*/}
-                              {/*bordered={false}*/}
-                              {/*hoverable={true}*/}
-                              {/*extra={<Tooltip title={mediumTextFCP} placement="bottomRight"><span className="moreDetail">More</span></Tooltip>}*/}
-                        {/*>*/}
-                            {/*<Meta title={<div>{map2Percetage(FCPArray[1])}</div>} description=*/}
-                                {/*{<div>*/}
-                                    {/*<span className="cardContentItem">min:{FCPminArray[1]}</span>*/}
-                                    {/*<span className="cardContentItem">max:{FCPmaxArray[1]}</span>*/}
-                                {/*</div>}*/}
-                            {/*/>*/}
-                        {/*</Card>*/}
-                        {/*<Card title="慢速" style={{width:200,background:'#FF6A6A'}}*/}
-                              {/*bordered={false}*/}
-                              {/*hoverable={true}*/}
-                              {/*extra={<Tooltip title={slowTextFCP} placement="bottomRight"><span className="moreDetail">More</span></Tooltip>}*/}
-                        {/*>*/}
-                            {/*<Meta title={<div>{map2Percetage(FCPArray[2])}</div>} description=*/}
-                                {/*{<div>*/}
-                                    {/*<span className="cardContentItem">min:{FCPminArray[2]}</span>*/}
-                                {/*</div>}*/}
-                            {/*/>*/}
-                        {/*</Card>*/}
-                    {/*</div>*/}
-                {/*</div>*/}
-                <div className="wrapper">
-                    <div className="cardGroupWrapper">
-                        <Card bordered={false} bodyStyle={{padding:0,width:620}}>
-                            <div ref="disBar" style={{width:'100%',height:500}} />
+                <div style={{margin: 20}}>
+                    <Row gutter={32}>
+                        <Col span={16}>
+                            <Card title="箱型图分析">
+                                <Tabs defaultActiveKey="1" >
+                                    <TabPane tab="DCL加载结果" key="1">
+                                        <Chart height={500} data={boxDv} scale={boxCols} padding={[ 20, 120, 95 ]} forceFit>
+                                            <Axis name='x' />
+                                            <Axis name='range' />
+                                            <Tooltip showTitle={false} crosshairs={{type:'rect',style: {fill: '#E4E8F1',fillOpacity: 0.43}}}     itemTpl='<li data-index={index} style="margin-bottom:4px;"><span style="background-color:{color};" class="g2-tooltip-marker"></span>{name}<br/><span style="padding-left: 16px">最大值：{high}</span><br/><span style="padding-left: 16px">上四分位数：{q3}</span><br/><span style="padding-left: 16px">中位数：{median}</span><br/><span style="padding-left: 16px">下四分位数：{q1}</span><br/><span style="padding-left: 16px">最小值：{low}</span><br/></li>'/>
 
-                        </Card>
-                    </div>
-                    <div className="cardGroupWrapper">
-                        <Card bordered={false} bodyStyle={{padding:0,width:620}}>
-                            <div ref="disPie" style={{width:'100%',height:500}} />
-                        </Card>
-                    </div>
+                                            <Geom type="schema" position="x*range" shape='box' tooltip={['x*low*q1*median*q3*high', (x, low, q1, median, q3, high) => {
+                                                return {
+                                                    name: x,
+                                                    low,
+                                                    q1,
+                                                    median,
+                                                    q3,
+                                                    high
+                                                };
+                                            }]}
+                                                  style={{stroke: 'rgba(0, 0, 0, 0.45)',fill: '#1890FF',fillOpacity: 0.3}}
+                                            />
+                                            <View data={data} >
+                                                <Geom type="point" position="x*outliers" shape='circle' size={3} active={false} />
+                                            </View>
+                                        </Chart>
+                                    </TabPane>
+                                    <TabPane tab="FCP加载结果" key="2">
+                                        <Chart height={500} data={boxDv} scale={boxCols} padding={[ 20, 120, 95 ]} forceFit>
+                                            <Axis name='x' />
+                                            <Axis name='range' />
+                                            <Tooltip showTitle={false} crosshairs={{type:'rect',style: {fill: '#E4E8F1',fillOpacity: 0.43}}}     itemTpl='<li data-index={index} style="margin-bottom:4px;"><span style="background-color:{color};" class="g2-tooltip-marker"></span>{name}<br/><span style="padding-left: 16px">最大值：{high}</span><br/><span style="padding-left: 16px">上四分位数：{q3}</span><br/><span style="padding-left: 16px">中位数：{median}</span><br/><span style="padding-left: 16px">下四分位数：{q1}</span><br/><span style="padding-left: 16px">最小值：{low}</span><br/></li>'/>
+
+                                            <Geom type="schema" position="x*range" shape='box' tooltip={['x*low*q1*median*q3*high', (x, low, q1, median, q3, high) => {
+                                                return {
+                                                    name: x,
+                                                    low,
+                                                    q1,
+                                                    median,
+                                                    q3,
+                                                    high
+                                                };
+                                            }]}
+                                                  style={{stroke: 'rgba(0, 0, 0, 0.45)',fill: '#1890FF',fillOpacity: 0.3}}
+                                            />
+                                            <View data={data} >
+                                                <Geom type="point" position="x*outliers" shape='circle' size={3} active={false} />
+                                            </View>
+                                        </Chart>
+                                    </TabPane>
+                                </Tabs>
+                            </Card>
+                        </Col>
+                        <Col span={8}>
+                            <Card title="雷达图分析">
+                                <Chart height={500} data={dv} padding={[20, 20, 95, 20 ]} scale={cols} forceFit>
+                                    <Coord type="polar" radius={0.8} />
+                                    <Axis name="item" line={null} tickLine={null} grid={{lineStyle: {
+                                        lineDash: null
+                                    },
+                                        hideFirstLine: false}} />
+                                    <Tooltip />
+                                    <Axis name="score" line={null} tickLine={null} grid={{type: 'polygon',
+                                        lineStyle: {
+                                            lineDash: null
+                                        },
+                                        alternateColor: 'rgba(0, 0, 0, 0.04)'}} />
+                                    <Legend name="user" marker="circle" offset={30}/>
+                                    <Geom type='area' position="item*score" color="user" />
+                                    <Geom type='line' position="item*score" color="user" size={2}/>
+                                    <Geom type='point' position="item*score" color="user" shape="circle" size={4} style={{stroke: '#fff',
+                                        lineWidth: 1,
+                                        fillOpacity: 1}} />
+                                </Chart>
+                            </Card>
+                        </Col>
+                    </Row>
                 </div>
             </div>
         )

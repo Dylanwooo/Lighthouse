@@ -3,8 +3,9 @@
   background: #333744;
 }
 .headTitle {
-  color: #ffffff;
-  font-size: 20px;
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 23px;
+  margin-left: 10px;
   font-family: -apple-system;
 }
 .logo {
@@ -55,7 +56,7 @@
   }
 
   .ant-layout-header {
-    background: #373d41;
+    background: #ffffff;
     text-align: left;
   }
   .trigger {
@@ -156,4 +157,48 @@
       margin: 0 50px 0 50px;
     }
   }
+}
+
+.pageHeader {
+  background: #ffffff;
+  width: 100%;
+  height: 150px;
+  margin-top: 5px;
+  padding-top: 20px;
+  .leftContainer {
+    margin: 0 0 0 45px;
+    .contentTitle {
+      font-size: 20px;
+      font-weight: 500;
+      color: rgba(0,0,0,.85);
+    }
+    .contentIntro {
+      font-size: 13px;
+      margin: 10px 0 0 50px;
+      color: rgba(0,0,0,.45);
+    }
+  }
+  .rightContainer {
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+    .number {
+      font-size: 25px;
+      font-weight: 600;
+      margin: 0 !important;
+    }
+  }
+}
+
+.mainContainer {
+  margin: 20px;
+  :global {
+    .ant-card-head-title {
+      font-size: 18px !important;
+      color: rgba(0,0,0,.65);
+    }
+    .ant-card-body {
+      padding: 0;
+    }
+  };
 }

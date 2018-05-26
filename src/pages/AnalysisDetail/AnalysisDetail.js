@@ -86,6 +86,7 @@ class AnalysisDetail extends PureComponent {
                     </Sider>
                     <Layout>
                         <Header>
+                            <Icon type="codepen" style={{color:'#00C1DE',fontSize:30}} />
                             <span className="headTitle">前端性能监测系统</span>
                         </Header>
                         <Content>
