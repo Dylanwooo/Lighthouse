@@ -153,7 +153,7 @@ export default class ResourceOptimize extends PureComponent {
         return(
             <div>
                 <div className="optimizeContainer">
-                    <Tabs style={{padding: '0 24px 24px 24px'}}>
+                    <Tabs>
                         <TabPane tab="图片优化" key="1">
                             <div className="itemWrapper">
                                 <p style={{marginLeft:20}}>规则影响：{map2toFix(this.props.imgRuleImpact)}</p>
@@ -169,13 +169,13 @@ export default class ResourceOptimize extends PureComponent {
                         </TabPane>
                         <TabPane tab="缩减CSS" key="2">
                             <div className="itemWrapper">
-                                <p>规则影响：{this.props.cssRuleImpact}</p>
-                                <p>{cssTitle}</p>
+                                <p style={{marginLeft:20}}>规则影响：{this.props.cssRuleImpact}</p>
+                                <p style={{marginLeft:20}}>{cssTitle}</p>
                             </div>
                         </TabPane>
                         <TabPane tab="缩减HTML" key="3">
                             <div className="itemWrapper">
-                                <p>规则影响：{map2toFix(this.props.htmlRuleImpact)}</p>
+                                <p style={{marginLeft:20}}>规则影响：{map2toFix(this.props.htmlRuleImpact)}</p>
                                 <p>{htmlTitle}</p>
                                 {/*{htmlFormat.length === 0?*/}
                                     {/*null :*/}
@@ -188,7 +188,7 @@ export default class ResourceOptimize extends PureComponent {
                         </TabPane>
                         <TabPane tab="缩减JavaScript" key="4">
                             <div className="itemWrapper">
-                                <p>规则影响：{map2toFix(this.props.jsRuleImpact)}</p>
+                                <p style={{marginLeft:20}}>规则影响：{map2toFix(this.props.jsRuleImpact)}</p>
                                 {/*<p>{jsTitle}</p>*/}
                                 {/*{jsFormat.length === 0?*/}
                                     {/*null :*/}
@@ -201,8 +201,8 @@ export default class ResourceOptimize extends PureComponent {
                         </TabPane>
                         <TabPane tab="缩短服务响应时间" key="5">
                             <div className="itemWrapper">
-                                <p>规则影响：{this.props.serverRuleImpact}</p>
-                                <p>{serverTitle}</p>
+                                <p style={{marginLeft:20}}>规则影响：{this.props.serverRuleImpact}</p>
+                                <p style={{marginLeft:20}}>{serverTitle}</p>
                             </div>
                         </TabPane>
                     </Tabs>

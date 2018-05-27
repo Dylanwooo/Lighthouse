@@ -130,7 +130,7 @@ export default class Suggestion extends Component {
                                         <Icon type="ant-design" style={{fontSize:22,position:'relative',top:4,left:-9}}/>
                                         建议数
                                     </p>
-                                    <p className="number" style={{position:'relative',left:10}}>48</p>
+                                    <p className="number" style={{position:'relative',left:10}}>68</p>
                                 </div>
                             </div>
                         </Col>
@@ -165,10 +165,18 @@ export default class Suggestion extends Component {
                         </Col>
                         <Col span={8}>
                             <Card title="首屏阻塞" style={{marginBottom:20}}>
-
+                                <FirstPaintBlock
+                                    FPBCSSBlock = {FPBCSSBlock}
+                                    FPBJSBlock = {FPBJSBlock}
+                                    FPBImpact = {FPBImpact}
+                                    FPBSummary = {FPBSummary}
+                                />
                             </Card>
                             <Card title="启用压缩">
-
+                                <Gzip dataSource={GzipUrlBlocks}
+                                    GzipRuleImpact={GzipRuleImpact}
+                                    GzipSummary={GzipSummary}
+                                />
                             </Card>
                         </Col>
                     </Row>

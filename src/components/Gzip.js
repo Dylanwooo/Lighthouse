@@ -44,9 +44,10 @@ export default class Gzip extends PureComponent {
 
         return(
             <div>
-                <p>{ruleName}</p>
-                <p>启用压缩规则影响：{ruleImpact}</p>
-                <p>{GzipSummary}</p>
+                <div style={{marginLeft:20}}>
+                    <p>启用压缩规则影响：{ruleImpact}</p>
+                    <p>{GzipSummary}</p>
+                </div>
                 <Table columns={columns} dataSource={data}/>
             </div>
         )
