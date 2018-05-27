@@ -3,7 +3,7 @@
  */
 
 import React, { PureComponent } from 'react';
-import { Card,Row,Col } from 'antd';
+import { Card,Row,Col,Tabs } from 'antd';
 import { mapTime2MS,map2LoadType } from '../../utils/utils';
 import './AnalysisDetail.less'
 
@@ -11,7 +11,7 @@ import { Chart, Geom, Axis, Tooltip, Coord, Label, Legend, View, Guide, Shape } 
 
 
 const DataSet = require('@antv/data-set');
-
+const TabPane = Tabs.TabPane;
 
 export default class ResourcesInfo extends PureComponent {
 
@@ -216,84 +216,91 @@ export default class ResourcesInfo extends PureComponent {
             <div>
                 <div className="timingWrapper">
                     <Card style={{width:'100%'}} title="页面加载耗时">
-                        <Row>
-                            <Col span={6}>
-                                <Card bordered={false}>
-                                    <p className="indexTitle">平均页面加载完成时间</p>
-                                    <p>{this.state.loadPage}<span className='unit'>s</span></p>
-                                </Card>
-                            </Col>
-                            <Col span={6}>
-                                <Card bordered={false}>
-                                    <p className="indexTitle">平均DOM树构建时间</p>
-                                    <p>{this.state.domReady}<span className='unit'>s</span></p>
-                                </Card>
-                            </Col>
-                            <Col span={6}>
-                                <Card bordered={false}>
-                                    <p className="indexTitle">平均重定向时间</p>
-                                    <p>{this.state.redirect}<span className='unit'>s</span></p>
-                                </Card>
-                            </Col>
-                            <Col span={6}>
-                                <Card bordered={false}>
-                                    <p className="indexTitle">平均DNS查询时间</p>
-                                    <p>{this.state.lookupDomain}<span className='unit'>s</span></p>
-                                </Card>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col span={6}>
-                                <Card bordered={false}>
-                                    <p className="indexTitle">平均白屏时间</p>
-                                    <p>{this.state.ttfb}<span className='unit'>ms</span></p>
-                                </Card>
-                            </Col>
-                            <Col span={6}>
-                                <Card bordered={false}>
-                                    <p className="indexTitle">平均request时间</p>
-                                    <p>{this.state.request}<span className='unit'>s</span></p>
-                                </Card>
-                            </Col>
-                            <Col span={6}>
-                                <Card bordered={false}>
-                                    <p className="indexTitle">平均onload回调时间</p>
-                                    <p>{this.state.loadEvent}<span className='unit'>s</span></p>
-                                </Card>
-                            </Col>
-                            <Col span={6}>
-                                <Card bordered={false}>
-                                    <p className="indexTitle">平均缓存时间</p>
-                                    <p>{this.state.appcache}<span className='unit'>s</span></p>
-                                </Card>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col span={6}>
-                                <Card bordered={false}>
-                                    <p className="indexTitle">平均卸载页面时间</p>
-                                    <p>{this.state.unloadEvent}<span className='unit'>s</span></p>
-                                </Card>
-                            </Col>
-                            <Col span={6}>
-                                <Card bordered={false}>
-                                    <p className="indexTitle">平均TCP握手建立时间</p>
-                                    <p>{this.state.connect}<span className='unit'>s</span></p>
-                                </Card>
-                            </Col>
-                            <Col span={6}>
-                                <Card bordered={false}>
-                                    <p className="indexTitle">重定向次数</p>
-                                    <p>{this.state.redirectCount}<span className='unit'>次</span></p>
-                                </Card>
-                            </Col>
-                            <Col span={6}>
-                                <Card bordered={false}>
-                                    <p className="indexTitle">页面加载方式</p>
-                                    <p className="loadType">{this.state.loadType}</p>
-                                </Card>
-                            </Col>
-                        </Row>
+                        <Tabs>
+                            <TabPane tab="加载耗时详情" key="1">
+                                <Row>
+                                    <Col span={6}>
+                                        <Card bordered={false}>
+                                            <p className="indexTitle">平均页面加载完成时间</p>
+                                            <p>{this.state.loadPage}<span className='unit'>s</span></p>
+                                        </Card>
+                                    </Col>
+                                    <Col span={6}>
+                                        <Card bordered={false}>
+                                            <p className="indexTitle">平均DOM树构建时间</p>
+                                            <p>{this.state.domReady}<span className='unit'>s</span></p>
+                                        </Card>
+                                    </Col>
+                                    <Col span={6}>
+                                        <Card bordered={false}>
+                                            <p className="indexTitle">平均重定向时间</p>
+                                            <p>{this.state.redirect}<span className='unit'>s</span></p>
+                                        </Card>
+                                    </Col>
+                                    <Col span={6}>
+                                        <Card bordered={false}>
+                                            <p className="indexTitle">平均DNS查询时间</p>
+                                            <p>{this.state.lookupDomain}<span className='unit'>s</span></p>
+                                        </Card>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col span={6}>
+                                        <Card bordered={false}>
+                                            <p className="indexTitle">平均白屏时间</p>
+                                            <p>{this.state.ttfb}<span className='unit'>ms</span></p>
+                                        </Card>
+                                    </Col>
+                                    <Col span={6}>
+                                        <Card bordered={false}>
+                                            <p className="indexTitle">平均request时间</p>
+                                            <p>{this.state.request}<span className='unit'>s</span></p>
+                                        </Card>
+                                    </Col>
+                                    <Col span={6}>
+                                        <Card bordered={false}>
+                                            <p className="indexTitle">平均onload回调时间</p>
+                                            <p>{this.state.loadEvent}<span className='unit'>s</span></p>
+                                        </Card>
+                                    </Col>
+                                    <Col span={6}>
+                                        <Card bordered={false}>
+                                            <p className="indexTitle">平均缓存时间</p>
+                                            <p>{this.state.appcache}<span className='unit'>s</span></p>
+                                        </Card>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col span={6}>
+                                        <Card bordered={false}>
+                                            <p className="indexTitle">平均卸载页面时间</p>
+                                            <p>{this.state.unloadEvent}<span className='unit'>s</span></p>
+                                        </Card>
+                                    </Col>
+                                    <Col span={6}>
+                                        <Card bordered={false}>
+                                            <p className="indexTitle">平均TCP握手建立时间</p>
+                                            <p>{this.state.connect}<span className='unit'>s</span></p>
+                                        </Card>
+                                    </Col>
+                                    <Col span={6}>
+                                        <Card bordered={false}>
+                                            <p className="indexTitle">重定向次数</p>
+                                            <p>{this.state.redirectCount}<span className='unit'>次</span></p>
+                                        </Card>
+                                    </Col>
+                                    <Col span={6}>
+                                        <Card bordered={false}>
+                                            <p className="indexTitle">页面加载方式</p>
+                                            <p className="loadType">{this.state.loadType}</p>
+                                        </Card>
+                                    </Col>
+                                </Row>
+                            </TabPane>
+                            <TabPane tab="加载耗时箱型图" key="2">
+
+                            </TabPane>
+                        </Tabs>
                     </Card>
                 </div>
                 <div className="pageStatsWrapper">
