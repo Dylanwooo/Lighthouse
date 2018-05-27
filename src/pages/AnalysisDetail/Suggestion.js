@@ -91,8 +91,8 @@ export default class Suggestion extends Component {
         const FPBSummary = MinimizeRenderBlockingResources.summary;
 
         const gridStyle = {
-            width: '25%',
-            textAlign: 'center',
+            width: '33%',
+            textAlign: 'left',
         };
 
         return (
@@ -140,13 +140,55 @@ export default class Suggestion extends Component {
                     <Row gutter={16}>
                         <Col span={16}>
                             <Card title="浏览器缓存" extra={<a href="#">全部条目</a>}>
-                                <Card.Grid style={gridStyle}>Content</Card.Grid>
-                                <Card.Grid style={gridStyle}>Content</Card.Grid>
-                                <Card.Grid style={gridStyle}>Content</Card.Grid>
-                                <Card.Grid style={gridStyle}>Content</Card.Grid>
-                                <Card.Grid style={gridStyle}>Content</Card.Grid>
-                                <Card.Grid style={gridStyle}>Content</Card.Grid>
-                                <Card.Grid style={gridStyle}>Content</Card.Grid>
+                                <p style={{marginLeft:20}}>启用浏览器缓存规则影响: 1.78</p>
+                                <Card.Grid style={gridStyle}>
+                                    <div style={{wordWrap:'break-word',wordBreak:'normal',color:'rgba(0,0,0,0.8)'}}>
+                                        <span style={{fontSize:16,marginRight:5}}>URL:</span>
+                                        <span style={{color:'rgb(0, 193, 222)',fontSize:14}}>https://misc.360buyimg.com/mtd/pc/index_2017/2.1.0/chunk/legacy.chunk.js</span>
+                                    </div>
+                                    <div>调用次数: 1</div>
+                                    <div>缓存时间: 15分钟</div>
+                                </Card.Grid>
+                                <Card.Grid style={gridStyle}>
+                                    <div style={{wordWrap:'break-word',wordBreak:'normal',color:'rgba(0,0,0,0.8)'}}>
+                                        <span style={{fontSize:16,marginRight:5}}>URL:</span>
+                                        <span style={{color:'rgb(0, 193, 222)',fontSize:14}}>https://misc.360buyimg.com/mtd/pc/index_2017/2.1.0/chunk/serviceSprite.chunk.js</span>
+                                    </div>
+                                    <div>调用次数: 1</div>
+                                    <div>缓存时间: 2小时</div>
+                                </Card.Grid>
+                                <Card.Grid style={gridStyle}>
+                                    <div style={{wordWrap:'break-word',wordBreak:'normal',color:'rgba(0,0,0,0.8)'}}>
+                                        <span style={{fontSize:16,marginRight:5}}>URL:</span>
+                                        <span style={{color:'rgb(0, 193, 222)',fontSize:14}}>https://misc.360buyimg.com/mtd/pc/o2_toolbar/1.0.0/home//js/localStorageObj.js</span>
+                                    </div>
+                                    <div>调用次数: 2</div>
+                                    <div>缓存时间: 10分钟</div>
+                                </Card.Grid>
+                                <Card.Grid style={gridStyle}>
+                                    <div style={{wordWrap:'break-word',wordBreak:'normal',color:'rgba(0,0,0,0.8)'}}>
+                                        <span style={{fontSize:16,marginRight:5}}>URL:</span>
+                                        <span style={{color:'rgb(0, 193, 222)',fontSize:14}}>https://m.360buyimg.com/babel/jfs/t16960/183/2530397193/100118/8dc16c70/5b03b5e6Nd2a50984.jpg</span>
+                                    </div>
+                                    <div>调用次数: 4</div>
+                                    <div>缓存时间: 0.5小时</div>
+                                </Card.Grid>
+                                <Card.Grid style={gridStyle}>
+                                    <div style={{wordWrap:'break-word',wordBreak:'normal',color:'rgba(0,0,0,0.8)'}}>
+                                        <span style={{fontSize:16,marginRight:5}}>URL:</span>
+                                        <span style={{color:'rgb(0, 193, 222)',fontSize:14}}>https://m.360buyimg.com/babel/jfs/t16960/183/2530397193/100118/8dc16c70/5b03b5e6Nd2a50984.jpg</span>
+                                    </div>
+                                    <div>调用次数: 4</div>
+                                    <div>缓存时间: 2小时</div>
+                                </Card.Grid>
+                                <Card.Grid style={gridStyle}>
+                                    <div style={{wordWrap:'break-word',wordBreak:'normal',color:'rgba(0,0,0,0.8)'}}>
+                                        <span style={{fontSize:16,marginRight:5}}>URL:</span>
+                                        <span style={{color:'rgb(0, 193, 222)',fontSize:14}}>https://m.360buyimg.com/babel/jfs/t16960/183/2530397193/100118/8dc16c70/5b03b5e6Nd2a50984.jpg</span>
+                                    </div>
+                                    <div>调用次数: 4</div>
+                                    <div>缓存时间: 12小时</div>
+                                </Card.Grid>
                             </Card>
                             <Card style={{marginTop:20}} title="资源优化" extra={<a href="#">全部条目</a>}>
                                 <ResourceOptimize
