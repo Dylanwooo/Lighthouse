@@ -31,65 +31,64 @@ export default class Suggestion extends Component {
     };
 
     componentWillMount() {
-        // console.log(this.props.formattedResults);
-        // if(this.props.formattedResults) {
-        //     this.setState({
-        //         AvoidLandingPageRedirects: this.props.formattedResults.ruleResults.AvoidLandingPageRedirects, //避免使用着陆页重定向
-        //         EnableGzipCompression: this.props.formattedResults.ruleResults.EnableGzipCompression, //启用压缩
-        //         LeverageBrowserCaching: this.props.formattedResults.ruleResults.LeverageBrowserCaching,  //使用浏览器缓存
-        //         MainResourceServerResponseTime: this.props.formattedResults.ruleResults.MainResourceServerResponseTime, //缩短服务器响应时间
-        //         MinifyCss: this.props.formattedResults.ruleResults.MinifyCss, //缩减CSS
-        //         MinifyHTML: this.props.formattedResults.ruleResults.MinifyHTML,   //缩减 HTML
-        //         MinifyJavaScript: this.props.formattedResults.ruleResults.MinifyJavaScript,  //缩减 JavaScript
-        //         MinimizeRenderBlockingResources: this.props.formattedResults.ruleResults.MinimizeRenderBlockingResources, //清除首屏内容中阻止呈现的 JavaScript 和 CSS
-        //         OptimizeImages: this.props.formattedResults.ruleResults.OptimizeImages,    //优化图片
-        //         PrioritizeVisibleContent: this.props.formattedResults.ruleResults.PrioritizeVisibleContent,  //按优先级排列可见内容
-        //     })
-        // }
+        if(this.props.formattedResults) {
+            this.setState({
+                AvoidLandingPageRedirects: this.props.formattedResults.ruleResults.AvoidLandingPageRedirects, //避免使用着陆页重定向
+                EnableGzipCompression: this.props.formattedResults.ruleResults.EnableGzipCompression, //启用压缩
+                LeverageBrowserCaching: this.props.formattedResults.ruleResults.LeverageBrowserCaching,  //使用浏览器缓存
+                MainResourceServerResponseTime: this.props.formattedResults.ruleResults.MainResourceServerResponseTime, //缩短服务器响应时间
+                MinifyCss: this.props.formattedResults.ruleResults.MinifyCss, //缩减CSS
+                MinifyHTML: this.props.formattedResults.ruleResults.MinifyHTML,   //缩减 HTML
+                MinifyJavaScript: this.props.formattedResults.ruleResults.MinifyJavaScript,  //缩减 JavaScript
+                MinimizeRenderBlockingResources: this.props.formattedResults.ruleResults.MinimizeRenderBlockingResources, //清除首屏内容中阻止呈现的 JavaScript 和 CSS
+                OptimizeImages: this.props.formattedResults.ruleResults.OptimizeImages,    //优化图片
+                PrioritizeVisibleContent: this.props.formattedResults.ruleResults.PrioritizeVisibleContent,  //按优先级排列可见内容
+            })
+        }
     }
 
     render() {
-        // const {
-        //     AvoidLandingPageRedirects,
-        //     EnableGzipCompression,
-        //     LeverageBrowserCaching,
-        //     MainResourceServerResponseTime,
-        //     MinifyCss,
-        //     MinifyHTML,
-        //     MinifyJavaScript,
-        //     MinimizeRenderBlockingResources,
-        //     OptimizeImages,
-        //     PrioritizeVisibleContent
-        // } = this.state;
-        //
-        //
-        // const GzipUrlBlocks = EnableGzipCompression.urlBlocks?extractObject(EnableGzipCompression.urlBlocks):EnableGzipCompression.summary;
-        // const GzipRuleImpact = EnableGzipCompression.ruleImpact || '无';
-        // const GzipSummary = EnableGzipCompression.summary.format;
-        //
-        // const BrowserBlocks = LeverageBrowserCaching.urlBlocks?extractObject(LeverageBrowserCaching.urlBlocks):{};
-        // const BrowserRuleImpact = LeverageBrowserCaching.ruleImpact || '无';
-        // const BrowserSummary = LeverageBrowserCaching.summary.format;
-        //
-        // const serverRuleImpact = MainResourceServerResponseTime.ruleImpact;
-        // const serverBlocks = MainResourceServerResponseTime.urlBlocks?extractObject(MainResourceServerResponseTime.urlBlocks):MainResourceServerResponseTime.summary;
-        // const cssRuleImpact = MinifyCss.ruleImpact || '无';
-        // const cssBlocks = MinifyCss.urlBlocks?extractObject(MinifyCss.urlBlocks):MinifyCss.summary;
-        //
-        // const htmlRuleImpact = MinifyHTML.ruleImpact || '无';
-        // const htmlBlocks = MinifyHTML.urlBlocks?extractObject(MinifyHTML.urlBlocks):MinifyHTML.summary;
-        //
-        // const jsRuleImpact = MinifyJavaScript.ruleImpact || '无';
-        // const jsBlocks = MinifyJavaScript.urlBlocks?extractObject(MinifyJavaScript.urlBlocks):MinifyJavaScript.summary;
-        //
-        // const imgRuleImpact = OptimizeImages.ruleImpact || '无';
-        // const imgBlocks = OptimizeImages.urlBlocks?extractObject(OptimizeImages.urlBlocks):OptimizeImages.summary;
-        //
-        // const FPBBlcoks = MinimizeRenderBlockingResources.urlBlocks;
-        // const FPBCSSBlock = FPBBlcoks[1];
-        // const FPBJSBlock = FPBBlcoks[2];
-        // const FPBImpact = MinimizeRenderBlockingResources.ruleImpact || '无';
-        // const FPBSummary = MinimizeRenderBlockingResources.summary;
+        const {
+            AvoidLandingPageRedirects,
+            EnableGzipCompression,
+            LeverageBrowserCaching,
+            MainResourceServerResponseTime,
+            MinifyCss,
+            MinifyHTML,
+            MinifyJavaScript,
+            MinimizeRenderBlockingResources,
+            OptimizeImages,
+            PrioritizeVisibleContent
+        } = this.state;
+
+
+        const GzipUrlBlocks = EnableGzipCompression.urlBlocks?extractObject(EnableGzipCompression.urlBlocks):EnableGzipCompression.summary;
+        const GzipRuleImpact = EnableGzipCompression.ruleImpact || '无';
+        const GzipSummary = EnableGzipCompression.summary.format;
+
+        const BrowserBlocks = LeverageBrowserCaching.urlBlocks?extractObject(LeverageBrowserCaching.urlBlocks):{};
+        const BrowserRuleImpact = LeverageBrowserCaching.ruleImpact || '无';
+        const BrowserSummary = LeverageBrowserCaching.summary.format;
+
+        const serverRuleImpact = MainResourceServerResponseTime.ruleImpact;
+        const serverBlocks = MainResourceServerResponseTime.urlBlocks?extractObject(MainResourceServerResponseTime.urlBlocks):MainResourceServerResponseTime.summary;
+        const cssRuleImpact = MinifyCss.ruleImpact || '无';
+        const cssBlocks = MinifyCss.urlBlocks?extractObject(MinifyCss.urlBlocks):MinifyCss.summary;
+
+        const htmlRuleImpact = MinifyHTML.ruleImpact || '无';
+        const htmlBlocks = MinifyHTML.urlBlocks?extractObject(MinifyHTML.urlBlocks):MinifyHTML.summary;
+
+        const jsRuleImpact = MinifyJavaScript.ruleImpact || '无';
+        const jsBlocks = MinifyJavaScript.urlBlocks?extractObject(MinifyJavaScript.urlBlocks):MinifyJavaScript.summary;
+
+        const imgRuleImpact = OptimizeImages.ruleImpact || '无';
+        const imgBlocks = OptimizeImages.urlBlocks?extractObject(OptimizeImages.urlBlocks):OptimizeImages.summary;
+
+        const FPBBlcoks = MinimizeRenderBlockingResources.urlBlocks;
+        const FPBCSSBlock = FPBBlcoks[1];
+        const FPBJSBlock = FPBBlcoks[2];
+        const FPBImpact = MinimizeRenderBlockingResources.ruleImpact || '无';
+        const FPBSummary = MinimizeRenderBlockingResources.summary;
 
         const gridStyle = {
             width: '25%',
@@ -113,15 +112,24 @@ export default class Suggestion extends Component {
                         <Col span={6}>
                             <div className="rightContainer">
                                 <div style={{width:80,borderRight:'1px solid rgba(0,0,0,0.1)',marginRight:30}}>
-                                    <p style={{color:'rgba(0,0,0,.4)',margin:'0 !important'}}>资源数</p>
+                                    <p style={{color:'rgba(0,0,0,.4)',margin:'0 !important'}}>
+                                        <Icon type="api" style={{fontSize:22,position:'relative',top:4,left:-9}}/>
+                                        资源数
+                                    </p>
                                     <p className="number" style={{position:'relative',right:10}}>25,846</p>
                                 </div>
                                 <div style={{width:80,borderRight:'1px solid rgba(0,0,0,0.1)',marginRight:30}}>
-                                    <p style={{color:'rgba(0,0,0,.4)',margin:'0 !important'}}>请求耗时</p>
+                                    <p style={{color:'rgba(0,0,0,.4)',margin:'0 !important'}}>
+                                        <Icon type="clock-circle-o" style={{fontSize:22,position:'relative',top:4,left:-9}}/>
+                                        耗时
+                                    </p>
                                     <p className="number">1.32s</p>
                                 </div>
                                 <div style={{width:80}}>
-                                    <p style={{color:'rgba(0,0,0,.4)',margin:'0 !important'}}>建议条数</p>
+                                    <p style={{color:'rgba(0,0,0,.4)',margin:'0 !important'}}>
+                                        <Icon type="ant-design" style={{fontSize:22,position:'relative',top:4,left:-9}}/>
+                                        建议数
+                                    </p>
                                     <p className="number" style={{position:'relative',left:10}}>48</p>
                                 </div>
                             </div>
@@ -140,25 +148,26 @@ export default class Suggestion extends Component {
                                 <Card.Grid style={gridStyle}>Content</Card.Grid>
                                 <Card.Grid style={gridStyle}>Content</Card.Grid>
                             </Card>
-                            <Card style={{marginTop:20}} title="资源优化">
-                                <Tabs>
-                                    <TabPane tab="缩短服务响应时间" key="1">
-
-                                    </TabPane>
-                                    <TabPane tab="缩减CSS" key="2">
-
-                                    </TabPane>
-                                    <TabPane tab="缩减HTML" key="3">
-
-                                    </TabPane>
-                                    <TabPane tab="缩减JavaScript" key="4">
-
-                                    </TabPane>
-                                </Tabs>
+                            <Card style={{marginTop:20}} title="资源优化" extra={<a href="#">全部条目</a>}>
+                                <ResourceOptimize
+                                    serverRuleImpact={serverRuleImpact}
+                                    serverData={serverBlocks}
+                                    cssRuleImpact={cssRuleImpact}
+                                    cssData = {cssBlocks}
+                                    htmlImpact={htmlRuleImpact}
+                                    htmlData = {htmlBlocks}
+                                    jsImpact={jsRuleImpact}
+                                    jsData = {jsBlocks}
+                                    imgRuleImpact={imgRuleImpact}
+                                    imgData = {imgBlocks}
+                                />
                             </Card>
                         </Col>
                         <Col span={8}>
-                            <Card>
+                            <Card title="首屏阻塞" style={{marginBottom:20}}>
+
+                            </Card>
+                            <Card title="启用压缩">
 
                             </Card>
                         </Col>

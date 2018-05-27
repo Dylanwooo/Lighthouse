@@ -42,35 +42,6 @@ export default class Gzip extends PureComponent {
             }]
         }
 
-        // if(dataSource){
-        //     const title = mapLink2Vaule(dataSource.header);
-        //     const urls = dataSource.urls;
-        //
-        //     urls.map(item => {
-        //         data.push({
-        //             key: urls.indexOf(item),
-        //             value:mapKey2Value(item.result.format,item.result.args)
-        //         });
-        //     });
-        //
-        //     columns = [{
-        //         title: title,
-        //         dataIndex: 'value',
-        //         key: 'value'
-        //     }];
-        // } else {
-        //     data = [{
-        //         key: '1',
-        //         value: '暂无数据'
-        //     }];
-        //     columns = [{
-        //         title: '数据',
-        //         dataIndex: 'value',
-        //         key: 'value'
-        //     }]
-        // }
-
-
         return(
             <div>
                 <p>{ruleName}</p>
